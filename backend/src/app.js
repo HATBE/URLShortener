@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -6,7 +8,7 @@ const urlsRoutes = require('./routes/urls');
 
 const app = express();
 
-mongoose.connect('')
+mongoose.connect(process.env.DB_CONN)
 .then(() => {
   console.log('Successfully connected to database!');
 })
