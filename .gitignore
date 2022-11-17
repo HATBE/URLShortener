@@ -13,25 +13,26 @@ npm-debug.log
 yarn-error.log
 
 # IDEs and editors
-.idea/
+/frontend/.idea/
 .project
 .classpath
-.c9/
+/frontend/.c9/
 *.launch
-.settings/
+/frontend/.settings/
 *.sublime-workspace
 
 # Visual Studio Code
-.vscode/*
+/frontend/.vscode/*
+/backend/.vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.history/*
+/frontend/.history/*
 
 # Miscellaneous
 /frontend/.angular/cache
-.sass-cache/
+/frontend/.sass-cache/
 /frontend/connect.lock
 /frontend/coverage
 /frontend/libpeerconnection.log
