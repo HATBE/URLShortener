@@ -6,7 +6,7 @@ const urlsRoutes = require('./routes/urls');
 
 const app = express();
 
-mongoose.connect('mongodb+srv://tutorial:lip9JgchHfbpVKGU@cluster0.y9amit5.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect('')
 .then(() => {
   console.log('Successfully connected to database!');
 })
