@@ -11,6 +11,7 @@ import { Url } from '../index/url.model'
 export class RedirectComponent implements OnInit {
 
   id: string | null = '';
+  error: string = '';
 
   constructor(private route: ActivatedRoute, private http:HttpClient) {
   }
@@ -23,7 +24,7 @@ export class RedirectComponent implements OnInit {
         this.http.get<{message: string; url: Url}>('http://localhost:3000/api/urls/' + this.id).subscribe(data => {
           window.location.href = data.url.url;
         }, error => {
-          alert("url does not exist")
+          this.error = "This url does not exist!"
         });
       }
     });

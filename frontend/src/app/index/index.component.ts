@@ -25,7 +25,7 @@ export class IndexComponent implements OnInit {
     }
     this.error = '';
 
-    this.http.post<{message: any; url: Url}>("http://localhost:3000/api/urls", {url: this.url}).subscribe(data => {
+    this.http.post<{message: any; url: Url | any}>("http://localhost:3000/api/urls", {url: this.url}).subscribe(data => {
       this.shorturl = data.url.fullshorturl;
     });
 
