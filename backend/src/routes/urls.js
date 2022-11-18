@@ -4,8 +4,27 @@ const randomString = require('randomString');
 
 const UrlModel = require('../models/url');
 
-router.get("/", (req, res, next) => {
-    res.status(200).json({})
+router.get("/:id", (req, res, next) => {
+    // check if id is right
+    if(req.params.id.length !== 9) {
+        res.status(400).json({message: "wrong id"});
+        return;
+    }
+    UrlModel.findOne({shorturl: req.params.id}).then(result => {
+        if(result) {
+            res.status(200).json({
+                message: "url found",
+                url: {
+                    url: result.url,
+                    shorturl: result.shorturl,
+                    fullshorturl: `${req.hostname}/u/${result.shorturl}`,
+                    date: result.date
+                }
+            });
+        } else {
+            res.status(404).json({message: "url not found"});
+        }
+    });
 });
 
 router.post("/", (req, res, next) => {
@@ -27,8 +46,8 @@ router.post("/", (req, res, next) => {
             length: 9,
             charset: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
         });
-        UrlModel.exists({shorturl: shorturl}).then(ex => {
-            if(ex) rep = true;
+        UrlModel.exists({shorturl: shorturl}).then(result => {
+            if(result) rep = true;
         });
     } while(rep);
     // build UrlModel
@@ -49,7 +68,6 @@ router.post("/", (req, res, next) => {
             }
         });
     });
-
 });
 
 module.exports = router;
