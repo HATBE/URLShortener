@@ -17,7 +17,7 @@ router.get("/:id", (req, res, next) => {
                 url: {
                     url: result.url,
                     shorturl: result.shorturl,
-                    fullshorturl: `${req.hostname}/u/${result.shorturl}`,
+                    fullshorturl: `http://${result.hostname}:4200/u/${result.shorturl}`, // TEMP !!!!!! change to real url,
                     date: result.date
                 }
             });
@@ -43,8 +43,7 @@ router.post("/", (req, res, next) => {
     do {
         // generate new shorturl, check if it akready exists in db, if exists, repeat
         shorturl = randomString.generate({
-            length: 9,
-            charset: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
+            length: 9
         });
         UrlModel.exists({shorturl: shorturl}).then(result => {
             if(result) rep = true;
@@ -63,7 +62,7 @@ router.post("/", (req, res, next) => {
             url: {
                 url: url.url,
                 shorturl: url.shorturl,
-                fullshorturl: `${req.hostname}/u/${url.shorturl}`,
+                fullshorturl: `http://${req.hostname}:4200/u/${url.shorturl}`, // TEMP !!!!!! change to real url
                 date: url.date
             }
         });

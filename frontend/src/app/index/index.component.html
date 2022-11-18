@@ -1,0 +1,22 @@
+<div class="wrapper d-flex justify-content-center align-items-center w-100 h-100">
+  <div class="container d-flex justify-content-center ">
+    <div class="card bg-dark shadow">
+      <div class="card-body text-light">
+        <div class="row" *ngIf="!shorturl">
+          <div class="col-8 col-md-9">
+            <input [(ngModel)]="url" placeholder="Enter a URL" type="url" class="text-light w-100 form-control bg-dark">
+          </div>
+          <div class="col-4 col-md-3 d-flex justify-content-center">
+            <button type="button" (click)="onClick()" class="btn w-100 btn-outline-light">Shorten</button>
+          </div>
+          <div class="p-3 pb-0 h5" *ngIf="error != ''">
+            <b class="text-danger">Error!</b> <span> {{error}}</span>
+          </div>
+        </div>
+        <div classs="h3" *ngIf="shorturl">
+          Your new url is: <a href="{{shorturl}}"><span class="text-primary">{{shorturl}}</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
