@@ -19,8 +19,8 @@ export class IndexComponent implements OnInit {
   }
 
   onClick() {
-    if(!/[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/.test(this.url)) {
-        this.error = "URL format is wrong!";
+    if(!/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/.test(this.url)) {
+        this.error = "URL format is wrong! http(s)://url.com";
         return;
     }
     this.error = '';

@@ -34,7 +34,7 @@ router.post("/", (req, res, next) => {
         return;
     }
     // check if url is valid
-    if(!/[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/.test(req.body.url)) {
+    if(!/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/.test(req.body.url)) {
         res.status(400).json({message: "failed, please provide a valid url"});
         return;
     }
