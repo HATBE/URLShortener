@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { IndexComponent } from './components/index/index.component';
 import { RedirectComponent } from './components/redirect/redirect.component';
 import { HttpClientModule } from '@angular/common/http';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    FontAwesomeModule,
     HttpClientModule
   ],
   providers: [],

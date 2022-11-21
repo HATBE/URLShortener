@@ -12,6 +12,9 @@ main {
 .link-primary {
   color: var(--bs-primary) !important;
 }
+.hover-primary:hover {
+  color: var(--bs-primary) !important;
+}
 .url-space {
   background-color: #000;
 }

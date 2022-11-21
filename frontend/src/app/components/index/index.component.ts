@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Url } from '../../models/url.model'
+import { faClipboard } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-index',
@@ -13,6 +14,8 @@ export class IndexComponent implements OnInit {
   url: string = ""
   shorturl: string = "";
   isLoading: boolean = false;
+
+  faClipboard = faClipboard;
 
   constructor(private http:HttpClient) { }
 
@@ -40,6 +43,9 @@ export class IndexComponent implements OnInit {
       this.isLoading = false;
     });
     this.url = "";
+  }
 
+  onClickCopyToClipboard() {
+    navigator.clipboard.writeText(this.shorturl);
   }
 }
