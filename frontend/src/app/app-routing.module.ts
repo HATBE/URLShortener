@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { IndexComponent } from './index/index.component';
-import { RedirectComponent } from './redirect/redirect.component';
+import { IndexComponent } from './components/index/index.component';
+import { RedirectComponent } from './components/redirect/redirect.component';
 
 const routes: Routes = [
   {path: '', component: IndexComponent, title: "URL-Shortener"},

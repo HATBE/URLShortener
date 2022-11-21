@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Url } from './url.model'
+import { Url } from '../../models/url.model'
 
 @Component({
   selector: 'app-index',
