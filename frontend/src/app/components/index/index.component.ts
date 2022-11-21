@@ -29,7 +29,7 @@ export class IndexComponent implements OnInit {
   onShorten() {
     this.isLoading = true;
     if(!/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/.test(this.url)) {
-        this.error = "URL format is wrong! http(s)://url.com";
+        this.error = "URL format is wrong! http(s)://url.com(/*)";
         this.isLoading = false;
         return;
     }
