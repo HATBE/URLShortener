@@ -22,7 +22,8 @@ export class RedirectComponent implements OnInit {
         this.id = paramMap.get('id');
 
         this.http.get<{message: string; url: Url}>('http://localhost:3000/api/urls/' + this.id).subscribe(data => {
-          window.location.href = data.url.url;
+          let url = data.url.url;
+          window.location.href = url;
         }, error => {
           this.error = "This url does not exist!"
         });

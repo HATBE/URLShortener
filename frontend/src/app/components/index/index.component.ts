@@ -12,23 +12,34 @@ export class IndexComponent implements OnInit {
   error: string = "";
   url: string = ""
   shorturl: string = "";
+  isLoading: boolean = false;
 
   constructor(private http:HttpClient) { }
 
   ngOnInit(): void {
   }
 
-  onClick() {
+  onClickInput() {
+    this.error = "";
+  }
+
+  onShorten() {
+    this.isLoading = true;
     if(!/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/.test(this.url)) {
         this.error = "URL format is wrong! http(s)://url.com";
+        this.isLoading = false;
         return;
     }
     this.error = '';
 
     this.http.post<{message: any; url: Url | any}>("http://localhost:3000/api/urls", {url: this.url}).subscribe(data => {
       this.shorturl = data.url.fullshorturl;
+      this.isLoading = false;
+    }, error => {
+      this.error = `${error.status} ${error.statusText}`;
+      this.isLoading = false;
     });
+    this.url = "";
 
-    //this.url = ""
   }
 }

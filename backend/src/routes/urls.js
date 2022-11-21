@@ -62,7 +62,7 @@ router.post("/", (req, res, next) => {
             url: {
                 url: url.url,
                 shorturl: url.shorturl,
-                fullshorturl: `http://${req.hostname}:4200/u/${url.shorturl}`, // TEMP !!!!!! change to real url
+                fullshorturl: `http://${req.hostname}:4200/r/${url.shorturl}`, // TEMP !!!!!! change to real url
                 date: url.date
             }
         });

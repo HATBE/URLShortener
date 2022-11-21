@@ -5,7 +5,8 @@ import { RedirectComponent } from './components/redirect/redirect.component';
 
 const routes: Routes = [
   {path: '', component: IndexComponent, title: "URL-Shortener"},
-  {path: 'u/:id', component: RedirectComponent, title: "Redirect..."}
+  {path: 'r/:id', component: RedirectComponent, title: "Redirect..."},
+  {path:'**', component: IndexComponent}
 ];
 
 @NgModule({
