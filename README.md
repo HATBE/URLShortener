@@ -6,6 +6,7 @@ Feautures:
 - Node.JS Backend (express) (REST)
 - Bootstrap CSS
 - Fontawesome Icons
+- MongoDB Database
 
 ---
 

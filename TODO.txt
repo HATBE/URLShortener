@@ -2,3 +2,4 @@
 
 - Use Service in frontend for url
 !! - change fullshorturl in backend (urls route) to the real URL
+- Add Docker support
