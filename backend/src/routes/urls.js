@@ -17,7 +17,7 @@ router.get("/:id", (req, res, next) => {
                 url: {
                     url: result.url,
                     shorturl: result.shorturl,
-                    fullshorturl: `http://${result.hostname}:4200/u/${result.shorturl}`, // TEMP !!!!!! change to real url,
+                    fullshorturl: `http://${result.hostname}:4200/r/${result.shorturl}`, // TEMP !!!!!! change to real url,
                     date: result.date
                 }
             });
