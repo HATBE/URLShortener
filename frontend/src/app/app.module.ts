@@ -8,12 +8,17 @@ import { IndexComponent } from './components/index/index.component';
 import { RedirectComponent } from './components/redirect/redirect.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-
+import { HeaderComponent } from './components/parts/header/header.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { HeaderButtonComponent } from './components/parts/header/header-button/header-button.component';
 @NgModule({
   declarations: [
     AppComponent,
     IndexComponent,
-    RedirectComponent
+    RedirectComponent,
+    HeaderComponent,
+    LoginComponent,
+    HeaderButtonComponent
   ],
   imports: [
     BrowserModule,

@@ -8,7 +8,6 @@ import { UrlService } from 'src/app/services/url.service';
 @Component({
   selector: 'app-redirect',
   templateUrl: './redirect.component.html',
-  styleUrls: ['./redirect.component.css'],
   providers: [
     Title
   ],

@@ -1,1 +1,7 @@
 // TODO
+
+Backend?
+- login / register
+- see own urls (if not loggedin (guest), store in localstorage, if loggedin, add to dash and remove from localstorage)
+- delete own urls
+- allow to modify url (if modified, popop on redirect, (notify that its changed (3 sec. timer or direct link click, ... or something like this)))
