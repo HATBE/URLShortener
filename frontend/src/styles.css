@@ -35,3 +35,20 @@ main {
     width: 95%
   }
 }
+@media only screen and (min-width: 768px) {
+  .w-md-75 {
+    width: 75% !important;
+  }
+  .w-md-50 {
+    width: 50% !important;
+  }
+}
+.btn-primary {
+  background-color: var(--bs-primary);
+  border: var(--bs-primary);
+}
+.btn-primary:focus, .btn-primary:hover   {
+  background-color: var(--bs-primary) !important;
+  border: var(--bs-primary) !important;
+  filter: brightness(85%) !important;
+}

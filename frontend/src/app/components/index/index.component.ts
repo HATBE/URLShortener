@@ -19,8 +19,7 @@ export class IndexComponent implements OnInit {
 
   constructor(private urlService: UrlService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onClickInput() {
     this.error = "";
@@ -28,6 +27,10 @@ export class IndexComponent implements OnInit {
 
   onShorten() {
     this.isLoading = true;
+    if(this.url === '') {
+      this.isLoading = false;
+      return;
+    }
     if(!/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/.test(this.url)) {
         this.error = "URL format is wrong! http(s)://url.com(/*)";
         this.isLoading = false;
