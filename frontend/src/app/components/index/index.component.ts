@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Url } from '../../models/url.model'
+import { UrlService } from 'src/app/services/url.service';
 import { faClipboard } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
@@ -17,7 +17,7 @@ export class IndexComponent implements OnInit {
 
   faClipboard = faClipboard;
 
-  constructor(private http:HttpClient) { }
+  constructor(private urlService: UrlService) {}
 
   ngOnInit(): void {
   }
@@ -35,14 +35,21 @@ export class IndexComponent implements OnInit {
     }
     this.error = '';
 
-    this.http.post<{message: any; url: Url | any}>("http://localhost:3000/api/urls", {url: this.url}).subscribe(data => {
-      this.shorturl = data.url.fullshorturl;
-      this.isLoading = false;
-    }, error => {
-      this.error = `${error.status} ${error.statusText}`;
-      this.isLoading = false;
+    this.urlService.addUrl(this.url).subscribe({
+      next: this.successAddingUrl.bind(this),
+      error: this.errorAddingUrl.bind(this)
     });
     this.url = "";
+  }
+
+  successAddingUrl(data: {message: string, url: Url}) {
+    this.shorturl = data.url.fullshorturl;
+    this.isLoading = false;
+  }
+
+  errorAddingUrl(error: {status: string, statusText: string}) {
+    this.error = `${error.status} ${error.statusText}`;
+    this.isLoading = false;
   }
 
   onClickCopyToClipboard() {
