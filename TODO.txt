@@ -1,4 +1,1 @@
 // TODO
-
-!! - change fullshorturl in backend (urls route) to the real URL
-- Add Docker support

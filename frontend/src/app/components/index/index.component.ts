@@ -43,7 +43,7 @@ export class IndexComponent implements OnInit {
   }
 
   successAddingUrl(data: {message: string, url: Url}) {
-    this.shorturl = data.url.fullshorturl;
+    this.shorturl = window.location.href + data.url.shorturl;
     this.isLoading = false;
   }
 
