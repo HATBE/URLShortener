@@ -28,4 +28,9 @@ app.use((req, res, next) => {
 
 app.use('/api/urls', urlsRoutes);
 
+// Default route
+app.get('*', (req, res, next) => {
+  res.json({"error":"route not found"})
+});
+
 module.exports = app;

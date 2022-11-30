@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/auth/login/login.component';
-import { IndexComponent } from './components/index/index.component';
-import { RedirectComponent } from './components/redirect/redirect.component';
-import { DashboardComponent } from './components/userbackend/dashboard/dashboard.component';
+import { LoginComponent } from './components/pages/auth/login/login.component';
+import { IndexComponent } from './components/pages/index/index.component';
+import { RedirectComponent } from './components/pages/redirect/redirect.component';
+import { DashboardComponent } from './components/pages/userbackend/dashboard/dashboard.component';
 
 const routes: Routes = [
   {path: '', component: IndexComponent, title: "URL-Shortener"},

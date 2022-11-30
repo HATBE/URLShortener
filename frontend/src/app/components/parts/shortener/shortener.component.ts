@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Url } from '../../models/url.model'
+import { Url } from '../../../models/url.model'
 import { UrlService } from 'src/app/services/url.service';
 import { faClipboard } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
-  selector: 'app-index',
-  templateUrl: './index.component.html',
-  styleUrls: ['./index.component.css']
+  selector: 'app-shortener',
+  templateUrl: './shortener.component.html',
+  styleUrls: ['./shortener.component.css']
 })
-export class IndexComponent implements OnInit {
+export class ShortenerComponent implements OnInit {
 
   error: string = "";
   url: string = ""
@@ -17,9 +17,10 @@ export class IndexComponent implements OnInit {
 
   faClipboard = faClipboard;
 
-  constructor(private urlService: UrlService) {}
+  constructor(private urlService: UrlService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   onClickInput() {
     this.error = "";
@@ -58,4 +59,5 @@ export class IndexComponent implements OnInit {
   onClickCopyToClipboard() {
     navigator.clipboard.writeText(this.shorturl);
   }
+
 }

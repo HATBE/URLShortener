@@ -1,0 +1,15 @@
+<div *ngIf="!shorturl">
+  <input (click)="onClickInput()" (keydown.enter)="onShorten()" [(ngModel)]="url" placeholder="Enter a URL" type="url" class="text-light w-100 form-control bg-dark">
+  <button type="button" (click)="onShorten()" class="btn w-100 btn-outline-light">Shorten</button>
+  <div *ngIf="error != ''">
+    {{error}}
+  </div>
+  <div *ngIf="isLoading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</div>
+<div *ngIf="shorturl">
+    <a id="url" href="{{shorturl}}">{{shorturl}}</a> <fa-icon (click)="onClickCopyToClipboard()" [icon]="faClipboard"></fa-icon>
+</div>
