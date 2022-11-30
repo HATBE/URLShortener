@@ -42,6 +42,9 @@ main {
   .w-md-50 {
     width: 50% !important;
   }
+  .w-md-25 {
+    width: 25% !important;
+  }
 }
 .btn-primary {
   background-color: var(--bs-primary);
@@ -50,5 +53,10 @@ main {
 .btn-primary:focus, .btn-primary:hover   {
   background-color: var(--bs-primary) !important;
   border: var(--bs-primary) !important;
+  filter: brightness(85%) !important;
+}
+
+.link-primary:hover, .link-primary:focus {
+  color: var(--bs-primary) !important;
   filter: brightness(85%) !important;
 }

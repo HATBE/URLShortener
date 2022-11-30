@@ -5,3 +5,11 @@ Backend?
 - see own urls (if not loggedin (guest), store in localstorage, if loggedin, add to dash and remove from localstorage)
 - delete own urls
 - allow to modify url (if modified, popop on redirect, (notify that its changed (3 sec. timer or direct link click, ... or something like this)))
+- always track all urls (only if and when someone clicks, no personal data)
+- enable extra tracking (log ip, log useragent, ...) (make admin config setting if a popup should popup when enabled, to inform before redirect / collection)
+- change pw
+- delete account (incl. all urls).
+
+
+- add imprint
+- add feauture that automaticly adds https to domain on submit if no set (edgecase: when page has no https...)

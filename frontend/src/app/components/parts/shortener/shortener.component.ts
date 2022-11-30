@@ -33,7 +33,7 @@ export class ShortenerComponent implements OnInit {
       return;
     }
     if(!/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/.test(this.url)) {
-        this.error = "URL format is wrong! http(s)://url.com(/*)";
+        this.error = "URL format is wrong! Use http(s)://url.com(/*)";
         this.isLoading = false;
         return;
     }
@@ -43,7 +43,6 @@ export class ShortenerComponent implements OnInit {
       next: this.successAddingUrl.bind(this),
       error: this.errorAddingUrl.bind(this)
     });
-    this.url = "";
   }
 
   successAddingUrl(data: {message: string, url: Url}) {
@@ -59,5 +58,4 @@ export class ShortenerComponent implements OnInit {
   onClickCopyToClipboard() {
     navigator.clipboard.writeText(this.shorturl);
   }
-
 }

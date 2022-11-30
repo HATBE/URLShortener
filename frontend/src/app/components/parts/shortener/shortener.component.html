@@ -1,15 +1,31 @@
-<div *ngIf="!shorturl">
-  <input (click)="onClickInput()" (keydown.enter)="onShorten()" [(ngModel)]="url" placeholder="Enter a URL" type="url" class="text-light w-100 form-control bg-dark">
-  <button type="button" (click)="onShorten()" class="btn w-100 btn-outline-light">Shorten</button>
-  <div *ngIf="error != ''">
-    {{error}}
-  </div>
-  <div *ngIf="isLoading">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
+<div class="w-100">
+  <div *ngIf="!shorturl">
+    <div class="row gx-2">
+      <div class="col-8 col-xl-10">
+        <input (click)="onClickInput()" (keydown.enter)="onShorten()" [(ngModel)]="url" placeholder="Enter a URL to shorten" type="url" class="w-100 text-light form-control bg-dark">
+      </div>
+      <div class="col-4 col-xl-2">
+        <button type="button" (click)="onShorten()" class="w-100 btn btn-outline-light">Shorten</button>
+      </div>
+    </div>
+    <div class="py-3 text-light" *ngIf="error != ''">
+      <span class="text-danger fw-bold">Error!</span> {{error}}
+    </div>
+    <div class="py-4 w-100 d-flex justify-content-center" *ngIf="isLoading">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
     </div>
   </div>
-</div>
-<div *ngIf="shorturl">
-    <a id="url" href="{{shorturl}}">{{shorturl}}</a> <fa-icon (click)="onClickCopyToClipboard()" [icon]="faClipboard"></fa-icon>
+  <div class="text-light" *ngIf="shorturl">
+    <div>
+      <a href="/"><button class="mb-2 btn btn-outline-light">&lt; Back</button></a><!--Href, reaload-->
+    </div>
+    <div class="h3">
+      Your new url is:
+    </div>
+    <div class="p-3 rounded d-flex justify-content-between h4" style="background-color: #000;">
+      <a class="link-primary" id="url" href="{{shorturl}}">{{shorturl}}</a> <fa-icon class="text-light hover-primary" (click)="onClickCopyToClipboard()" [icon]="faClipboard"></fa-icon>
+    </div>
+  </div>
 </div>
