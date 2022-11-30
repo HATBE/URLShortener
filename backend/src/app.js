@@ -1,32 +1,35 @@
 require('dotenv').config();
 
 const express = require('express');
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const urlsRoutes = require('./routes/urls');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const cors = require("cors");
+
+const routes = require('./routes/routes');
 
 const app = express();
 
-mongoose.connect(process.env.DB_CONN)
-.then(() => {
+mongoose.connect(process.env.DB_CONN, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}, () => {
   console.log('Successfully connected to database!');
-})
-.catch((c) => {
-  console.error(c);
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+// CORS stuff
+app.use(cors({
+  credentials: true,
+  origin: '*'
+}));
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS, PUT');
-  next();
-});
+// MIDLEWARE
+app.use(bodyParser.json()); // json parser
+app.use(bodyParser.urlencoded({extended: false})); // urlencoded parser
+app.use(cookieParser()); // cookie parser
 
-app.use('/api/urls', urlsRoutes);
+app.use('/api/', routes);
 
 // Default route
 app.get('*', (req, res, next) => {

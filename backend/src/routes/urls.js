@@ -37,6 +37,12 @@ router.post("/", (req, res, next) => {
         res.status(400).json({message: "failed, please provide a valid url"});
         return;
     }
+    // check if url is in range
+    if(req.body.url.length < 1 || req.body.url > 2048) {
+        res.status(400).json({message: "url not in range (1-2048)"});
+        return;
+    }
+
     let shorturl;
     let rep = false;
     do {
