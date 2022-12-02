@@ -1,12 +1,21 @@
-<div class="card w-100 bg-dark">
+<div class="card w-100 bg-dark" *ngIf="!loggedIn">
   <div class="card-header text-light fw-bold">
     <h4>Login</h4>
   </div>
-  <div class="card-body d-flex justify-content-center">
-    <form>
-      <input type="text" placeholder="Username" class="my-2 text-light bg-dark form-control">
-      <input type="text" placeholder="Password" class="my-2 text-light bg-dark form-control">
-      <button type="submit" class="btn btn-outline-light ">Login</button>
-    </form>
+  <div class="card-body">
+    <div class="w-100 d-flex flex-column justify-content-between align-items-center">
+      <div class="py-3 text-light" *ngIf="error != ''">
+        <span class="text-danger fw-bold">Error!</span> {{error}}
+      </div>
+      <form class="w-50 w-md-25" [formGroup]="form" (submit)="onSubmitLogin()">
+        <input formControlName="username" type="text" placeholder="Username" class="w-100 my-2 text-light bg-dark form-control" required>
+        <input formControlName="password" type="text" placeholder="Password" class="w-100 my-2 text-light bg-dark form-control" required>
+        <button type="submit" class="btn btn-outline-light ">Login</button>
+      </form>
+    </div>
   </div>
+</div>
+
+<div *ngIf="loggedIn">
+  You are already loggedIn
 </div>

@@ -5,11 +5,9 @@ const mongoose = require('mongoose');
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const cors = require("cors");
+const cors = require('cors');
 
 const routes = require('./routes/routes');
-
-const app = express();
 
 mongoose.connect(process.env.DB_CONN, {
   useNewUrlParser: true,
@@ -18,10 +16,13 @@ mongoose.connect(process.env.DB_CONN, {
   console.log('Successfully connected to database!');
 });
 
+const app = express();
+
 // CORS stuff
 app.use(cors({
   credentials: true,
-  origin: '*'
+  methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH'],
+  origin: process.env.URL_FRONTEND
 }));
 
 // MIDLEWARE

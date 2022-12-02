@@ -10,20 +10,17 @@ const UserModel = require('../models/user');
 router.post('/register', async (req, res) => {
     // check if username and password was provided
     if(!req.body.password || !req.body.username) {
-        res.status(400).json({message: "failed, please provide a username and password"});
-        return;
+        return res.status(400).json({message: "failed, please provide a username and password"});
     }
 
     // check if username and pw are in range
     if(req.body.password < 1 || req.body.password > 1024 || req.body.username < 3 || req.body.username > 16) {
-        res.status(400).json({message: "failed, username or password not in range"});
-        return;
+        return res.status(400).json({message: "failed, username or password not in range"});
     }
 
     // check if user already exists
     if(await UserModel.exists({username: req.body.username})){
-        res.status(400).json({message: "username already exists"});
-        return;
+        return res.status(400).json({message: "username already exists"});
     }
 
     const salt = await bcrypt.genSalt(10); // generate salt
@@ -48,22 +45,19 @@ router.post('/register', async (req, res) => {
 // login
 router.post('/login', async (req, res) => {
     if(!req.body.password || !req.body.username) {
-        res.status(400).json({message: "failed, please provide a username and password"});
-        return;
+        return res.status(400).json({message: "failed, please provide a username and password"});
     }
 
     // check if user exist
     if(!await UserModel.exists({username: req.body.username})) {
-        res.status(401).json({message: "Invalid credentials"});
-        return;
+        return res.status(401).json({message: "Invalid credentials"});
     }
 
     const user = await UserModel.findOne({username: req.body.username});
 
     // check if stored pw and given pw match
     if(!await bcrypt.compare(req.body.password, user.password)) {
-        res.status(401).json({message: "Invalid credentials"});
-        return;
+        return res.status(401).json({message: "Invalid credentials"});
     }
 
     const tokenData = {id: user._id};
@@ -78,15 +72,40 @@ router.post('/login', async (req, res) => {
     res.status(200).json({message: "successfully loggedin"});
 });
 
-// logout1
+// logout
 router.post('/logout', (req, res) => {
     res.cookie('authtoken', '', {
         maxAge: 0
     });
 
-    res.send({
-        message: "successfully loggedout"
-    })
+    res.status(200).json({message: "successfully loggedout"});
+});
+
+// get loggedin user data
+router.get('/user', async (req, res) => {
+    // check if auth cookie isset
+    if(!req.cookies['authtoken']) {
+        return res.status(401).json({message: 'Unauthenticated'});
+    }
+
+    const cookie = req.cookies['authtoken'];
+
+    const claims = jwt.verify(cookie, process.env.JWT_SECRET);
+
+    if(!claims) {
+        return res.status(401).json({message: 'Unauthenticated'});
+    }
+
+    const user = await UserModel.findOne({_id: claims.id});
+
+    const {_id, username} = await user.toJSON();
+
+    res.status(200).json({
+        user: {
+            id: _id,
+            username: username
+        }
+    });
 });
 
 module.exports = router;

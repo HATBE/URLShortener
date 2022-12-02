@@ -17,5 +17,4 @@ export class UrlService {
   addUrl(url: string) {
     return this.http.post<{message: any; url: Url | any}>(this.apiEndpoint, {url: url});
   }
-
 }
