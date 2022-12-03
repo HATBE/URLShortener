@@ -6,12 +6,18 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./header-button.component.css']
 })
 export class HeaderButtonComponent implements OnInit {
-  @Input() name = "";
-  @Input() link = "";
+  @Input() name: string = "";
+  @Input() link: string | null = "";
+  @Input() noActive: boolean = false;
 
-  constructor() { }
+  active: string = 'active';
+
+  constructor() {}
 
   ngOnInit(): void {
+    if(this.noActive) {
+      this.active = '';
+    }
   }
 
 }

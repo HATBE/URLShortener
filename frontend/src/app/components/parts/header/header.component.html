@@ -6,8 +6,10 @@
     </h1>
   </a>
   <div>
-    <app-header-button [link]="'/register'" [name]="'Register'"></app-header-button>
-    <app-header-button [link]="'/login'" [name]="'Login'"></app-header-button>
+    <app-header-button *ngIf="!loggedIn" [link]="'/register'" [name]="'Register'"></app-header-button>
+    <app-header-button *ngIf="!loggedIn" [link]="'/login'" [name]="'Login'"></app-header-button>
+    <app-header-button *ngIf="loggedIn" [link]="'/dashboard'" [name]="'Dashboard'"></app-header-button>
+    <app-header-button *ngIf="loggedIn" [link]="'/'" [noActive]="true" (click)="logout()" [name]="'Logout'"></app-header-button>
   </div>
 </div>
 </header>

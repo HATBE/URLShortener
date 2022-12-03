@@ -12,13 +12,5 @@ export class AppComponent {
   constructor(private userService: UserService,) { }
 
   ngOnInit(): void {
-
-    this.userService.getLoggedInUser().subscribe(res => {
-      console.log(res)
-    })
-
-    if(false) {
-      alert("authtoken")
-    }
   }
 }

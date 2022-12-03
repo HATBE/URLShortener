@@ -26,19 +26,14 @@ export class LoginComponent implements OnInit {
     });
   }
 
-    ngOnInit(): void {
-    // check if user is already loggedin
-
-    /*Emiters.authEmitter.subscribe(
-      (auth: boolean) => {
-        if(auth) {
-          this.loggedIn = true;
-          this.router.navigate(['/']);
-          return;
-        }
-      }
-    );*/
-  }
+  ngOnInit(): void {
+  // check if user is already loggedin
+  this.userService.getLoggedInUser().subscribe(() => {
+    this.loggedIn = true;
+    this.router.navigate(['/dashboard']);
+    return;
+  });
+}
 
   onSubmitLogin() {
     const username = this.form.getRawValue().username;
@@ -56,7 +51,8 @@ export class LoginComponent implements OnInit {
   }
 
   successLogin(data: any) {
-    this.router.navigate(['/']);
+    Emiters.authEmitter.emit(true);
+    this.router.navigate(['/dashboard']);
   }
 
   errorLogin(data: {error: {message: string}}) {

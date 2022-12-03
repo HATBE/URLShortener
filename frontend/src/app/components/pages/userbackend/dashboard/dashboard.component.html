@@ -1,1 +1,16 @@
-<p>dashboard works!</p>
+<div *ngIf="loggedIn">
+  <div class="card w-100 bg-dark">
+    <div class="card-header text-light fw-bold">
+      <h4>Dashboard</h4>
+    </div>
+    <div class="card-body text-light">
+      dashboard
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!loggedIn" class="d-flex justify-content-center">
+  <div class="spinner-border text-dark" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>

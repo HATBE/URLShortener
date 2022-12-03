@@ -27,6 +27,12 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // check if user is already loggedin
+    this.userService.getLoggedInUser().subscribe(() => {
+      this.loggedIn = true;
+      this.router.navigate(['/dashboard']);
+      return;
+    });
   }
 
   onSubmitRegister() {
@@ -45,7 +51,7 @@ export class RegisterComponent implements OnInit {
   }
 
   successRegister(data: any) {
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 
   errorRegister(data: {error: {message: string}}) {
