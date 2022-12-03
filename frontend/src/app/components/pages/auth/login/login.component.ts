@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
     ngOnInit(): void {
     // check if user is already loggedin
 
-    Emiters.authEmitter.subscribe(
+    /*Emiters.authEmitter.subscribe(
       (auth: boolean) => {
         if(auth) {
           this.loggedIn = true;
@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
           return;
         }
       }
-    );
+    );*/
   }
 
   onSubmitLogin() {

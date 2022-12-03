@@ -1,1 +1,21 @@
-<p>register works!</p>
+<div class="card w-100 bg-dark" *ngIf="!loggedIn">
+  <div class="card-header text-light fw-bold">
+    <h4>Register</h4>
+  </div>
+  <div class="card-body">
+    <div class="w-100 d-flex flex-column justify-content-between align-items-center">
+      <div class="py-3 text-light" *ngIf="error != ''">
+        <span class="text-danger fw-bold">Error!</span> {{error}}
+      </div>
+      <form class="w-50 w-md-25" [formGroup]="form" (submit)="onSubmitRegister()">
+        <input formControlName="username" type="text" placeholder="Username" class="w-100 my-2 text-light bg-dark form-control" required>
+        <input formControlName="password" type="text" placeholder="Password" class="w-100 my-2 text-light bg-dark form-control" required>
+        <button type="submit" class="btn btn-outline-light ">Register</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loggedIn">
+  You are already loggedIn
+</div>
