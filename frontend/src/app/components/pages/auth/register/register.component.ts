@@ -14,6 +14,7 @@ export class RegisterComponent implements OnInit {
   form: FormGroup;
   loggedIn: boolean = false;
   error: string = '';
+  isLoading: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -36,10 +37,12 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmitRegister() {
+    this.isLoading = true;
     const username = this.form.getRawValue().username;
     const password = this.form.getRawValue().password;
 
     if(username === '' || password === '') {
+      this.isLoading = false;
       return;
     }
 
@@ -51,10 +54,12 @@ export class RegisterComponent implements OnInit {
   }
 
   successRegister(data: any) {
+    this.isLoading = false;
     this.router.navigate(['/login']);
   }
 
   errorRegister(data: {error: {message: string}}) {
+    this.isLoading = false;
     this.error = data.error.message;
   }
 }

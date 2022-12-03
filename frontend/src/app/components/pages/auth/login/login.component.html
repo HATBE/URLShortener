@@ -4,14 +4,17 @@
   </div>
   <div class="card-body">
     <div class="w-100 d-flex flex-column justify-content-between align-items-center">
-      <div class="py-3 text-light" *ngIf="error != ''">
-        <span class="text-danger fw-bold">Error!</span> {{error}}
+      <div class="w-100 alert alert-danger" *ngIf="error != ''">
+        <span class="fw-bold">Error!</span> {{error}}
       </div>
-      <form class="w-50 w-md-25" [formGroup]="form" (submit)="onSubmitLogin()">
+      <form *ngIf="!isLoading" class="w-50 w-md-25" [formGroup]="form" (submit)="onSubmitLogin()">
         <input formControlName="username" type="text" placeholder="Username" class="w-100 my-2 text-light bg-dark form-control" required>
-        <input formControlName="password" type="text" placeholder="Password" class="w-100 my-2 text-light bg-dark form-control" required>
+        <input formControlName="password" type="password" placeholder="Password" class="w-100 my-2 text-light bg-dark form-control" required>
         <button type="submit" class="btn btn-outline-light ">Login</button>
       </form>
+      <div *ngIf="isLoading" class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
     </div>
   </div>
 </div>

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 
 import { Router } from '@angular/router';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,6 +12,7 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
   loggedIn: boolean = false;
+  user: User | null = null;
 
   constructor(
     private userService: UserService,
@@ -19,8 +21,8 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.getLoggedInUser().subscribe({
-      error: this.notLoggedIn.bind(this),
-      next: this.successloggedIn.bind(this)
+      next: this.successloggedIn.bind(this),
+      error: this.notLoggedIn.bind(this)
     });
   }
 
@@ -30,9 +32,9 @@ export class DashboardComponent implements OnInit {
     return;
   }
 
-  successloggedIn() {
+  successloggedIn(data: any) {
+    this.user = data.user;
     this.loggedIn = true;
     return;
   }
-
 }

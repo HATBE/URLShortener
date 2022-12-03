@@ -2,6 +2,12 @@
   --bs-primary: #237890;
   --bs-primary-rgb: 35, 120, 144;
 }
+* {
+  border-radius: 0px !important;
+}
+.spinner-border {
+  border-radius: 50% !important;
+}
 body {
   background-color: #237890;
 }

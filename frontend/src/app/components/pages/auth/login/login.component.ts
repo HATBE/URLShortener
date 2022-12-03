@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   error: string = '';
   loggedIn: boolean = false;
+  isLoading: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -36,10 +37,12 @@ export class LoginComponent implements OnInit {
 }
 
   onSubmitLogin() {
+    this.isLoading = true;
     const username = this.form.getRawValue().username;
     const password = this.form.getRawValue().password;
 
     if(username === '' || password === '') {
+      this.isLoading = false;
       return;
     }
 
@@ -52,10 +55,12 @@ export class LoginComponent implements OnInit {
 
   successLogin(data: any) {
     Emiters.authEmitter.emit(true);
+    this.isLoading = false;
     this.router.navigate(['/dashboard']);
   }
 
   errorLogin(data: {error: {message: string}}) {
+    this.isLoading = false;
     this.error = data.error.message;
   }
 }

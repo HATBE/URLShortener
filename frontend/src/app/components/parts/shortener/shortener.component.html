@@ -1,5 +1,8 @@
 <div class="w-100">
-  <div *ngIf="!shorturl">
+  <div class="w-100" *ngIf="!shorturl">
+    <div class="w-100 alert alert-danger" *ngIf="error != ''">
+      <span class="fw-bold">Error!</span> {{error}}
+    </div>
     <div class="row gx-2">
       <div class="col-8 col-xl-10">
         <input (click)="onClickInput()" (keydown.enter)="onShorten()" [(ngModel)]="url" placeholder="Enter a URL to shorten" type="url" class="w-100 text-light form-control bg-dark">
@@ -7,9 +10,6 @@
       <div class="col-4 col-xl-2">
         <button type="button" (click)="onShorten()" class="w-100 btn btn-outline-light">Shorten</button>
       </div>
-    </div>
-    <div class="py-3 text-light" *ngIf="error != ''">
-      <span class="text-danger fw-bold">Error!</span> {{error}}
     </div>
     <div class="py-4 w-100 d-flex justify-content-center" *ngIf="isLoading">
       <div class="spinner-border text-primary" role="status">
