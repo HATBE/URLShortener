@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Url } from '../../../models/url.model'
+import { User } from 'src/app/models/user.model';
 import { UrlService } from 'src/app/services/url.service';
+import { UserService } from 'src/app/services/user.service';
 import { faClipboard } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
@@ -9,7 +11,6 @@ import { faClipboard } from '@fortawesome/free-regular-svg-icons';
   styleUrls: ['./shortener.component.css']
 })
 export class ShortenerComponent implements OnInit {
-
   error: string = "";
   url: string = ""
   shorturl: string = "";
@@ -17,9 +18,19 @@ export class ShortenerComponent implements OnInit {
 
   faClipboard = faClipboard;
 
-  constructor(private urlService: UrlService) { }
+  loggedIn: boolean = false;
+  user: User | null = null;
+
+  constructor(
+    private userService: UserService,
+    private urlService: UrlService
+  ) {}
 
   ngOnInit(): void {
+    this.userService.getLoggedInUser().subscribe({
+      next: this.successloggedIn.bind(this),
+      error: this.notLoggedIn.bind(this)
+    });
   }
 
   onClickInput() {
@@ -46,7 +57,7 @@ export class ShortenerComponent implements OnInit {
   }
 
   successAddingUrl(data: {message: string, url: Url}) {
-    this.shorturl = window.location.href + data.url.shorturl;
+    this.shorturl = window.location.origin + '/' + data.url.shorturl;
     this.isLoading = false;
   }
 
@@ -57,5 +68,16 @@ export class ShortenerComponent implements OnInit {
 
   onClickCopyToClipboard() {
     navigator.clipboard.writeText(this.shorturl);
+  }
+
+  notLoggedIn() {
+    this.loggedIn = false;
+    return;
+  }
+
+  successloggedIn(data: any) {
+    this.user = data.user;
+    this.loggedIn = true;
+    return;
   }
 }

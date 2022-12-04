@@ -28,4 +28,7 @@
       <a class="link-primary" id="url" target="_blank" href="{{shorturl}}">{{shorturl}}</a> <fa-icon class="text-light hover-primary" (click)="onClickCopyToClipboard()" [icon]="faClipboard"></fa-icon>
     </div>
   </div>
+  <div class="text-light" *ngIf="loggedIn">
+    TEST: LOGGEDIN
+  </div>
 </div>

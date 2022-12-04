@@ -13,6 +13,10 @@ const urlSchema = mongoose.Schema({
     date: {
         type: Number, 
         required: true
+    },
+    userid: {
+        type: String,
+        required: false
     }
 });
 

@@ -1,9 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const randomString = require('randomString');
+const jwt = require('jsonwebtoken');
 
 const UrlModel = require('../models/url');
+const UserModel = require('../models/user');
 
+// get post with id
 router.get("/:id", (req, res, next) => {
     // check if id is right
     if(req.params.id.length !== 9) {
@@ -17,7 +20,8 @@ router.get("/:id", (req, res, next) => {
                 url: {
                     url: result.url,
                     shorturl: result.shorturl,
-                    date: result.date
+                    date: result.date,
+                    userid: result.userid
                 }
             });
         } else {
@@ -26,7 +30,25 @@ router.get("/:id", (req, res, next) => {
     });
 });
 
-router.post("/", (req, res, next) => {
+// get all posts by user
+router.get('/', (req, res, next) => {
+
+})
+
+// create post
+router.post("/", async (req, res, next) => {
+    let userid = null;
+
+    if(req.cookies['authtoken']) {
+        const cookie = req.cookies['authtoken'];
+        const claims = jwt.verify(cookie, process.env.JWT_SECRET);
+        if(!claims) {
+            return res.status(401).json({message: 'Unauthenticated'});
+        }
+        let user = await UserModel.findOne({_id: claims.id});
+        userid = await user.toJSON()._id;
+    }
+
     // check if url is passed in the body
     if(!req.body.url) {
         res.status(400).json({message: "failed, please provide a url"});
@@ -58,8 +80,10 @@ router.post("/", (req, res, next) => {
     const url = new UrlModel({
         url: req.body.url,
         shorturl: shorturl,
-        date: Math.round(Date.now() / 1000)
+        date: Math.round(Date.now() / 1000),
+        userid: userid || null
     });
+    console.log(url)
     // save UrlModel
     url.save().then(url => {
         res.status(200).json({

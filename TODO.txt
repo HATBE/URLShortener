@@ -1,8 +1,7 @@
 // TODO
 
 Frontend/idea:
-user Backend?
-- login / register
+user Backend
 - see own urls (if not loggedin (guest), store in localstorage, if loggedin, add to dash and remove from localstorage)
 - delete own urls
 - allow to modify url (if modified, popop on redirect, (notify that its changed (3 sec. timer or direct link click, ... or something like this)))
@@ -10,7 +9,6 @@ user Backend?
 - enable extra tracking (log ip, log useragent, ...) (make admin config setting if a popup should popup when enabled, to inform before redirect / collection)
 - change pw
 - delete account (incl. all urls).
-
 
 - add imprint
 - add feauture that automaticly adds https to domain on submit if no set (edgecase: when page has no https...)
@@ -23,5 +21,4 @@ Backend:
 - add helper funcs, like checkpassword or checkusername, url range checker !!DRY!!
 - make things more dry.
 - create service for backend
-- change urls route to async await
 - add add eat (expire at) to token in auth/login route (check this in login (if expired, then delete cookie))
