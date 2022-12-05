@@ -27,12 +27,16 @@ router.get('/my', async (req, res, next) => {
 
     let urls = await UrlModel.find({userid: _id});
 
-    urls = urls.map(ob => {
+    let date = Math.round(Date.now() / 1000);
+
+    urls.sort(url => {if(url.date < date) return -1});
+
+    urls = urls.map(u => {
         return {
-            id: ob._id,
-            url: ob.url,
-            shorturl: ob.shorturl,
-            date: ob.date
+            id: u._id,
+            url: u.url,
+            shorturl: u.shorturl,
+            date: u.date
         }
     });
 

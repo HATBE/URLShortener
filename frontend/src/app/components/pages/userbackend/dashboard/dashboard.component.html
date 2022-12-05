@@ -2,31 +2,36 @@
   <div class="card-header text-light fw-bold">
     <h4>Dashboard</h4>
   </div>
-  <div class="card-body text-light d-flex flex-column align-items-center">
-    <app-shortener class="w-100 w-md-50"></app-shortener>
+  <div class="card-body text-light">
+    <h3>Your URLs</h3>
     <table class="overflow-x-scroll table table-dark table-striped" *ngIf="myUrls">
       <thead>
         <tr>
           <th>#</th>
           <th>Url</th>
+          <th></th>
           <th>ShortUrl</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let url of myUrls; let i = index">
-          <td>
+          <th>
             {{i + 1}}
+          </th>
+          <td>
+            <a target="_blank" class="link-light text-decoration-none" href="{{url.url}}">{{url.url}}</a>
           </td>
           <td>
-            <a class="link-primary" href="{{url.url}}">{{url.url}}</a>
+            <fa-icon class="text-primary" [icon]="faArrowAltCircleRight"></fa-icon>
           </td>
           <td>
-            <a class="link-primary" href="{{localUrl}}{{url.shorturl}}">{{localUrl}}{{url.shorturl}}</a>
+            <a target="_blank" class="link-light text-decoration-none" href="{{localUrl}}{{url.shorturl}}">{{localUrl}}{{url.shorturl}}</a>
           </td>
-          <td class="d-flex justify-content-end">
-            <button class="mx-2 btn btn-danger">Delete</button>
-            <!--<button class="mx-2 btn btn-warning">Placeholder</button>-->
+          <td>
+            <div class="d-flex justify-content-end">
+              <button class="mx-2 btn btn-danger"><fa-icon [icon]="faTrash"></fa-icon></button>
+            </div>
           </td>
         </tr>
       </tbody>
