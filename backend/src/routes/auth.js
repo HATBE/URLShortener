@@ -98,7 +98,7 @@ router.get('/user', async (req, res) => {
 
     const user = await UserModel.findOne({_id: claims.id});
 
-    const {_id, username} = await user.toJSON();
+    const {_id, username} = user.toJSON();
 
     res.status(200).json({
         user: {

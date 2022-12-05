@@ -6,33 +6,41 @@ const jwt = require('jsonwebtoken');
 const UrlModel = require('../models/url');
 const UserModel = require('../models/user');
 
-// get post with id
-router.get("/:id", (req, res, next) => {
-    // check if id is right
-    if(req.params.id.length !== 9) {
-        res.status(400).json({message: "wrong id"});
-        return;
+// get all posts by user
+router.get('/my', async (req, res, next) => {
+    // TODO:
+      // check if auth cookie isset
+      if(!req.cookies['authtoken']) {
+        return res.status(401).json({message: 'Unauthenticated'});
     }
-    UrlModel.findOne({shorturl: req.params.id}).then(result => {
-        if(result) {
-            res.status(200).json({
-                message: "url found",
-                url: {
-                    url: result.url,
-                    shorturl: result.shorturl,
-                    date: result.date,
-                    userid: result.userid
-                }
-            });
-        } else {
-            res.status(404).json({message: "url not found"});
+
+    const cookie = req.cookies['authtoken'];
+
+    const claims = jwt.verify(cookie, process.env.JWT_SECRET);
+
+    if(!claims) {
+        return res.status(401).json({message: 'Unauthenticated'});
+    }
+
+    const user = await UserModel.findOne({_id: claims.id});
+
+    const {_id} = user.toJSON();
+
+    let urls = await UrlModel.find({userid: _id});
+
+    urls = urls.map(ob => {
+        return {
+            id: ob._id,
+            url: ob.url,
+            shorturl: ob.shorturl,
+            date: ob.date
         }
     });
-});
 
-// get all posts by user
-router.get('/', (req, res, next) => {
-
+    res.status(200).json({
+        message: "success",
+        urls: urls
+    });
 })
 
 // create post
@@ -94,6 +102,30 @@ router.post("/", async (req, res, next) => {
                 date: url.date
             }
         });
+    });
+});
+
+// get post with id
+router.get("/:id", (req, res, next) => {
+    // check if id is right
+    if(req.params.id.length !== 9) {
+        res.status(400).json({message: "wrong id"});
+        return;
+    }
+    UrlModel.findOne({shorturl: req.params.id}).then(result => {
+        if(result) {
+            res.status(200).json({
+                message: "url found",
+                url: {
+                    url: result.url,
+                    shorturl: result.shorturl,
+                    date: result.date,
+                    userid: result.userid
+                }
+            });
+        } else {
+            res.status(404).json({message: "url not found"});
+        }
     });
 });
 
