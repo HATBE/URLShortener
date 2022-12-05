@@ -3,8 +3,34 @@
     <h4>Dashboard</h4>
   </div>
   <div class="card-body text-light d-flex flex-column align-items-center">
-    Welcome: {{user?.username}}
     <app-shortener class="w-100 w-md-50"></app-shortener>
+    <table class="overflow-x-scroll table table-dark table-striped" *ngIf="myUrls">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Url</th>
+          <th>ShortUrl</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let url of myUrls; let i = index">
+          <td>
+            {{i + 1}}
+          </td>
+          <td>
+            <a class="link-primary" href="{{url.url}}">{{url.url}}</a>
+          </td>
+          <td>
+            <a class="link-primary" href="{{localUrl}}{{url.shorturl}}">{{localUrl}}{{url.shorturl}}</a>
+          </td>
+          <td class="d-flex justify-content-end">
+            <button class="mx-2 btn btn-danger">Delete</button>
+            <!--<button class="mx-2 btn btn-warning">Placeholder</button>-->
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 

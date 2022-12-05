@@ -8,9 +8,8 @@ const UserModel = require('../models/user');
 
 // get all posts by user
 router.get('/my', async (req, res, next) => {
-    // TODO:
-      // check if auth cookie isset
-      if(!req.cookies['authtoken']) {
+    // check if auth cookie isset
+    if(!req.cookies['authtoken']) {
         return res.status(401).json({message: 'Unauthenticated'});
     }
 
@@ -41,7 +40,7 @@ router.get('/my', async (req, res, next) => {
         message: "success",
         urls: urls
     });
-})
+});
 
 // create post
 router.post("/", async (req, res, next) => {

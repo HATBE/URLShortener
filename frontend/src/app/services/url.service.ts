@@ -14,6 +14,10 @@ export class UrlService {
     return this.http.get<{message: string; url: Url}>(this.apiEndpoint + id);
   }
 
+  getMyUrls() {
+    return this.http.get<{message: any; urls: Url[] | any}>(this.apiEndpoint + "my", {withCredentials: true});
+  }
+
   addUrl(url: string) {
     return this.http.post<{message: any; url: Url | any}>(this.apiEndpoint, {url: url}, {withCredentials: true});
   }
