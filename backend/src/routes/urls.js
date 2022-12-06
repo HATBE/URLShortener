@@ -6,26 +6,17 @@ const jwt = require('jsonwebtoken');
 const UrlModel = require('../models/url');
 const UserModel = require('../models/user');
 
+const Auth = require('../classes/Auth')
+
 // get all posts by user
 router.get('/my', async (req, res, next) => {
-    // check if auth cookie isset
-    if(!req.cookies['authtoken']) {
-        return res.status(401).json({message: 'Unauthenticated'});
+    const user = await Auth.getUserFromCookie(req.cookies);
+
+    if(!user) {
+        return res.status(401).json({message: "unauthorized"});
     }
 
-    const cookie = req.cookies['authtoken'];
-
-    const claims = jwt.verify(cookie, process.env.JWT_SECRET);
-
-    if(!claims) {
-        return res.status(401).json({message: 'Unauthenticated'});
-    }
-
-    const user = await UserModel.findOne({_id: claims.id});
-
-    const {_id} = user.toJSON();
-
-    let urls = await UrlModel.find({userid: _id});
+    let urls = await UrlModel.find({userid: user.getId()});
 
     let date = Math.round(Date.now() / 1000);
 
@@ -94,7 +85,6 @@ router.post("/", async (req, res, next) => {
         date: Math.round(Date.now() / 1000),
         userid: userid || null
     });
-    console.log(url)
     // save UrlModel
     url.save().then(url => {
         res.status(200).json({
@@ -130,6 +120,11 @@ router.get("/:id", (req, res, next) => {
             res.status(404).json({message: "url not found"});
         }
     });
+});
+
+// delete post with id
+router.delete("/:id", (req, res, next) => {
+    //TODO:
 });
 
 module.exports = router;
