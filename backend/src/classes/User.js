@@ -17,6 +17,13 @@ class User {
     getUsername() {
         return this.#username;
     }
+
+    getAsModel() {
+        return {
+            id: this.getId(),
+            username: this.getUsername()
+        }
+    }
 }
 
 module.exports = User;
