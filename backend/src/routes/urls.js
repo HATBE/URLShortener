@@ -9,7 +9,7 @@ const UserModel = require('../models/user');
 const Auth = require('../classes/Auth')
 
 // get all posts by user
-router.get('/my', async (req, res, next) => {
+router.get('/my', async (req, res) => {
     const user = await Auth.getUserFromCookie(req.cookies);
 
     if(!user) {
@@ -38,7 +38,7 @@ router.get('/my', async (req, res, next) => {
 });
 
 // create post
-router.post("/", async (req, res, next) => {
+router.post("/", async (req, res) => {
     let userid = null;
 
     if(req.cookies['authtoken']) {
@@ -53,18 +53,15 @@ router.post("/", async (req, res, next) => {
 
     // check if url is passed in the body
     if(!req.body.url) {
-        res.status(400).json({message: "failed, please provide a url"});
-        return;
+        return res.status(400).json({message: "failed, please provide a url"});
     }
     // check if url is valid
     if(!/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/.test(req.body.url)) {
-        res.status(400).json({message: "failed, please provide a valid url"});
-        return;
+        return res.status(400).json({message: "failed, please provide a valid url"});
     }
     // check if url is in range
     if(req.body.url.length < 1 || req.body.url > 2048) {
-        res.status(400).json({message: "url not in range (1-2048)"});
-        return;
+        return res.status(400).json({message: "url not in range (1-2048)"});
     }
 
     let shorturl;
@@ -99,11 +96,10 @@ router.post("/", async (req, res, next) => {
 });
 
 // get post with id
-router.get("/:id", (req, res, next) => {
+router.get("/:id", (req, res) => {
     // check if id is right
     if(req.params.id.length !== 9) {
-        res.status(400).json({message: "wrong id"});
-        return;
+        return res.status(400).json({message: "wrong id"});
     }
     UrlModel.findOne({shorturl: req.params.id}).then(result => {
         if(result) {
@@ -123,8 +119,32 @@ router.get("/:id", (req, res, next) => {
 });
 
 // delete post with id
-router.delete("/:id", (req, res, next) => {
-    //TODO:
+router.delete("/:id", async (req, res) => {
+    const user = await Auth.getUserFromCookie(req.cookies);
+
+    if(!user) {
+        return res.status(401).json({message: "unauthorized"});
+    }
+
+    // check if id is right
+    if(req.params.id.length !== 9) {
+        return res.status(400).json({message: "wrong id"});
+    }
+
+    // check if url exists
+    if(!await UrlModel.exists({shorturl: req.params.id})) {
+        return res.status(404).json({message: "url was not found"});
+    }
+
+    // check if user has access to url
+    if(!await UrlModel.exists({shorturl: req.params.id, userid: user.getId()})) {
+        return res.status(404).json({message: "you don't have access to this url"});
+    }
+
+    UrlModel.deleteOne({shorturl: req.params.id}).then(result => {
+        console.log(result)
+        res.status(200).json({message: "ok"});
+    });
 });
 
 module.exports = router;
