@@ -28,7 +28,7 @@ export class RedirectComponent implements OnInit {
       if(paramMap.has('id')) {
         this.id = paramMap.get('id');
 
-        this.urlService.getUrl(this.id).subscribe({
+        this.urlService.get(this.id).subscribe({
           next: this.successLoadingUrl.bind(this),
           error: this.errorLoadingUrl.bind(this)
         });

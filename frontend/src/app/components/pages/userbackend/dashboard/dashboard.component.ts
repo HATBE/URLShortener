@@ -53,4 +53,10 @@ export class DashboardComponent implements OnInit {
     this.loggedIn = true;
     return;
   }
+
+  deleteUrl(shortUrl: string) {
+    this.urlService.delete(shortUrl).subscribe(res => {
+      window.location.reload();
+    });
+  }
 }

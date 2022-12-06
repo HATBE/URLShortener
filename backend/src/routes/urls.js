@@ -142,7 +142,6 @@ router.delete("/:id", async (req, res) => {
     }
 
     UrlModel.deleteOne({shorturl: req.params.id}).then(result => {
-        console.log(result)
         res.status(200).json({message: "ok"});
     });
 });

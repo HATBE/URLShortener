@@ -29,7 +29,7 @@
             <a target="_blank" class="link-light text-decoration-none" href="{{localUrl}}{{url.shorturl}}">{{localUrl}}{{url.shorturl}}</a>
           </td>
           <td>
-            <div class="d-flex justify-content-end">
+            <div (click)="deleteUrl(url.shorturl)" class="d-flex justify-content-end">
               <button class="mx-2 btn btn-danger"><fa-icon [icon]="faTrash"></fa-icon></button>
             </div>
           </td>

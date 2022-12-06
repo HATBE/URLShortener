@@ -10,7 +10,7 @@ export class UrlService {
   private apiEndpoint = 'http://localhost:3000/api/urls/';
   constructor(private http: HttpClient) { }
 
-  getUrl(id: string | null) {
+  get(id: string | null) {
     return this.http.get<{message: string; url: Url}>(this.apiEndpoint + id);
   }
 
@@ -18,7 +18,11 @@ export class UrlService {
     return this.http.get<{message: any; urls: Url[] | any}>(this.apiEndpoint + "my", {withCredentials: true});
   }
 
-  addUrl(url: string) {
+  add(url: string) {
     return this.http.post<{message: any; url: Url | any}>(this.apiEndpoint, {url: url}, {withCredentials: true});
+  }
+
+  delete(shorturl: string) {
+    return this.http.delete<{message: any;}>(this.apiEndpoint + shorturl, {withCredentials: true});
   }
 }

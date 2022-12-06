@@ -50,7 +50,7 @@ export class ShortenerComponent implements OnInit {
     }
     this.error = '';
 
-    this.urlService.addUrl(this.url).subscribe({
+    this.urlService.add(this.url).subscribe({
       next: this.successAddingUrl.bind(this),
       error: this.errorAddingUrl.bind(this)
     });

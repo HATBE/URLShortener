@@ -5,9 +5,18 @@ class User {
     #username;
 
     constructor(user) {
-        user = user.toJSON();
-        this.#username = user.username;
-        this.#id = JSON.stringify(user._id).replace(/['"]+/g, '');
+        switch ((typeof user)) {
+            case 'object':
+                user = user.toJSON();
+                this.#id = JSON.stringify(user._id).replace(/['"]+/g, ''); // mongose ids are objects :(
+                this.#username = user.username;
+                break;
+            case 'string':
+                // TODO: get from id
+                break;
+            default:
+                return null;
+        }
     }
 
     getId() {
