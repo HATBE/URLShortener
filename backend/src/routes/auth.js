@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
+const Validate = require('../classes/Validate');
+const Auth = require('../classes/Auth')
+const User = require('../classes/User')
+
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
@@ -34,42 +38,34 @@ router.post('/register', async (req, res) => {
 
     const result = await user.save(); // save user
 
-    const {username, _id} = await result.toJSON();
+    const {username, _id} = result.toJSON();
 
     res.status(201).json({message: "successfully, created user", user: {
         username: username,
         id: _id
-    }})
+    }});
+    console.log(`[AUTH] user "${username}" registered successfully.`);
 });
 
 // login
-router.post('/login', async (req, res) => {
+router.post('/login',  (req, res) => {
     if(!req.body.password || !req.body.username) {
         return res.status(400).json({message: "failed, please provide a username and password"});
     }
 
-    // check if user exist
-    if(!await UserModel.exists({username: req.body.username})) {
-        return res.status(401).json({message: "Invalid credentials"});
-    }
+    Auth.tryLogin(req.body.username, req.body.password)
+    .then(login => {
+        if(!login) {
+            return res.status(401).json({message: "Invalid credentials"});
+        }
 
-    const user = await UserModel.findOne({username: req.body.username});
-
-    // check if stored pw and given pw match
-    if(!await bcrypt.compare(req.body.password, user.password)) {
-        return res.status(401).json({message: "Invalid credentials"});
-    }
-
-    const tokenData = {id: user._id};
-    const signedToken = jwt.sign(tokenData, process.env.JWT_SECRET); // sign token
-
-    // set jwt cookie
-    res.cookie('authtoken', signedToken, {
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000 // 1 day
+        res.cookie('authtoken', login, {
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000 // 1 day
+        });
+        
+        res.status(200).json({message: "successfully loggedin"});
     });
-
-    res.status(200).json({message: "successfully loggedin"});
 });
 
 // logout
@@ -106,6 +102,21 @@ router.get('/user', async (req, res) => {
             username: username
         }
     });
+});
+
+router.get('/test', (req,res) => {
+    Auth.getUserFromCookie(req.cookies)
+    .then((user) => {
+        if(user) {
+            console.log(user.getId())
+        } else {
+            console.log(user)
+        }
+    });
+
+    res.status(200).json({
+        message: "ok"
+    })
 });
 
 module.exports = router;

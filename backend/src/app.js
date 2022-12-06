@@ -12,8 +12,15 @@ const routes = require('./routes/routes');
 mongoose.connect(process.env.DB_CONN, {
   useNewUrlParser: true,
   useUnifiedTopology: true
-}, () => {
-  console.log('Successfully connected to database!');
+})
+.then((res) => {
+  console.log('[INIT] successfully connected to database!');
+})
+.catch((error) => {
+  // if Server can't connect to DB, exit with an error code
+  console.warn('[INIT] error while connecting to database:');
+  console.warn(error);
+  process.exit(1);
 });
 
 const app = express();
