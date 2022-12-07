@@ -7,6 +7,14 @@ class User {
     #date;
     #userid;
 
+    static async create() {
+
+    }
+
+    static async delete() {
+
+    }
+
     constructor(url) {
         url = url.toJSON();
 

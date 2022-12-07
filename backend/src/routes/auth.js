@@ -15,22 +15,22 @@ router.post('/register', async (req, res) => {
     const rPassword = req.body.password;
 
     // check if username and pw are in range
-    if(rPassword.length < 1 || rPassword.length > 1024 || rUsername.length < 3 || rUsername.length > 16) {
+    if(!Validate.username(rUsername) || !Validate.password(rPassword)) {
         return res.status(400).json({message: "username or password not in range"});
     }
 
     const register = await Auth.register(rUsername, rPassword);
 
-    if(register.state) {
-        console.log(`[AUTH] user "${rUsername}" registered successfully.`);
-        return res.status(201).json({message: "successfully, created user", user: {
-            username: register.user.getUsername(),
-            id: register.user.getId()
-        }});
-    } else {
+    if(!register.state) {
         console.log(`[AUTH] user "${rUsername}" failed to register.`);
         return res.status(400).json({message: register.reason});
     }
+    
+    console.log(`[AUTH] user "${rUsername}" registered successfully.`);
+    return res.status(201).json({message: "successfully, created user", user: {
+        username: register.user.getUsername(),
+        id: register.user.getId()
+    }});
 });
 
 // login
@@ -50,17 +50,22 @@ router.post('/login', async (req, res) => {
 });
 
 // logout
-router.post('/logout', (req, res) => {
+router.post('/logout', async (req, res) => {
+    const user = await Auth.getUserFromCookie(req.cookies);
+
+    if(!user) {
+        return res.status(401).json({message: "unauthorized"});
+    }
+
     res.cookie('authtoken', '', {
         maxAge: 0
     });
-
+    console.log(`[AUTH] user "${user.getUsername()}" loggedout successfully.`);
     res.status(200).json({message: "successfully loggedout"});
 });
 
 // get loggedin user data
 router.get('/user', async (req, res) => {
-    // login
     const user = await Auth.getUserFromCookie(req.cookies);
     
     if(!user) {

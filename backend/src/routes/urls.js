@@ -6,7 +6,66 @@ const jwt = require('jsonwebtoken');
 const UrlModel = require('../models/url');
 const UserModel = require('../models/user');
 
-const Auth = require('../classes/Auth')
+const Auth = require('../classes/Auth');
+const Validate = require("../classes/Validate");
+
+// create post
+router.post("/", async (req, res) => {
+    let userid = null;
+
+    if(req.cookies['authtoken']) {
+        const cookie = req.cookies['authtoken'];
+        const claims = jwt.verify(cookie, process.env.JWT_SECRET);
+        if(!claims) {
+            return res.status(401).json({message: 'Unauthenticated'});
+        }
+        let user = await UserModel.findOne({_id: claims.id});
+        userid = await user.toJSON()._id;
+    }
+
+    // check if url is passed in the body
+    if(!req.body.url) {
+        return res.status(400).json({message: "please provide a url"});
+    }
+
+    const rUrl = req.body.url;
+
+    if(!Validate.url(rUrl)) {
+        return res.status(400).json({message: "please provide a valid url"});
+    }
+
+    let shorturl;
+    let rep = false;
+    do {
+        // generate new shorturl, check if it already exists in db, if exists, repeat
+        shorturl = randomString.generate({
+            length: 9
+        });
+
+        const result = await UrlModel.exists({shorturl: shorturl})
+        if(result) rep = true;
+    } while(rep);
+
+    // build urlmodel
+    const url = new UrlModel({
+        url: rUrl,
+        shorturl: shorturl,
+        date: Math.round(Date.now() / 1000),
+        userid: userid || null
+    });
+
+    // save urlmodel
+    const save = await url.save();
+
+    res.status(200).json({
+        message: "successfully added a url",
+        url: {
+            url: save.url,
+            shorturl: save.shorturl,
+            date: save.date
+        }
+    });
+});
 
 // get all posts by user
 router.get('/my', async (req, res) => {
@@ -37,83 +96,25 @@ router.get('/my', async (req, res) => {
     });
 });
 
-// create post
-router.post("/", async (req, res) => {
-    let userid = null;
-
-    if(req.cookies['authtoken']) {
-        const cookie = req.cookies['authtoken'];
-        const claims = jwt.verify(cookie, process.env.JWT_SECRET);
-        if(!claims) {
-            return res.status(401).json({message: 'Unauthenticated'});
-        }
-        let user = await UserModel.findOne({_id: claims.id});
-        userid = await user.toJSON()._id;
-    }
-
-    // check if url is passed in the body
-    if(!req.body.url) {
-        return res.status(400).json({message: "failed, please provide a url"});
-    }
-    // check if url is valid
-    if(!/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/.test(req.body.url)) {
-        return res.status(400).json({message: "failed, please provide a valid url"});
-    }
-    // check if url is in range
-    if(req.body.url.length < 1 || req.body.url > 2048) {
-        return res.status(400).json({message: "url not in range (1-2048)"});
-    }
-
-    let shorturl;
-    let rep = false;
-    do {
-        // generate new shorturl, check if it akready exists in db, if exists, repeat
-        shorturl = randomString.generate({
-            length: 9
-        });
-        UrlModel.exists({shorturl: shorturl}).then(result => {
-            if(result) rep = true;
-        });
-    } while(rep);
-    // build UrlModel
-    const url = new UrlModel({
-        url: req.body.url,
-        shorturl: shorturl,
-        date: Math.round(Date.now() / 1000),
-        userid: userid || null
-    });
-    // save UrlModel
-    url.save().then(url => {
-        res.status(200).json({
-            message: "successfully added a url",
-            url: {
-                url: url.url,
-                shorturl: url.shorturl,
-                date: url.date
-            }
-        });
-    });
-});
-
 // get post with id
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
     // check if id is right
     if(req.params.id.length !== 9) {
         return res.status(400).json({message: "wrong id"});
     }
-    UrlModel.findOne({shorturl: req.params.id}).then(result => {
-        if(result) {
-            res.status(200).json({
-                message: "url found",
-                url: {
-                    url: result.url,
-                    shorturl: result.shorturl,
-                    date: result.date,
-                    userid: result.userid
-                }
-            });
-        } else {
-            res.status(404).json({message: "url not found"});
+    const url = await UrlModel.findOne({shorturl: req.params.id});
+
+    if(!url) {
+        return res.status(404).json({message: "url not found"});
+    }
+
+    res.status(200).json({
+        message: "url found",
+        url: {
+            url: url.url,
+            shorturl: url.shorturl,
+            date: url.date,
+            userid: url.userid
         }
     });
 });
@@ -141,9 +142,9 @@ router.delete("/:id", async (req, res) => {
         return res.status(404).json({message: "you don't have access to this url"});
     }
 
-    UrlModel.deleteOne({shorturl: req.params.id}).then(result => {
-        res.status(200).json({message: "ok"});
-    });
+    const result = await UrlModel.deleteOne({shorturl: req.params.id});
+    
+    res.status(200).json({message: "ok"});
 });
 
 module.exports = router;
