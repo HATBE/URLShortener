@@ -9,14 +9,8 @@ const Validate = require("../classes/Validate");
 
 // create url
 router.post("/", async (req, res) => {
-    let userid = null;
-
     const user = await User.getFromCookie(req.cookies);
-
-    if(!user) {
-        return res.status(401).json({message: "unauthorized"});
-    }
-
+    
     // check if url is passed in the body
     if(!req.body.url) {
         return res.status(400).json({message: "please provide a url"});

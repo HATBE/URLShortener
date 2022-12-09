@@ -39,7 +39,7 @@ class Url {
             url: rUrl,
             shorturl: shorturl,
             date: Math.round(Date.now() / 1000),
-            userid: user.getId() || null
+            userid: user ? user.getId() : null || null
         });
 
          // save urlmodel
@@ -101,7 +101,7 @@ class Url {
             url: this.getUrl(),
             shorturl: this.getShorturl(),
             date: this.getDate(),
-            user: user.getAsObject()
+            user: user ? user.getAsObject() : null
         }
     }
 }
