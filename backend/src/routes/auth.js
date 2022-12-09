@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const Validate = require('../classes/Validate');
+const User = require('../classes/user');
 const Auth = require('../classes/Auth');
 
 // register
@@ -51,7 +52,7 @@ router.post('/login', async (req, res) => {
 
 // logout
 router.post('/logout', async (req, res) => {
-    const user = await Auth.getUserFromCookie(req.cookies);
+    const user = await User.getFromCookie(req.cookies);
 
     if(!user) {
         return res.status(401).json({message: "unauthorized"});
@@ -66,12 +67,12 @@ router.post('/logout', async (req, res) => {
 
 // get loggedin user data
 router.get('/user', async (req, res) => {
-    const user = await Auth.getUserFromCookie(req.cookies);
+    const user = await User.getFromCookie(req.cookies);
     
     if(!user) {
         return res.status(401).json({message: "unauthorized"});
     }
-    res.status(200).json({user: user.getAsModel()});
+    res.status(200).json({user: user.getAsObject()});
 });
 
 // Test route, only for DEBUG!

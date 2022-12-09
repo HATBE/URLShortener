@@ -40,7 +40,7 @@ app.use(cookieParser()); // cookie parser
 app.use('/api/', routes);
 
 // Default route
-app.get('*', (req, res, next) => {
+app.all('*', (req, res, next) => {
   res.json({"error":"route not found"})
 });
 

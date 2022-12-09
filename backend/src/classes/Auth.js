@@ -5,23 +5,6 @@ const UserModel = require('../models/user');
 const User = require('./User');
 
 class Auth {
-    static async getUserFromCookie(cookies) {
-        if(!cookies['authtoken']) {
-            return null;
-        }
-
-        const cookie = cookies['authtoken'];
-        const claim = jwt.verify(cookie, process.env.JWT_SECRET);
-
-        if(!claim) {
-            return null;
-        }
-
-        const user = await UserModel.findOne({_id: claim.id});
-
-        return new User(user);
-    }
-
     static async login(res, username, password) {
         if(!await UserModel.exists({username: username})) {
             return false;
