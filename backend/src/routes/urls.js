@@ -10,7 +10,7 @@ const Validate = require("../classes/Validate");
 // create url
 router.post("/", async (req, res) => {
     const user = await User.getFromCookie(req.cookies);
-    
+
     // check if url is passed in the body
     if(!req.body.url) {
         return res.status(400).json({message: "please provide a url"});
@@ -90,7 +90,7 @@ router.delete("/:id", async (req, res) => {
     const del = await Url.delete(req.params.id, user);
 
     if(!del.state) {
-        return res.status(404).json({message: del.reason});
+        return res.status(400).json({message: del.reason});
     }
     
     res.status(200).json({message: "ok"});

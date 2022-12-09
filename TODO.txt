@@ -2,9 +2,6 @@
 
 Frontend/idea:
 user Backend
-- see own urls (if not loggedin (guest), store in localstorage, if loggedin, add to dash and remove from localstorage)
-- delete own urls
-- allow to modify url (if modified, popop on redirect, (notify that its changed (3 sec. timer or direct link click, ... or something like this)))
 - always track all urls (only if and when someone clicks, no personal data)
 - enable extra tracking (log ip, log useragent, ...) (make admin config setting if a popup should popup when enabled, to inform before redirect / collection)
 - change pw
@@ -16,7 +13,4 @@ user Backend
 
 Backend:
 
-- add helper funcs, like checkpassword or checkusername, url range checker !!DRY!!
-- make things more dry.
-- create service for backend
 - add add eat (expire at) to token in auth/login route (check this in login (if expired, then delete cookie))

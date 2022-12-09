@@ -56,7 +56,7 @@ class Url {
 
         // check if user has access to url
         if(!await UrlModel.exists({shorturl: shorturl, userid: user.getId()})) {
-            return res.status(404).json({message: "you don't have access to this url"});
+            return {state: false, reason: 'you don\'t have access to this url'}
         }
 
         const result = await UrlModel.deleteOne({shorturl: shorturl});
