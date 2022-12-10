@@ -2,8 +2,8 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+const morgan = require('morgan')
 
-const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
@@ -33,8 +33,9 @@ app.use(cors({
 }));
 
 // MIDLEWARE
-app.use(bodyParser.json()); // json parser
-app.use(bodyParser.urlencoded({extended: false})); // urlencoded parser
+app.use(morgan('common'))
+app.use(express.json()); // json parser
+app.use(express.urlencoded({extended: false})); // urlencoded parser
 app.use(cookieParser()); // cookie parser
 
 app.use('/api/', routes);
