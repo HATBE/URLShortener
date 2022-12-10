@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit {
 
     this.urlService.getMyUrls().subscribe(urls => {
       this.myUrls = urls.urls;
-      console.log(this.myUrls)
+      console.log(this.myUrls?.length)
     });
   }
 

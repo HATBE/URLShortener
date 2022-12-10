@@ -4,7 +4,11 @@
   </div>
   <div class="card-body text-light">
     <h3>Your URLs</h3>
-    <table class="overflow-x-scroll table table-dark table-striped" *ngIf="myUrls">
+
+    <div class="w-100 alert alert-info" *ngIf="myUrls != null && myUrls.length <= 0">
+      <span class="fw-bold">Info!</span> Currently you don't have any URLs
+    </div>
+    <table class="overflow-x-scroll table table-dark table-striped" *ngIf="myUrls != null && myUrls.length > 0">
       <thead>
         <tr>
           <th>#</th>

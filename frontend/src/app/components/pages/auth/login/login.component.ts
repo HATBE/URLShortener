@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   error: string = '';
   loggedIn: boolean = false;
   isLoading: boolean = false;
+  freshLoggedInName: string | null = null;
 
   constructor(
     private userService: UserService,
@@ -34,6 +35,15 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['/dashboard']);
     return;
   });
+
+  if(window.location.search) {
+    const param = new URLSearchParams(window.location.search);
+
+    if(param.has('freshregisteras')) {
+      this.form.patchValue({username: param.get("freshregisteras")});
+      this.freshLoggedInName = param.get("freshregisteras");
+    }
+  }
 }
 
   onSubmitLogin() {

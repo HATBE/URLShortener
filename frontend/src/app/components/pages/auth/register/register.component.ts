@@ -55,7 +55,10 @@ export class RegisterComponent implements OnInit {
 
   successRegister(data: any) {
     this.isLoading = false;
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login'], { queryParams: {
+        freshregisteras: this.form.getRawValue().username
+      }
+    });
   }
 
   errorRegister(data: {error: {message: string}}) {

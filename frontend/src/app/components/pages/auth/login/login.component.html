@@ -7,6 +7,9 @@
       <div class="w-100 alert alert-danger" *ngIf="error != ''">
         <span class="fw-bold">Error!</span> {{error}}
       </div>
+      <div class="w-100 alert alert-success" *ngIf="freshLoggedInName != null">
+        <span class="fw-bold">Success!</span> You successfully registerd as <b>{{freshLoggedInName}}</b>.
+      </div>
       <form *ngIf="!isLoading" class="w-50 w-md-25" [formGroup]="form" (submit)="onSubmitLogin()">
         <input formControlName="username" type="text" placeholder="Username" class="w-100 my-2 text-light bg-dark form-control" required>
         <input formControlName="password" type="password" placeholder="Password" class="w-100 my-2 text-light bg-dark form-control" required>
