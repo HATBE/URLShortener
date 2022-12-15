@@ -38,6 +38,13 @@ app.use(express.json()); // json parser
 app.use(express.urlencoded({extended: false})); // urlencoded parser
 app.use(cookieParser()); // cookie parser
 
+app.use((err, req, res, next) => {
+  if(err) {
+      res.status(500).json({message: "Something went wrong"});
+      console.warn(err);
+  }
+})
+
 app.use('/api/', routes);
 
 // Default route
