@@ -3,8 +3,8 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan')
-
 const cookieParser = require('cookie-parser');
+const rateLimit = require('express-rate-limit')
 const cors = require('cors');
 
 const routes = require('./routes/routes');
@@ -37,13 +37,19 @@ app.use(morgan('common'))
 app.use(express.json()); // json parser
 app.use(express.urlencoded({extended: false})); // urlencoded parser
 app.use(cookieParser()); // cookie parser
-
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 mins
+	max: 333,
+	standardHeaders: true,
+	legacyHeaders: false, 
+  message: {error: "Too many requests, please try again later."}
+}));
 app.use((err, req, res, next) => {
   if(err) {
       res.status(500).json({message: "Something went wrong"});
       console.warn(err);
   }
-})
+});
 
 app.use('/api/', routes);
 
