@@ -36,12 +36,12 @@ mongoose.connect(process.env.DB_CONN, {
 app.use(cors({                                  // Cors
   credentials: true,
   methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH'],
-  origin: process.env.URL_FRONTEND
+  origin: process.env.URL_FRONTEND || "https://localhost:4200"
 }));
 app.use(morgan('common'));                      // Logging
 app.use(rateLimit({                             // Rate limit
-  windowMs: process.env.RATE_LIMIT_WINDOW_MINUTES * 60 * 1000, // Value in mins
-	max: process.env.RATE_LIMIT_MAX,
+  windowMs: (process.env.RATE_LIMIT_WINDOW_MINUTES || 15) * 60 * 1000, // Value in mins
+	max: process.env.RATE_LIMIT_MAX || 100,
 	standardHeaders: true,
 	legacyHeaders: false, 
   message: {error: "Too many requests, please try again later."}
