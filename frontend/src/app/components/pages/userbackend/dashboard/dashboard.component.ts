@@ -21,6 +21,8 @@ export class DashboardComponent implements OnInit {
   myUrls: Url[] | null = null;
   localUrl: string = window.location.origin + '/';
 
+  isLoading: boolean = false;
+
   faTrash = faTrash;
   faArrowAltCircleRight = faArrowAltCircleRight;
 
@@ -31,27 +33,26 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.userService.getLoggedInUser().subscribe({
       next: this.successloggedIn.bind(this),
       error: this.notLoggedIn.bind(this)
-    });
-
-    this.urlService.getMyUrls().subscribe(urls => {
-      this.myUrls = urls.urls;
-      console.log(this.myUrls?.length)
     });
   }
 
   notLoggedIn() {
     this.loggedIn = false;
     this.router.navigate(['/login']);
-    return;
   }
 
   successloggedIn(data: any) {
     this.user = data.user;
     this.loggedIn = true;
-    return;
+
+    this.urlService.getMyUrls().subscribe(urls => {
+      this.myUrls = urls.urls;
+      this.isLoading = false;
+    });
   }
 
   deleteUrl(shortUrl: string) {

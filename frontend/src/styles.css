@@ -5,16 +5,27 @@
 * {
   border-radius: 0px !important;
 }
+
+/* remove ugly bootstrap focus outline/border/shadow*/
+input:focus,input:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: inherit !important;
+}
 .spinner-border {
   border-radius: 50% !important;
 }
 body {
-  background-color: #237890;
+  background-color: var(--bs-dark);
   overflow-x: hidden;
 }
 main {
-  height: 100vh;
-  width: 100vw;
+  background-color: #1c1c1c;
+  height: 100%;
+  width: 100%;
+}
+h1,h2,h3,h4,h5,h6 {
+  font-weight: bold;
 }
 .link-primary {
   color: var(--bs-primary) !important;

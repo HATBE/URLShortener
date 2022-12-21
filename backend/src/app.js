@@ -44,7 +44,7 @@ app.use(rateLimit({                             // Rate limit
 	max: process.env.RATE_LIMIT_MAX || 100,
 	standardHeaders: true,
 	legacyHeaders: false, 
-  message: {error: "Too many requests, please try again later."}
+  message: {message: "Too many requests, please try again later."}
 }));
 app.use(express.json());                        // JSON parser
 app.use(express.urlencoded({extended: false})); // Urlencoded parser

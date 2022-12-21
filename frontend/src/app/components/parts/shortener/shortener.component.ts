@@ -16,6 +16,8 @@ export class ShortenerComponent implements OnInit {
   shorturl: string = "";
   isLoading: boolean = false;
 
+  copyBtnPressed = false;
+
   faClipboard = faClipboard;
 
   loggedIn: boolean = false;
@@ -68,6 +70,7 @@ export class ShortenerComponent implements OnInit {
 
   onClickCopyToClipboard() {
     navigator.clipboard.writeText(this.shorturl);
+    this.copyBtnPressed = true;
   }
 
   notLoggedIn() {
@@ -79,5 +82,13 @@ export class ShortenerComponent implements OnInit {
     this.user = data.user;
     this.loggedIn = true;
     return;
+  }
+
+  reset() {
+    this.shorturl = '';
+    this.isLoading = false;
+    this.url = '';
+    this.error = '';
+    this.copyBtnPressed = false;
   }
 }

@@ -14,6 +14,7 @@ import { HeaderButtonComponent } from './components/parts/header/header-button/h
 import { RegisterComponent } from './components/pages/auth/register/register.component';
 import { DashboardComponent } from './components/pages/userbackend/dashboard/dashboard.component';
 import { ShortenerComponent } from './components/parts/shortener/shortener.component';
+import { FooterComponent } from './components/parts/footer/footer.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,7 +25,8 @@ import { ShortenerComponent } from './components/parts/shortener/shortener.compo
     HeaderButtonComponent,
     RegisterComponent,
     DashboardComponent,
-    ShortenerComponent
+    ShortenerComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

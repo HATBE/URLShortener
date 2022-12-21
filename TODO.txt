@@ -1,0 +1,1 @@
+- Add feauture to frontend that adds https:// if no protocoll is specified
