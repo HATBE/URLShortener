@@ -9,6 +9,12 @@ const cors = require('cors');
 
 const routes = require('./routes/routes');
 
+const app = express();
+
+// **********
+// DB conn
+// **********
+
 mongoose.connect(process.env.DB_CONN, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -23,39 +29,41 @@ mongoose.connect(process.env.DB_CONN, {
   process.exit(1);
 });
 
-const app = express();
+// **********
+// Middleware
+// **********
 
-// CORS stuff
-app.use(cors({
+app.use(cors({                                  // Cors
   credentials: true,
   methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH'],
   origin: process.env.URL_FRONTEND
 }));
-
-// MIDLEWARE
-app.use(morgan('common'))
-app.use(express.json()); // json parser
-app.use(express.urlencoded({extended: false})); // urlencoded parser
-app.use(cookieParser()); // cookie parser
-app.use(rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 mins
-	max: 333,
+app.use(morgan('common'));                      // Logging
+app.use(rateLimit({                             // Rate limit
+  windowMs: process.env.RATE_LIMIT_WINDOW_MINUTES * 60 * 1000, // Value in mins
+	max: process.env.RATE_LIMIT_MAX,
 	standardHeaders: true,
 	legacyHeaders: false, 
   message: {error: "Too many requests, please try again later."}
 }));
-app.use((err, req, res, next) => {
+app.use(express.json());                        // JSON parser
+app.use(express.urlencoded({extended: false})); // Urlencoded parser
+app.use(cookieParser());                        // Cookie parser
+app.use((err, req, res, next) => {              // Catch if unexpected error
   if(err) {
       res.status(500).json({message: "Something went wrong"});
       console.warn(err);
   }
 });
 
-app.use('/api/', routes);
+// **********
+// Routes
+// **********
 
-// Default route
-app.all('*', (req, res, next) => {
-  res.json({"error":"route not found"})
+app.use('/api/', routes);                       // /api/* routes
+
+app.all('*', (req, res) => {                    // Default route
+  res.json({"error":"route not found"});
 });
 
 module.exports = app;
