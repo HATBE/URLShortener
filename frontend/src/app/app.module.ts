@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CountUpModule } from 'ngx-countup';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +17,8 @@ import { DashboardComponent } from './components/pages/userbackend/dashboard/das
 import { ShortenerComponent } from './components/parts/shortener/shortener.component';
 import { FooterComponent } from './components/parts/footer/footer.component';
 import { StatsComponent } from './components/parts/stats/stats.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +39,8 @@ import { StatsComponent } from './components/parts/stats/stats.component';
     FormsModule,
     FontAwesomeModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CountUpModule
   ],
   providers: [],
   bootstrap: [AppComponent]

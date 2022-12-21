@@ -1,14 +1,14 @@
-<table class="table table-dark stats-table">
+<table class="m-0 user-select-none table table-dark stats-table">
   <tr>
-    <th>{{urlsCount}}</th>
+    <th [countUp]="urlsCount" [options]="{ duration: 1 }"></th>
     <td>URLs shortened</td>
   </tr>
   <tr>
-    <th>{{usersCount}}</th>
+    <th [countUp]="usersCount" [options]="{ duration: 1 }"></th>
     <td>Registerd users</td>
   </tr>
   <tr>
-    <th>{{urlsClicked}}</th>
+    <th [countUp]="urlsClicked" [options]="{ duration: 1 }"></th>
     <td>URLs clicked</td>
   </tr>
 </table>

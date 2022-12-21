@@ -3,7 +3,7 @@
     <div class="w-100 alert alert-danger" *ngIf="error != ''">
       <span class="fw-bold">Error!</span> {{error}}
     </div>
-    <h3 class="fw-bold text-center pb-3">Paste the URL you want to be shorter</h3>
+    <h3 class="fw-bold text-center pb-3 text-light">Paste the URL you want to shorten</h3>
     <div class="row gx-2">
       <div class="col-8 col-xl-10">
         <input (click)="onClickInput()" (keydown.enter)="onShorten()" [(ngModel)]="url" placeholder="Enter a URL to shorten" type="url" class="w-100 text-light form-control bg-dark">
@@ -22,7 +22,7 @@
     <div>
       <button (click)="reset()" class="mb-2 btn btn-outline-light">&lt; Back</button>
     </div>
-    <h3>
+    <h3 class="text-light">
       Your new url is:
     </h3>
     <div [ngClass]="{'border-primary border': copyBtnPressed}" class="p-3 rounded d-flex justify-content-between h4" style="background-color: #000;">

@@ -27,6 +27,7 @@
     "bootstrap": "^5.2.2",
     "javascript-time-ago": "^2.5.9",
     "jquery": "^3.6.1",
+    "ngx-countup": "^13.1.0",
     "popper.js": "^1.16.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

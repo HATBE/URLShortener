@@ -12,19 +12,24 @@ export class StatsComponent implements OnInit {
   urlsCount: number = 0;
   urlsClicked: number = 0;
 
+  isLoading: boolean = false;
+
   constructor(private statsService: StatsService) { }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.statsService.get().subscribe({
       next: this.successLoading.bind(this),
       error: this.errorLoading.bind(this)
     });
+
   }
 
   successLoading(data: any) {
     this.usersCount = data.usersCount;
     this.urlsCount = data.urlsCount;
     this.urlsClicked = data.urlsClicked;
+    this.isLoading = false;
   }
 
   errorLoading() {

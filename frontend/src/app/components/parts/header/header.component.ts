@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { faGauge, faRightFromBracket, faRightToBracket, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { UserService } from 'src/app/services/user.service';
 import { Emiters } from '../../../emitters/emitters';
@@ -9,6 +10,11 @@ import { Emiters } from '../../../emitters/emitters';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  faRightFromBracket = faRightFromBracket;
+  faRightToBracket = faRightToBracket;
+  faUserPlus = faUserPlus;
+  faGauge = faGauge;
+
   loggedIn: boolean = false;
 
   constructor(

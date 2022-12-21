@@ -3,10 +3,7 @@
   padding: 10px;
 }
 
-.stats-table tr:not(:nth-child(1)) {
-  border-top: 1px grey solid;
-}
-
 .stats-table th {
+  color: var(--bs-light);
   text-align: end;
 }
