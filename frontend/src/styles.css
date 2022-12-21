@@ -23,6 +23,7 @@ main {
   width: 100%;
 }
 h1,h2,h3,h4,h5,h6 {
+  user-select: none;
   font-weight: bold;
   color: var(--bs-primary);
 }
