@@ -15,6 +15,7 @@ import { RegisterComponent } from './components/pages/auth/register/register.com
 import { DashboardComponent } from './components/pages/userbackend/dashboard/dashboard.component';
 import { ShortenerComponent } from './components/parts/shortener/shortener.component';
 import { FooterComponent } from './components/parts/footer/footer.component';
+import { StatsComponent } from './components/parts/stats/stats.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +27,8 @@ import { FooterComponent } from './components/parts/footer/footer.component';
     RegisterComponent,
     DashboardComponent,
     ShortenerComponent,
-    FooterComponent
+    FooterComponent,
+    StatsComponent
   ],
   imports: [
     BrowserModule,
