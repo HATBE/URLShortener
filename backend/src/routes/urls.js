@@ -5,6 +5,7 @@ const UrlModel = require('../models/url');
 
 const Url = require('../classes/Url');
 const User = require('../classes/User');
+const UrlTracker = require('../classes/UrlTracker');
 const Validate = require("../classes/Validate");
 
 // create url
@@ -67,6 +68,9 @@ router.get("/:id", async (req, res) => {
     if(!url) {
         return res.status(404).json({message: "url not found"});
     }
+
+    // enter data from user into url tracker
+    UrlTracker.create(await url.getRawId(), process.env.LOG_LOG_USER_IPS == "1" ? req.socket.remoteAddress : null);
 
     return res.status(200).json({
         message: "url found",

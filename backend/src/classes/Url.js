@@ -9,6 +9,10 @@ class Url {
     #date;
     #userid;
 
+    static async getCount() {
+        return await UrlModel.count();
+    }
+
     static async getFromShorturl(shorturl) {
         const url = await UrlModel.findOne({shorturl: shorturl});
         if(!url) return false;
@@ -67,7 +71,7 @@ class Url {
     constructor(url) {
         url = url.toJSON();
 
-        this.#id = JSON.stringify(url._id).replace(/['"]+/g, ''); // mongose ids are objects :(
+        this.#id = url._id;
         this.#url = url.url;
         this.#shorturl = url.shorturl;
         this.#date = url.date;
@@ -75,7 +79,11 @@ class Url {
     }
 
     getId() {
-        return this.#id;
+        return JSON.stringify(this.#id).replace(/['"]+/g, ''); // mongose ids are objects :(
+    }
+
+    getRawId() {
+        return this.#id
     }
 
     getUrl() {

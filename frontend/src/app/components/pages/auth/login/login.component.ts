@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -20,7 +20,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private renderer: Renderer2
   ) {
     this.form = this.formBuilder.group({
       username: '',
@@ -42,6 +43,8 @@ export class LoginComponent implements OnInit {
     if(param.has('freshregisteras')) {
       this.form.patchValue({username: param.get("freshregisteras")});
       this.freshLoggedInName = param.get("freshregisteras");
+
+      this.renderer.selectRootElement('#passwordInput').focus(); // select password field if user freshly registred
     }
   }
 }

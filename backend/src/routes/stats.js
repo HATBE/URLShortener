@@ -1,17 +1,19 @@
 const express = require("express");
 const router = express.Router();
 
-const UserModel = require('../models/user');
-const UrlModel = require('../models/url');
+const User = require('../classes/User');
+const Url = require('../classes/Url');
+const UrlTracker = require("../classes/UrlTracker");
 
 router.get('/', async (req, res) => {
-    usersCount = await UserModel.count();
-    urlsCount = await UrlModel.count();
+    usersCount = await User.getCount();
+    urlsCount = await Url.getCount();
+    urlsClickedCount = await UrlTracker.getCount();
 
     res.status(200).send({
         usersCount: usersCount,
         urlsCount: urlsCount,
-        urlsClicked: 0
+        urlsClicked: urlsClickedCount
     });
 })
 

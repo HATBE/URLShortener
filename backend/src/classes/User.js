@@ -7,6 +7,10 @@ class User {
     #id;
     #username;
 
+    static async getCount() {
+        return await UserModel.count();
+    }
+
     static async getFromCookie(cookies) {
         if(!cookies['authtoken']) {
             return null;
@@ -32,12 +36,12 @@ class User {
 
     constructor(user) {
         user = user.toJSON();
-        this.#id = JSON.stringify(user._id).replace(/['"]+/g, ''); // mongose ids are objects :(
+        this.#id = user._id;
         this.#username = user.username;
     }
 
     getId() {
-        return this.#id;
+        return JSON.stringify(this.#id).replace(/['"]+/g, ''); // mongose ids are objects :(
     }
 
     getUsername() {
