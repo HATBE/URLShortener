@@ -28,6 +28,8 @@ It's a really basic application
 | GET | /api/urls/:id |  |  | get a shortened url |
 | GET | /api/urls/my |  | authtoken | get current loggedin users urls |
 | DELETE | /api/urls/:id |  | authtoken | delete a url of a user (only when logged in as this user) |
+| **Stats** |  |  |  |  |
+| GET | /api/stats/ | | | get selected stats of whole page |
 
 ## Functionality
 

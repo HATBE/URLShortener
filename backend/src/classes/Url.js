@@ -15,7 +15,7 @@ class Url {
 
     static async getFromShorturl(shorturl) {
         const url = await UrlModel.findOne({shorturl: shorturl});
-        if(!url) return false;
+        if(!url) return false; 
         return new Url(url);
     }
 

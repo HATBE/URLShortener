@@ -1,14 +1,14 @@
 <table class="m-0 user-select-none table table-dark stats-table">
   <tr>
-    <th [countUp]="urlsCount" [options]="{ duration: 1 }"></th>
+    <th [reanimateOnClick]="false" [countUp]="urlsCount" [options]="{ duration: 1 }"></th>
     <td>URLs shortened</td>
   </tr>
   <tr>
-    <th [countUp]="usersCount" [options]="{ duration: 1 }"></th>
+    <th [reanimateOnClick]="false" [countUp]="usersCount" [options]="{ duration: 1 }"></th>
     <td>Registerd users</td>
   </tr>
   <tr>
-    <th [countUp]="urlsClicked" [options]="{ duration: 1 }"></th>
+    <th [reanimateOnClick]="false" [countUp]="urlsClicked" [options]="{ duration: 1 }"></th>
     <td>URLs clicked</td>
   </tr>
 </table>
