@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
+import { environment } from 'src/environments/environment';
 
 import { Url } from '../models/url.model';
 
@@ -7,7 +8,7 @@ import { Url } from '../models/url.model';
   providedIn: 'root'
 })
 export class UrlService {
-  private apiEndpoint = 'http://localhost:3000/api/urls/';
+  private apiEndpoint = `${environment.apiEndpoint}/urls/`;
   constructor(private http: HttpClient) { }
 
   get(id: string | null) {

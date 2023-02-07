@@ -11,7 +11,7 @@ function dbConnection() {
         console.log('[INIT] successfully connected to database!');
     })
     .catch((error) => {
-        // if Server can't connect to db, exit with an error code
+        // if the server can't connect to db, exit with an error code
         console.warn('[INIT] error while connecting to database:');
         console.warn(error);
         process.exit(1);

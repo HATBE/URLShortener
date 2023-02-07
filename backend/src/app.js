@@ -39,7 +39,7 @@ app.use(errorHandler);                          // Catch if unexpected error
 // Routes
 // **********
 
-app.use('/api/', routes);                       // /api/* routes
+app.use(process.env.API_ENDPOINT_PREFIX, routes);                       // /api/* routes
 
 app.all('*', (req, res) => {                    // Default route
   res.json({"error":"route not found"});
