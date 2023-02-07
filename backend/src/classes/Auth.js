@@ -7,35 +7,36 @@ const User = require('./User');
 class Auth {
     static async login(res, username, password) {
         if(!await UserModel.exists({username: username})) {
-            return false;
+            // if user does not exist
+            return {status: false};
         }
 
         const user = await UserModel.findOne({username: username});
 
         // compare passwords (submited and from db), if they dont match, return
         if(!await bcrypt.compare(password, user.password)) {
-            console.warn(`[AUTH] user "${username}" failed to login. reason: wrong password!`);
-            return false;
+            console.warn(`[AUTH] user "${username}" failed to login. reason: wrong password!`); // write failed login to log
+            return {status: false};
         }
         
-        const tokenData = {id: user._id}; // write token data
-        const signedToken = jwt.sign(tokenData, process.env.JWT_SECRET); // sign token
+        const tokenData = {id: user._id};   // write token data
+        const signedToken = jwt.sign(       // sign token
+            tokenData, 
+            process.env.JWT_SECRET,
+            {
+                expiresIn: process.env.LOGIN_EXPIRES_IN || '1d',
+            }
+        ); 
 
-        console.log(`[AUTH] user "${username}" loggedin successfully.`);
-        
-        // set auth cookie
-        res.cookie('authtoken', signedToken, {
-            httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000 // 1 day
-        });
+        console.log(`[AUTH] user "${username}" loggedin successfully.`); // write successful login to log
 
-        return true;
+        return {status: true, token: signedToken};
     }
 
     static async register(username, password) {
         // if user already exists, return
         if(await UserModel.exists({username: username})){
-            return {state: false, reason: "Username already exists"};
+            return {status: false, reason: "Username already exists"};
         }
 
         const salt = await bcrypt.genSalt(10); // generate salt
@@ -49,7 +50,7 @@ class Auth {
 
         const result = await user.save(); // save user
         
-        return {state: true, user: new User(result)}
+        return {status: true, user: new User(result)}
     }
 }
 

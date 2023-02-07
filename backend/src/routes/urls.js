@@ -8,10 +8,10 @@ const User = require('../classes/User');
 const UrlTracker = require('../classes/UrlTracker');
 const Validate = require("../classes/Validate");
 
+const mustAuthorize = require('../middleware/mustAuthorize');
+
 // create url
 router.post("/", async (req, res) => {
-    const user = await User.getFromCookie(req.cookies);
-
     // check if url is passed in the body
     if(!req.body.url) {
         return res.status(400).json({message: "please provide a url"});
@@ -23,7 +23,7 @@ router.post("/", async (req, res) => {
         return res.status(400).json({message: "please provide a valid url"});
     }
 
-    const myurl = await Url.create(rUrl, user);
+    const myurl = await Url.create(rUrl, req.user);
 
     res.status(200).json({
         message: "successfully added a url",
@@ -32,14 +32,8 @@ router.post("/", async (req, res) => {
 });
 
 // get all posts by user
-router.get('/my', async (req, res) => {
-    const user = await User.getFromCookie(req.cookies);
-
-    if(!user) {
-        return res.status(401).json({message: "unauthorized"});
-    }
-
-    let urls = await UrlModel.find({userid: user.getId()});
+router.get('/my', mustAuthorize, async (req, res) => {
+    let urls = await UrlModel.find({userid: req.user.getId()});
         
     let date = Math.round(Date.now() / 1000);
     urls.sort(url => {if(url.date < date) return -1});
@@ -59,7 +53,7 @@ router.get('/my', async (req, res) => {
 // get post with id
 router.get("/:id", async (req, res) => {
     // check if id is right
-    if(req.params.id.length !== 9) {
+    if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
         return res.status(400).json({message: "id is not in a valid format"});
     }
    
@@ -79,19 +73,13 @@ router.get("/:id", async (req, res) => {
 });
 
 // delete post with id
-router.delete("/:id", async (req, res) => {
-    const user = await User.getFromCookie(req.cookies);
-
-    if(!user) {
-        return res.status(401).json({message: "unauthorized"});
-    }
-
+router.delete("/:id", mustAuthorize, async (req, res) => {
     // check if id is right
-    if(req.params.id.length !== 9) {
+    if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
         return res.status(400).json({message: "id is not in a valid format"});
     }
 
-    const del = await Url.delete(req.params.id, user);
+    const del = await Url.delete(req.params.id, req.user);
 
     if(!del.state) {
         return res.status(400).json({message: del.reason});

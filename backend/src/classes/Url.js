@@ -31,7 +31,7 @@ class Url {
         do {
             // generate new shorturl, check if it already exists in db, if exists, repeat
             shorturl = randomString.generate({
-                length: 9
+                length: +process.env.SHORTURL_LENGTH || 9
             });
     
             const result = await UrlModel.exists({shorturl: shorturl})

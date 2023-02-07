@@ -1,19 +1,18 @@
-require('dotenv').config(); // load environment variables
+require('dotenv').config();                       // load environment variables
 
 const express = require('express');
 const app = express();
 
-const cors = require('cors'); // to configure cors
-const morgan = require('morgan'); // for logging
-const cookieParser = require('cookie-parser'); // for cookie parsing
-const rateLimit = require('express-rate-limit') // for rate limit
+const cors = require('cors');                     // to configure cors
+const morgan = require('morgan');                 // for logging
+const rateLimit = require('express-rate-limit');  // for rate limit
 
 const routes = require('./routes/routes');
 
-const dbConnection = require('./helpers/dbConnection')
-const errorHandler = require('./helpers/errorHandler');
+const dbConnection = require('./middleware/dbConnection');
+const authJwt = require('./middleware/jwtauth');
 
-dbConnection(); // connect to mongodb database
+dbConnection();                                  // connect to mongodb database
 
 // **********
 // Middleware
@@ -30,19 +29,20 @@ app.use(rateLimit({                             // Rate limit
 	standardHeaders: true,
 	legacyHeaders: false, 
   message: {message: "Too many requests, please try again later."}
-}));
-app.use(express.json());                        // JSON parser                                    
-app.use(cookieParser());                        // Cookie parser
-app.use(errorHandler);                          // Catch if unexpected error
+}));           
+app.use(express.json());                        // JSON parser                         
+
 
 // **********
 // Routes
 // **********
 
-app.use(process.env.API_ENDPOINT_PREFIX, routes);                       // /api/* routes
+app.use(process.env.API_ENDPOINT_PREFIX, authJwt, routes); // /api/* routes
 
 app.all('*', (req, res) => {                    // Default route
   res.json({"error":"route not found"});
 });
 
-module.exports = app;
+app.listen(process.env.PORT || 3000, () => {
+  console.log('started');
+})

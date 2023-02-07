@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -11,18 +11,18 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   login(username: string, password: string) {
-    return this.http.post(this.apiEndpoint + 'login', {username: username, password: password}, {withCredentials: true});
+    return this.http.post(this.apiEndpoint + 'login', {username: username, password: password}, {});
   }
 
   register(username: string, password: string) {
-    return this.http.post(this.apiEndpoint + 'register', {username: username, password: password}, {withCredentials: true});
+    return this.http.post(this.apiEndpoint + 'register', {username: username, password: password}, {});
   }
 
   logout() {
-    return this.http.post(this.apiEndpoint + 'logout', {}, {withCredentials: true});
+    localStorage.removeItem('authtoken');
   }
 
   getLoggedInUser() {
-    return this.http.get(this.apiEndpoint + 'user', {withCredentials: true});
+    return this.http.get(this.apiEndpoint + 'user', {headers: new HttpHeaders({'Authorization': `Bearer ${localStorage.getItem('authtoken')}`})});
   }
 }

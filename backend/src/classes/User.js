@@ -10,24 +10,7 @@ class User {
     static async getCount() {
         return await UserModel.count();
     }
-
-    static async getFromCookie(cookies) {
-        if(!cookies['authtoken']) {
-            return null;
-        }
-
-        const cookie = cookies['authtoken'];
-        const claim = jwt.verify(cookie, process.env.JWT_SECRET);
-
-        if(!claim) {
-            return null;
-        }
-
-        const user = await UserModel.findOne({_id: claim.id});
-
-        return new User(user);
-    }
-
+    
     static async getFromId(id) {
         const user = await UserModel.findOne({_id: id});
         if(!user) return false;
