@@ -20,6 +20,7 @@
             <th>Url</th>
             <th></th>
             <th>ShortUrl</th>
+            <th>Date</th>
             <th></th>
           </tr>
         </thead>
@@ -38,8 +39,14 @@
               <a target="_blank" class="link-light text-decoration-none" href="{{localUrl}}{{url.shorturl}}">{{localUrl}}{{url.shorturl}}</a>
             </td>
             <td>
+              {{url.date}}
+            </td>
+            <td class="d-flex justify-content-end">
+              <div routerLink="/urlstats/{{url.shorturl}}" class="d-flex justify-content-end">
+                <button class="mx-1 btn btn-primary"><fa-icon [icon]="faEye"></fa-icon></button>
+              </div>
               <div (click)="deleteUrl(url.shorturl)" class="d-flex justify-content-end">
-                <button class="mx-2 btn btn-danger"><fa-icon [icon]="faTrash"></fa-icon></button>
+                <button class="mx-1 btn btn-danger"><fa-icon [icon]="faTrash"></fa-icon></button>
               </div>
             </td>
           </tr>

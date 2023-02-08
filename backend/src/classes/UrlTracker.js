@@ -22,6 +22,10 @@ class UrlTracker {
         return save;
     }
 
+    static async getCountFromUrl(url) {
+        return await UrlTrackerModel.find({url: url}).count();
+    }
+
     constructor(urlTracker) {
         urlTracker = url.toJSON();
 

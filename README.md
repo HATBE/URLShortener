@@ -16,20 +16,19 @@ It's a really basic application
 
 ## REST API Endpoints
 
-| HTTP-Method | Endpoint | BODY x-www-form-urlencoded | Cookie | Description |
+| HTTP-Method | Endpoint | BODY (JSON) | Authorization Header Token | Description |
 |---|---|---|---|---|
 | **AUTH** |  |  |  |  |
-| POST | /api/auth/register | username: string, password: string |  | register as new user |
-| POST | /api/auth/login | username: string, password: string |  | login as registered user |
-| POST | /api/auth/logout |  | authtoken | logout form user account |
-| GET | /api/auth/user |  | authtoken | get data from current loggedin user |
+| POST | /api/v1/auth/register | username: string, password: string |  | register as new user |
+| POST | /api/v1/auth/login | username: string, password: string |  | login as registered user |
+| GET | /api/v1/auth/user |  | true | get data from current loggedin user |
 | **URLS** |  |  |  |  |
-| POST | /api/urls/ | url: string |  | create a shortend url |
-| GET | /api/urls/:id |  |  | get a shortened url |
-| GET | /api/urls/my |  | authtoken | get current loggedin users urls |
-| DELETE | /api/urls/:id |  | authtoken | delete a url of a user (only when logged in as this user) |
+| POST | /api/v1/urls/ | url: string | (optional) | create a shortend url |
+| GET | /api/v1/urls/:id |  |  | get a shortened url |
+| GET | /api/v1/urls/my |  | true | get current loggedin users urls |
+| DELETE | /api/v1/urls/:id |  | true | delete a url of a user (only when logged in as this user) |
 | **Stats** |  |  |  |  |
-| GET | /api/stats/ | | | get selected stats of whole page |
+| GET | /api/v1/stats/ | | | get selected stats of whole page |
 
 ## Functionality
 

@@ -1,1 +1,3 @@
 - Add feauture to frontend that adds https:// if no protocoll is specified
+- delete user 
+- user settings / change user detail / change password

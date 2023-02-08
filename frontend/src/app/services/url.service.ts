@@ -12,15 +12,19 @@ export class UrlService {
   constructor(private http: HttpClient) { }
 
   get(id: string | null) {
-    return this.http.get<{message: string; url: Url}>(this.apiEndpoint + id);
+    return this.http.get<{message: string, data: {url: Url}}>(this.apiEndpoint + id);
   }
 
   getMyUrls() {
-    return this.http.get<{message: any; urls: Url[] | any}>(this.apiEndpoint + "my", {headers: new HttpHeaders({'Authorization': `Bearer ${localStorage.getItem('authtoken')}`})});
+    return this.http.get<{message: any; data: {urls: Url[]} | any}>(this.apiEndpoint + "my", {headers: new HttpHeaders({'Authorization': `Bearer ${localStorage.getItem('authtoken')}`})});
   }
 
   add(url: string) {
-    return this.http.post<{message: any; url: Url | any}>(this.apiEndpoint, {url: url}, {headers: new HttpHeaders({'Authorization': `Bearer ${localStorage.getItem('authtoken')}`})});
+    return this.http.post<{message: any; data: { url: Url} | any}>(this.apiEndpoint, {url: url}, {headers: new HttpHeaders({'Authorization': `Bearer ${localStorage.getItem('authtoken')}`})});
+  }
+
+  getStats(id: string | null) {
+    return this.http.get<{message: any; data: {stats: any} | any}>(this.apiEndpoint +"/" + id + "/stats", {headers: new HttpHeaders({'Authorization': `Bearer ${localStorage.getItem('authtoken')}`})});
   }
 
   delete(shorturl: string) {

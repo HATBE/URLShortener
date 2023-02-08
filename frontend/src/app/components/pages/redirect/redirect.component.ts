@@ -36,9 +36,9 @@ export class RedirectComponent implements OnInit {
     });
   }
 
-  successLoadingUrl(data: {message: string, url: Url}) {
+  successLoadingUrl(data: {message: string, data: {url: Url}}) {
     this.title.setTitle("Success, redirecting...");
-    let url = data.url.url;
+    let url = data.data.url.url;
     window.location.href = url;
   }
 

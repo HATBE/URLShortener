@@ -6,8 +6,11 @@ import { UrlService } from 'src/app/services/url.service';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
 import { Url } from 'src/app/models/url.model';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faEye } from '@fortawesome/free-solid-svg-icons';
 import { faArrowAltCircleRight } from '@fortawesome/free-regular-svg-icons';
+
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en'
 
 @Component({
   selector: 'app-dashboard',
@@ -24,6 +27,7 @@ export class DashboardComponent implements OnInit {
   isLoading: boolean = false;
 
   faTrash = faTrash;
+  faEye = faEye;
   faArrowAltCircleRight = faArrowAltCircleRight;
 
   constructor(
@@ -46,17 +50,27 @@ export class DashboardComponent implements OnInit {
   }
 
   successloggedIn(data: any) {
-    this.user = data.user;
+    TimeAgo.addDefaultLocale(en)
+    const timeAgo = new TimeAgo('en-US');
+
+    console.log(data)
+
+    this.user = data.data.user;
     this.loggedIn = true;
 
-    this.urlService.getMyUrls().subscribe(urls => {
-      this.myUrls = urls.urls;
+    this.urlService.getMyUrls().subscribe(data => {
+      const urls = data.data.urls;
+      urls.map((url: any) => {
+        url.date = timeAgo.format(new Date(url.date * 1000));
+      });
+      this.myUrls = urls;
       this.isLoading = false;
     });
   }
 
   deleteUrl(shortUrl: string) {
     this.urlService.delete(shortUrl).subscribe(res => {
+      // TODO: remove url from myurls instead of reloading page! more dynamic = more better
       window.location.reload();
     });
   }

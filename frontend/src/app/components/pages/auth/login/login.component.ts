@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
 
   successLogin(data: any) {
     console.log(data)
-    localStorage.setItem('authtoken', data.data.token);
+    localStorage.setItem('authtoken', data.data.token); // save token in localstorage
     Emiters.authEmitter.emit(true);
     this.isLoading = false;
     this.router.navigate(['/dashboard']);

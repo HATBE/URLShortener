@@ -14,20 +14,23 @@ const mustAuthorize = require('../middleware/mustAuthorize');
 router.post("/", async (req, res) => {
     // check if url is passed in the body
     if(!req.body.url) {
-        return res.status(400).json({message: "please provide a url"});
+        return res.status(400).json({status: false, message: "please provide a url"});
     }
 
     const rUrl = req.body.url;
 
     if(!Validate.url(rUrl)) {
-        return res.status(400).json({message: "please provide a valid url"});
+        return res.status(400).json({status: false, message: "please provide a valid url"});
     }
 
     const myurl = await Url.create(rUrl, req.user);
 
     res.status(200).json({
+        status: true, 
         message: "successfully added a url",
-        url: await myurl.getAsObject()
+        data: {
+            url: await myurl.getAsObject()
+        }
     });
 });
 
@@ -45,47 +48,82 @@ router.get('/my', mustAuthorize, async (req, res) => {
     }
 
     res.status(200).json({
+        status: true,
         message: "success",
-        urls: newUrls
+        data: {
+            urls: newUrls
+        }
     });
 });
 
-// get post with id
-router.get("/:id", async (req, res) => {
+// get url stats  with id
+router.get("/:id/stats", mustAuthorize, async (req, res) => {
+    // TODO:
     // check if id is right
     if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
-        return res.status(400).json({message: "id is not in a valid format"});
+        return res.status(400).json({status: false, message: "id is not in a valid format"});
     }
    
     const url = await Url.getFromShorturl(req.params.id);
 
     if(!url) {
-        return res.status(404).json({message: "url not found"});
+        return res.status(404).json({status: false, message: "url not found"});
+    }
+
+    // check if user is the owner of this url
+    if((await url.getUser()).getId() != req.user.getId()) {
+        return res.status(401).json({status: false, message: "Unauthorized"});
+    }
+
+    return res.status(200).json({
+        status: true, 
+        message: "stats of the url",
+        data: {
+            stats: await url.getStats()
+        }
+    });
+});
+
+
+// get post with id
+router.get("/:id", async (req, res) => {
+    // check if id is right
+    if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
+        return res.status(400).json({status: false, message: "id is not in a valid format"});
+    }
+   
+    const url = await Url.getFromShorturl(req.params.id);
+
+    if(!url) {
+        return res.status(404).json({status: false, message: "url not found"});
     }
 
     // enter data from user into url tracker
     UrlTracker.create(await url.getRawId(), process.env.LOG_LOG_USER_IPS == "1" ? req.socket.remoteAddress : null);
 
     return res.status(200).json({
+        status: true, 
         message: "url found",
-        url:  await url.getAsObject()
+        data: {
+            url: await url.getAsObject()
+        }
     });
 });
 
-// delete post with id
+// delete url with id
 router.delete("/:id", mustAuthorize, async (req, res) => {
     // check if id is right
     if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
-        return res.status(400).json({message: "id is not in a valid format"});
+        return res.status(400).json({status: false, message: "id is not in a valid format"});
     }
 
     const del = await Url.delete(req.params.id, req.user);
 
     if(!del.state) {
-        return res.status(400).json({message: del.reason});
+        return res.status(400).json({status: false, message: del.reason});
     }
     
-    res.status(200).json({message: "ok"});
+    res.status(200).json({status: true, message: "ok"});
 });
 
 module.exports = router;

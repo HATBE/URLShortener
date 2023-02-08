@@ -11,9 +11,13 @@ router.get('/', async (req, res) => {
     urlsClickedCount = await UrlTracker.getCount();
 
     res.status(200).send({
-        usersCount: usersCount,
-        urlsCount: urlsCount,
-        urlsClicked: urlsClickedCount
+        status: true,
+        message: "success",
+        data: { 
+            usersCount: usersCount,
+            urlsCount: urlsCount,
+            urlsClicked: urlsClickedCount
+        }
     });
 })
 

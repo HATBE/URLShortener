@@ -58,8 +58,8 @@ export class ShortenerComponent implements OnInit {
     });
   }
 
-  successAddingUrl(data: {message: string, url: Url}) {
-    this.shorturl = window.location.origin + '/' + data.url.shorturl;
+  successAddingUrl(data: {message: string, data: {url: Url}}) {
+    this.shorturl = window.location.origin + '/' + data.data.url.shorturl;
     this.isLoading = false;
   }
 

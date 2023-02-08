@@ -1,6 +1,8 @@
 const UrlModel = require('../models/url');
-const User = require('./User');
 const randomString = require('randomString');
+
+const User = require('./User');
+const UrlTracker = require('./UrlTracker');
 
 class Url {
     #id;
@@ -53,6 +55,7 @@ class Url {
     }
 
     static async delete(shorturl, user) {
+        // TODO: delete every tracker
         // check if url exists
         if(!await UrlModel.exists({shorturl: shorturl})) {
             return {state: false, reason: "url was not found"}
@@ -63,7 +66,7 @@ class Url {
             return {state: false, reason: 'you don\'t have access to this url'}
         }
 
-        const result = await UrlModel.deleteOne({shorturl: shorturl});
+        const result = await UrlModel.deleteOne({shorturl: shorturl});0
 
         return {state: true, message: 'success'}
     }
@@ -100,6 +103,12 @@ class Url {
 
     getUser() {
         return User.getFromId(this.#userid);
+    }
+
+    async getStats() {
+        return {
+            clicked: await UrlTracker.getCountFromUrl(this.getRawId())
+        }
     }
 
     async getAsObject() {

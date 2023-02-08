@@ -26,9 +26,9 @@ export class StatsComponent implements OnInit {
   }
 
   successLoading(data: any) {
-    this.usersCount = data.usersCount;
-    this.urlsCount = data.urlsCount;
-    this.urlsClicked = data.urlsClicked;
+    this.usersCount = data.data.usersCount;
+    this.urlsCount = data.data.urlsCount;
+    this.urlsClicked = data.data.urlsClicked;
     this.isLoading = false;
   }
 

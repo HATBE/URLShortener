@@ -9,12 +9,12 @@ async function authJwt(req, res, next) {
         return next();
     }
 
-    if(req.headers['authorization'].split(' ')[1] == "null") {
+    const bearerToken = req.headers['authorization'].split(' ')[1];
+
+    if(bearerToken == "null") {
         req.user = null;
         return next();
     }
-
-    const bearerToken = req.headers['authorization'].split(' ')[1];
 
     if(!bearerToken) {
         // no token, failed
