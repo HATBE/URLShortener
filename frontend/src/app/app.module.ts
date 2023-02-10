@@ -18,6 +18,7 @@ import { ShortenerComponent } from './components/parts/shortener/shortener.compo
 import { FooterComponent } from './components/parts/footer/footer.component';
 import { StatsComponent } from './components/parts/stats/stats.component';
 import { UrlstatsComponent } from './components/pages/userbackend/urlstats/urlstats.component';
+import { SettingsComponent } from './components/pages/userbackend/settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { UrlstatsComponent } from './components/pages/userbackend/urlstats/urlst
     ShortenerComponent,
     FooterComponent,
     StatsComponent,
-    UrlstatsComponent
+    UrlstatsComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

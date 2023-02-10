@@ -1,5 +1,9 @@
 <div *ngIf="loggedIn" class="w-100 bg-dark">
-  {{data}}
+  <h3>Url Stats</h3>
+  <div>
+    clicked: {{data}}
+  </div>
+  <button routerLink="/dashboard" class="btn btn-primary">&lt; Back</button>
 </div>
 
 <div *ngIf="!loggedIn" class="d-flex justify-content-center">

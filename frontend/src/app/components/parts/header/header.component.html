@@ -12,6 +12,7 @@
     </ng-container>
     <ng-container *ngIf="loggedIn">
       <app-header-button [link]="'/dashboard'" [name]="'Dashboard'" [icon]="faGauge"></app-header-button>
+      <app-header-button [link]="'/settings'" [name]="'Settings'" [icon]="faGear"></app-header-button>
       <app-header-button [link]="'/'" [noActive]="true" (click)="logout()" [name]="'Logout'" [icon]="faRightFromBracket"></app-header-button>
     </ng-container>
   </div>

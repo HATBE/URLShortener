@@ -53,8 +53,6 @@ export class DashboardComponent implements OnInit {
     TimeAgo.addDefaultLocale(en)
     const timeAgo = new TimeAgo('en-US');
 
-    console.log(data)
-
     this.user = data.data.user;
     this.loggedIn = true;
 
@@ -69,9 +67,9 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteUrl(shortUrl: string) {
-    this.urlService.delete(shortUrl).subscribe(res => {
-      // TODO: remove url from myurls instead of reloading page! more dynamic = more better
-      window.location.reload();
+    this.urlService.delete(shortUrl) // send delete request to backend
+    .subscribe(res => {
+      this.myUrls?.splice(this.myUrls?.findIndex(o => {return o.shorturl == shortUrl}) || 0, 1) // remove entry from gui
     });
   }
 }

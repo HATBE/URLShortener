@@ -5,6 +5,7 @@ import { RegisterComponent } from './components/pages/auth/register/register.com
 import { IndexComponent } from './components/pages/index/index.component';
 import { RedirectComponent } from './components/pages/redirect/redirect.component';
 import { DashboardComponent } from './components/pages/userbackend/dashboard/dashboard.component';
+import { SettingsComponent } from './components/pages/userbackend/settings/settings.component';
 import { UrlstatsComponent } from './components/pages/userbackend/urlstats/urlstats.component';
 
 const routes: Routes = [
@@ -13,6 +14,7 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent, title: "Register"},
   {path: 'dashboard', component: DashboardComponent, title: "Dashboard"},
   {path: 'urlstats/:id', component: UrlstatsComponent, title: "Stats"},
+  {path: 'settings', component: SettingsComponent, title: "Settings"},
   {path: ':id', component: RedirectComponent, title: "Redirect..."},
   {path:'**', component: IndexComponent}
 ];

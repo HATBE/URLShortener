@@ -8,7 +8,9 @@ import { environment } from 'src/environments/environment';
 export class UserService {
   private apiEndpoint = `${environment.apiEndpoint}/auth/`;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   login(username: string, password: string) {
     return this.http.post(this.apiEndpoint + 'login', {username: username, password: password}, {});
@@ -23,6 +25,6 @@ export class UserService {
   }
 
   getLoggedInUser() {
-    return this.http.get(this.apiEndpoint + 'user', {headers: new HttpHeaders({'Authorization': `Bearer ${localStorage.getItem('authtoken')}`})});
+    return this.http.get<{status: boolean, data: String}>(this.apiEndpoint + 'user', {headers: new HttpHeaders({'Authorization': `Bearer ${localStorage.getItem('authtoken')}`})});
   }
 }

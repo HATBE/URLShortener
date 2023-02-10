@@ -48,7 +48,6 @@ export class UrlstatsComponent implements OnInit {
     this.user = data.data.user;
     this.loggedIn = true;
 
-
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if(paramMap.has('id')) {
         this.id = paramMap.get('id');
@@ -61,6 +60,4 @@ export class UrlstatsComponent implements OnInit {
       }
     });
   }
-
-
 }
