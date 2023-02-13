@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-settings',
@@ -25,6 +26,7 @@ export class SettingsComponent implements OnInit {
   }
 
   constructor(
+    private authService: AuthService,
     private userService: UserService,
     private router: Router,
   ) {}
@@ -74,13 +76,13 @@ export class SettingsComponent implements OnInit {
   }
 
   onLogout() {
-    this.userService.logout();
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 
   confirmDeleteAccount() {
       this.userService.delete().subscribe(data => {
-        this.userService.logout();
+        this.authService.logout();
         this.router.navigate(['/login']);
       });
   }

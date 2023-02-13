@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from 'src/app/services/user.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Emiters } from '../../../../emitters/emitters';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +16,7 @@ export class RegisterComponent implements OnInit {
   isLoading: boolean = false;
 
   constructor(
-    private userService: UserService,
+    private authService: AuthService,
     private formBuilder: FormBuilder,
     private router: Router
   ) {
@@ -29,7 +28,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     // check if user is already loggedin
-    if(this.userService.isLoggedIn()) {
+    if(this.authService.isLoggedIn()) {
       this.loggedIn = true;
       this.router.navigate(['/dashboard']);
       return;
@@ -46,7 +45,7 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    this.userService.register(username, password)
+    this.authService.register(username, password)
     .subscribe({
       next: this.successRegister.bind(this),
       error: this.errorRegister.bind(this)

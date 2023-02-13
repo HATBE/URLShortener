@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { UserService } from 'src/app/services/user.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,13 +9,13 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class AppComponent {
   constructor(
-    private userService: UserService,
+    private authService: AuthService,
   ) { }
 
   ngOnInit(): void {
-    this.userService.checkLogin();
+    this.authService.checkLogin();
     setInterval(() => {
-      this.userService.checkLogin();
+      this.authService.checkLogin();
     }, 300_000); // every five minutes
   }
 }

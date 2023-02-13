@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
-import { UserService } from 'src/app/services/user.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   freshLoggedInName: string | null = null;
 
   constructor(
-    private userService: UserService,
+    private authService: AuthService,
     private formBuilder: FormBuilder,
     private router: Router,
     private renderer: Renderer2
@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
   // check if user is already loggedin
-  if(this.userService.isLoggedIn()) {
+  if(this.authService.isLoggedIn()) {
     this.loggedIn = true;
     this.router.navigate(['/dashboard']);
     return;
@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.userService.login(username, password)
+    this.authService.login(username, password)
     .subscribe({
       next: this.successLogin.bind(this),
       error: this.errorLogin.bind(this)
