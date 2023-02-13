@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Url } from '../../../models/url.model'
 import { User } from 'src/app/models/user.model';
 import { UrlService } from 'src/app/services/url.service';
-import { UserService } from 'src/app/services/user.service';
 import { faClipboard } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
@@ -12,6 +11,7 @@ import { faClipboard } from '@fortawesome/free-regular-svg-icons';
 })
 export class ShortenerComponent implements OnInit {
   error: string = "";
+  info: string = "";
   url: string = ""
   shorturl: string = "";
   isLoading: boolean = false;
@@ -24,15 +24,10 @@ export class ShortenerComponent implements OnInit {
   user: User | null = null;
 
   constructor(
-    private userService: UserService,
     private urlService: UrlService
   ) {}
 
   ngOnInit(): void {
-    this.userService.getLoggedInUser().subscribe({
-      next: this.successloggedIn.bind(this),
-      error: this.notLoggedIn.bind(this)
-    });
   }
 
   onClickInput() {
@@ -44,6 +39,11 @@ export class ShortenerComponent implements OnInit {
     if(this.url === '') {
       this.isLoading = false;
       return;
+    }
+    if(!(this.url.toLowerCase().startsWith('http://') || this.url.toLowerCase().startsWith('https://'))) {
+      // if url has no protocol (http or https), add https.
+      this.url = `https://${this.url}`;
+      this.info = "A protocol (https://) was added.";
     }
     if(!/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/.test(this.url)) {
         this.error = "URL format is wrong! Use http(s)://url.com(/*)";
@@ -73,22 +73,13 @@ export class ShortenerComponent implements OnInit {
     this.copyBtnPressed = true;
   }
 
-  notLoggedIn() {
-    this.loggedIn = false;
-    return;
-  }
-
-  successloggedIn(data: any) {
-    this.user = data.user;
-    this.loggedIn = true;
-    return;
-  }
-
   reset() {
+    // this function is called on the "back" button in the html component
     this.shorturl = '';
     this.isLoading = false;
     this.url = '';
     this.error = '';
+    this.info = '';
     this.copyBtnPressed = false;
   }
 }

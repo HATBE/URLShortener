@@ -11,7 +11,9 @@ export class UrlService {
   private apiEndpoint = `${environment.apiEndpoint}/urls/`;
   private authHeader = new HttpHeaders({'Authorization': `Bearer ${localStorage.getItem('authtoken')}`});
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   get(id: string | null) {
     return this.http.get<{message: string, data: {url: Url}}>(this.apiEndpoint + id);

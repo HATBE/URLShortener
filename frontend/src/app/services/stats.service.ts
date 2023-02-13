@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 })
 export class StatsService {
   private apiEndpoint = `${environment.apiEndpoint}/stats/`;
+
   constructor(private http: HttpClient) { }
 
   get() {

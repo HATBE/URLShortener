@@ -22,6 +22,9 @@
     <div>
       <button (click)="reset()" class="mb-2 btn btn-outline-light">&lt; Back</button>
     </div>
+    <div class="w-100 alert alert-info" *ngIf="info != ''">
+      <span class="fw-bold">Info!</span> {{info}}
+    </div>
     <h3 class="text-light">
       Your new url is:
     </h3>
