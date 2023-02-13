@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 })
 export class UserService {
   private apiEndpoint = `${environment.apiEndpoint}/auth/`;
+  private authHeader = new HttpHeaders({'Authorization': `Bearer ${localStorage.getItem('authtoken')}`});
 
   constructor(
     private http: HttpClient
@@ -24,7 +25,16 @@ export class UserService {
     localStorage.removeItem('authtoken');
   }
 
+  isLoggedIn() {
+    // if authtoken isset in localstorage, login == true
+    // every x minutes its checked if this token exists / if this token is valid, if not, remove from localstorage...
+    if(localStorage.getItem('authtoken')) {
+      return true;
+    }
+    return false;
+  }
+
   getLoggedInUser() {
-    return this.http.get<{status: boolean, data: String}>(this.apiEndpoint + 'user', {headers: new HttpHeaders({'Authorization': `Bearer ${localStorage.getItem('authtoken')}`})});
+    return this.http.get<{status: boolean, data: String}>(this.apiEndpoint + 'user', {headers: this.authHeader});
   }
 }

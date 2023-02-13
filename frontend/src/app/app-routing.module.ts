@@ -7,14 +7,15 @@ import { RedirectComponent } from './components/pages/redirect/redirect.componen
 import { DashboardComponent } from './components/pages/userbackend/dashboard/dashboard.component';
 import { SettingsComponent } from './components/pages/userbackend/settings/settings.component';
 import { UrlstatsComponent } from './components/pages/userbackend/urlstats/urlstats.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {path: '', component: IndexComponent, title: "URL-Shortener"},
   {path: 'login', component: LoginComponent, title: "Login"},
   {path: 'register', component: RegisterComponent, title: "Register"},
-  {path: 'dashboard', component: DashboardComponent, title: "Dashboard"},
-  {path: 'urlstats/:id', component: UrlstatsComponent, title: "Stats"},
-  {path: 'settings', component: SettingsComponent, title: "Settings"},
+  {path: 'dashboard', component: DashboardComponent, title: "Dashboard", canActivate: [AuthGuard]},
+  {path: 'urlstats/:id', component: UrlstatsComponent, title: "Stats", canActivate: [AuthGuard]},
+  {path: 'settings', component: SettingsComponent, title: "Settings", canActivate: [AuthGuard]},
   {path: ':id', component: RedirectComponent, title: "Redirect..."},
   {path:'**', component: IndexComponent}
 ];
