@@ -1,13 +1,16 @@
-<div class="text-light">
+
+<div class="border mb-2 rounded overflow-hidden">
+  <h4 class="text-light border-bottom p-3 mb-0 bg-gradient-1">Your URLs</h4>
+
   <div class="py-4 w-100 d-flex justify-content-center" *ngIf="isLoading">
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
   </div>
-  <div *ngIf="!isLoading">
-    <h4 class="text-light">Your URLs</h4>
-    <div class="w-100 alert alert-info" *ngIf="myUrls != null && myUrls.length <= 0">
-      <span class="fw-bold">Info!</span> Currently you don't have any URLs
+
+  <div class="m-3" *ngIf="!isLoading">
+    <div class="w-100 " *ngIf="myUrls != null && myUrls.length <= 0">
+      Currently you don't have any URLs! <button class="btn btn-outline-primary" routerLink="/">Create one</button>
     </div>
     <table class="overflow-x-scroll table table-dark table-striped" *ngIf="myUrls != null && myUrls.length > 0">
       <thead>

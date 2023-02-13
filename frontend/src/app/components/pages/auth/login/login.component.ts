@@ -31,11 +31,11 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
   // check if user is already loggedin
-  this.userService.getLoggedInUser().subscribe(() => {
+  if(this.userService.isLoggedIn()) {
     this.loggedIn = true;
     this.router.navigate(['/dashboard']);
     return;
-  });
+  };
 
   if(window.location.search) {
     const param = new URLSearchParams(window.location.search);
@@ -68,9 +68,12 @@ export class LoginComponent implements OnInit {
 
   successLogin(data: any) {
     localStorage.setItem('authtoken', data.data.token); // save token in localstorage
-    Emiters.authEmitter.emit(true);
-    this.isLoading = false;
-    this.router.navigate(['/dashboard']);
+
+    setTimeout(() => {
+      Emiters.authEmitter.emit(true);
+      this.isLoading = false;
+      this.router.navigate(['/']);
+    }, 500); // 0.5 sec timeout (until browser saved token)
   }
 
   errorLogin(data: {error: {message: string}}) {

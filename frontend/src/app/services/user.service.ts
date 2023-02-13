@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { Emiters } from '../emitters/emitters';
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +27,17 @@ export class UserService {
   logout() {
     // if user is logged in: logout, else, do nothing
     if(this.isLoggedIn()) {
+      Emiters.authEmitter.emit(false);
       localStorage.removeItem('authtoken');
     }
+  }
+
+  delete() {
+    return this.http.delete(this.apiEndpoint, {headers: this.authHeader});
+  }
+
+  deleteUrls() {
+    return this.http.delete(this.apiEndpoint + 'user/urls', {headers: this.authHeader});
   }
 
   isLoggedIn() {
@@ -41,6 +51,10 @@ export class UserService {
 
   getLoggedInUser() {
     return this.http.get<{status: boolean, data: String}>(this.apiEndpoint + 'user', {headers: this.authHeader});
+  }
+
+  changePassword(oldPassword: string, newPassword: string) {
+    return this.http.patch(this.apiEndpoint + "password", {oldpassword: oldPassword, newpassword: newPassword}, {headers: this.authHeader});
   }
 
   checkLogin() {

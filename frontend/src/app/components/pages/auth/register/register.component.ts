@@ -29,11 +29,11 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     // check if user is already loggedin
-    this.userService.getLoggedInUser().subscribe(() => {
+    if(this.userService.isLoggedIn()) {
       this.loggedIn = true;
       this.router.navigate(['/dashboard']);
       return;
-    });
+    };
   }
 
   onSubmitRegister() {

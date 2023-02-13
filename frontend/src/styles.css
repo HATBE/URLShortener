@@ -93,3 +93,11 @@ h1,h2,h3,h4,h5,h6 {
 .alert {
   margin: 0 !important;
 }
+.btn-outline-primary {
+  border-color: var(--bs-primary);
+  color: var(--bs-primary);
+}
+.btn-outline-primary:hover {
+  border-color: var(--bs-primary);
+  background-color: var(--bs-primary);
+}

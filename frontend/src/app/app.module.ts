@@ -20,6 +20,7 @@ import { StatsComponent } from './components/parts/stats/stats.component';
 import { UrlstatsComponent } from './components/pages/userbackend/urlstats/urlstats.component';
 import { SettingsComponent } from './components/pages/userbackend/settings/settings.component';
 import { YourUrlsComponent } from './components/parts/your-urls/your-urls.component';
+import { ChangePasswordComponent } from './components/parts/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { YourUrlsComponent } from './components/parts/your-urls/your-urls.compon
     StatsComponent,
     UrlstatsComponent,
     SettingsComponent,
-    YourUrlsComponent
+    YourUrlsComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,
