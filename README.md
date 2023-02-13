@@ -21,10 +21,15 @@ It's a really basic application
 | **AUTH** |  |  |  |  |
 | POST | /api/v1/auth/register | username: string, password: string |  | register as new user |
 | POST | /api/v1/auth/login | username: string, password: string |  | login as registered user |
-| GET | /api/v1/auth/user |  | true | get data from current loggedin user |
+| **USERS** |  |  |  |  |
+| GET | /api/v1/users |  | true | get data from current loggedin user |
+| DELETE | /api/v1/users |  | true | delete currently loggedin user |
+| DELETE | /api/v1/users/urls |  | true | delete currently loggedin users urls |
+| PATCH | /api/v1/users/password | oldpassword: string, newpassword: string | true | change password |
 | **URLS** |  |  |  |  |
 | POST | /api/v1/urls/ | url: string | (optional) | create a shortend url |
 | GET | /api/v1/urls/:id |  |  | get a shortened url |
+| GET | /api/v1/urls/:id/stats |  | true | get stats of url |
 | GET | /api/v1/urls/my |  | true | get current loggedin users urls |
 | DELETE | /api/v1/urls/:id |  | true | delete a url of a user (only when logged in as this user) |
 | **Stats** |  |  |  |  |
@@ -71,12 +76,21 @@ You can login with a registered account.
 
 ### Dashboard
 
-If you successfully logged in with you user, you get directly sendt to your dashboard.\
+If you successfully logged in with you user, you get directly go to your dashboard.\
 Here you get a List with all your shortened urls. (if you created them while you where loggedin...).
 
-Here you can delete the urls permanently too.
+Here you can delete the urls permanently too or click on the eye button to access the statistics.
+And access the Settings.
 
 ![login](./.img/9.png)
+
+### Settings
+
+In the settings, you can change the password of the currently loggedin User.
+
+You can delete your account or all your urls.
+
+![login](./.img/15.png)
 
 ### API
 
@@ -114,3 +128,11 @@ Here i used POST-MAN.
 **Get current loggedin users urls**
 
 ![login](./.img/14.png)
+
+
+
+
+
+---
+
+You can do much more with the API, just read the table above.

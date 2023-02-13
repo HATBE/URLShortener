@@ -8,7 +8,9 @@ import { Emiters } from '../emitters/emitters';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiEndpoint = `${environment.apiEndpoint}/auth/`;
+  private authApiEndpoint = `${environment.apiEndpoint}/auth/`;
+  private usersApiEndpoint = `${environment.apiEndpoint}/users/`;
+
   private authHeader = new HttpHeaders({'Authorization': `Bearer ${localStorage.getItem('authtoken')}`});
 
   constructor(
@@ -36,15 +38,15 @@ export class AuthService {
   }
 
   getLoggedInUser() {
-    return this.http.get<{status: boolean, data: String}>(this.apiEndpoint + 'user', {headers: this.authHeader});
+    return this.http.get<{status: boolean, data: String}>(this.usersApiEndpoint, {headers: this.authHeader});
   }
 
   login(username: string, password: string) {
-    return this.http.post(this.apiEndpoint + 'login', {username: username, password: password}, {});
+    return this.http.post(this.authApiEndpoint + 'login', {username: username, password: password}, {});
   }
 
   register(username: string, password: string) {
-    return this.http.post(this.apiEndpoint + 'register', {username: username, password: password}, {});
+    return this.http.post(this.authApiEndpoint + 'register', {username: username, password: password}, {});
   }
 
   logout() {
