@@ -40,8 +40,7 @@ class User {
     }
 
     async delete() {
-        // delete user, all urls and trackers from user
-        await this.deleteAllUrls();
+        // delete user
         await UserModel.deleteOne({_id: this.getRawId()});
         return true;
     }

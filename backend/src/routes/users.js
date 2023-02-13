@@ -18,6 +18,7 @@ router.get('/', mustAuthorize, async (req, res) => {
 
 // delete logged in user
 router.delete('/', mustAuthorize, async (req, res) => {
+    await Url.deleteAllUrlsFromUser(req.user.getId());
     await req.user.delete();
     res.status(200).json({
         status: true, 
