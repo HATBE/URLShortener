@@ -1,11 +1,13 @@
 const UserModel = require('../models/user');
 const UrlModel = require('../models/url');
-const Url = require('./Url');
+const bcrypt = require('bcryptjs');
+const Validate = require('../classes/Validate');
 const jwt = require('jsonwebtoken');
 
 class User {
     #id;
     #username;
+    #password;
 
     static async getCount() {
         return await UserModel.count();
@@ -19,8 +21,14 @@ class User {
 
     constructor(user) {
         user = user.toJSON();
+
         this.#id = user._id;
         this.#username = user.username;
+        this.#password = user.password;
+    }
+
+    getRawId() {
+        return this.#id;
     }
 
     getId() {
@@ -31,20 +39,33 @@ class User {
         return this.#username;
     }
 
-    async getUrls() { 
-        let urls = await UrlModel.find({userid: this.getId()});
-        
-        let date = Math.round(Date.now() / 1000);
-        urls.sort(url => {if(url.date < date) return -1});
+    async delete() {
+        // delete user, all urls and trackers from user
+        await this.deleteAllUrls();
+        await UserModel.deleteOne({_id: this.getRawId()});
+        return true;
+    }
 
-        let newUrls = [];
+    async changePassword(oldpassword, newpassword) {
+        // check if old password matches
+        if(!await this.comparePasswords(oldpassword)) {
+            return {status: false, reason: "Old password wrong"};
+        }
 
-        urls.forEach(url => {
-            let a = Url.getFromId(url._id);
-            newUrls.push(a.getAsObject());
-        })
+        if(!Validate.password(newpassword)) {
+            return {status: false, reason: "Password not in range"};
+        }
 
-        return newUrls;
+        const salt = await bcrypt.genSalt(10); // generate salt
+        const hashedPassword = await bcrypt.hash(newpassword, salt); // hash password
+
+        const update = await UserModel.findByIdAndUpdate(this.getRawId(), {
+            password: hashedPassword
+        });
+
+        const result = await update.save(); // save user
+
+        return {status: true};
     }
 
     getAsObject() {
@@ -52,6 +73,13 @@ class User {
             id: this.getId(),
             username: this.getUsername()
         }
+    }
+
+    async comparePasswords(password) {
+        if(!await bcrypt.compare(password, this.#password)) {
+            return false
+        }
+        return true;
     }
 }
 

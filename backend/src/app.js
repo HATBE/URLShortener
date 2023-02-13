@@ -44,5 +44,5 @@ app.all('*', (req, res) => {                    // Default route
 });
 
 app.listen(process.env.PORT || 3000, () => {
-  console.log('started');
+  console.log('[INIT] started');
 })

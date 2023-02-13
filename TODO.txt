@@ -1,2 +1,0 @@
-- delete user 
-- user settings / change user detail / change password

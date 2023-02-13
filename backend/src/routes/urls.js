@@ -4,7 +4,6 @@ const router = express.Router();
 const UrlModel = require('../models/url');
 
 const Url = require('../classes/Url');
-const User = require('../classes/User');
 const UrlTracker = require('../classes/UrlTracker');
 const Validate = require("../classes/Validate");
 
@@ -117,7 +116,7 @@ router.delete("/:id", mustAuthorize, async (req, res) => {
         return res.status(400).json({status: false, message: "id is not in a valid format"});
     }
 
-    const del = await Url.delete(req.params.id, req.user);
+    const del = await Url.deleteForUser(req.params.id, req.user);
 
     if(!del.state) {
         return res.status(400).json({status: false, message: del.reason});

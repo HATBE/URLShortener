@@ -55,7 +55,7 @@ class Url {
         return new Url(save);
     }
 
-    static async delete(shorturl, user) {
+    static async deleteForUser(shorturl, user) {
         // check if url exists
         if(!await UrlModel.exists({shorturl: shorturl})) {
             return {state: false, reason: "url was not found"}
@@ -67,10 +67,19 @@ class Url {
         }
 
         const url = await Url.getFromShorturl(shorturl);
-        const tracker = await UrlTrackerModel.deleteMany({url: url.getRawId()}); // delete all trackers
-        const result = await UrlModel.deleteOne({shorturl: shorturl}); // delete url
+        
+        url.delete();
 
         return {state: true, message: 'success'}
+    }
+
+    static async deleteAllUrlsFromUser(userid) {
+        // delete all urls + tracker from a user
+        const urls = await UrlModel.find({userid: userid});
+        urls.forEach(async url => {
+            const cUrl = await Url.getFromId(url._id);
+            cUrl.delete();
+        });
     }
 
     constructor(url) {
@@ -103,14 +112,21 @@ class Url {
         return this.#date;
     }
 
-    getUser() {
-        return User.getFromId(this.#userid);
+    async getUser() {
+        return await User.getFromId(this.#userid);
     }
 
     async getStats() {
         return {
             clicked: await UrlTracker.getCountFromUrl(this.getRawId())
         }
+    }
+
+    async delete() {
+        await UrlTrackerModel.deleteMany({url: this.getRawId()}); // delete all trackers
+        await UrlModel.deleteOne({_id: this.getRawId()}); // delete url
+
+        return true;
     }
 
     async getAsObject() {
