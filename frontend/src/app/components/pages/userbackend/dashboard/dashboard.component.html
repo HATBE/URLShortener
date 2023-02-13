@@ -2,58 +2,12 @@
 
   <h3>Dashboard</h3>
 
-  <div class="text-light">
-    <div class="py-4 w-100 d-flex justify-content-center" *ngIf="isLoading">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
-    <div *ngIf="!isLoading">
-      <h4 class="text-light">Your URLs</h4>
-      <div class="w-100 alert alert-info" *ngIf="myUrls != null && myUrls.length <= 0">
-        <span class="fw-bold">Info!</span> Currently you don't have any URLs
-      </div>
-      <table class="overflow-x-scroll table table-dark table-striped" *ngIf="myUrls != null && myUrls.length > 0">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Url</th>
-            <th></th>
-            <th>ShortUrl</th>
-            <th>Date</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let url of myUrls; let i = index">
-            <th>
-              {{i + 1}}
-            </th>
-            <td>
-              <a target="_blank" class="link-light text-decoration-none" href="{{url.url}}">{{url.url}}</a>
-            </td>
-            <td>
-              <fa-icon class="text-primary" [icon]="faArrowAltCircleRight"></fa-icon>
-            </td>
-            <td>
-              <a target="_blank" class="link-light text-decoration-none" href="{{localUrl}}{{url.shorturl}}">{{localUrl}}{{url.shorturl}}</a>
-            </td>
-            <td>
-              {{url.date}}
-            </td>
-            <td class="d-flex justify-content-end">
-              <div routerLink="/urlstats/{{url.shorturl}}" class="d-flex justify-content-end">
-                <button class="mx-1 btn btn-primary"><fa-icon [icon]="faEye"></fa-icon></button>
-              </div>
-              <div (click)="deleteUrl(url.shorturl)" class="d-flex justify-content-end">
-                <button class="mx-1 btn btn-danger"><fa-icon [icon]="faTrash"></fa-icon></button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div>
+    <button routerLink="/settings" class="btn btn-large btn-primary">
+      <fa-icon [icon]="faGear"></fa-icon> Settings
+    </button>
   </div>
+  <app-your-urls></app-your-urls>
 </div>
 
 <div *ngIf="!loggedIn" class="d-flex justify-content-center">
