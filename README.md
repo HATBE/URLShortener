@@ -121,10 +121,6 @@ Here i used POST-MAN.
 
 ![login](./.img/11.png)
 
-**Logout**
-
-![login](./.img/12.png)
-
 **Get current loggedin users urls**
 
 ![login](./.img/14.png)
