@@ -15,7 +15,7 @@ class Auth {
 
         // compare passwords (submited and from db), if they dont match, return
         if(!await bcrypt.compare(password, user.password)) {
-            console.warn(`[AUTH] user "${username}" failed to login. reason: wrong password!`); // write failed login to log
+            console.warn(`[AUTH] The user "${username}" failed to login. reason: wrong password!`); // write failed login to log
             return {status: false};
         }
         
@@ -28,15 +28,15 @@ class Auth {
             }
         ); 
 
-        console.log(`[AUTH] user "${username}" loggedin successfully.`); // write successful login to log
+        console.log(`[AUTH] The user "${username}" loggedin successfully.`); // write successful login to log
 
-        return {status: true, token: signedToken};
+        return {status: true, token: signedToken, user: user};
     }
 
     static async register(username, password) {
         // if user already exists, return
         if(await UserModel.exists({username: username})){
-            return {status: false, reason: "Username already exists"};
+            return {status: false, reason: "This username is already taken!"};
         }
 
         const salt = await bcrypt.genSalt(10); // generate salt

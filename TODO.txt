@@ -1,0 +1,7 @@
+- admin dashboard
+- role sytem
+- role based auth
+- url stats charts (when was pressed)
+- url stats table of accessed ips (if checkbox tracking (premium feature?))
+- pagination for dashboard urls list
+- big refactor

@@ -57,7 +57,6 @@ router.get('/my', mustAuthorize, async (req, res) => {
 
 // get url stats  with id
 router.get("/:id/stats", mustAuthorize, async (req, res) => {
-    // TODO:
     // check if id is right
     if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
         return res.status(400).json({status: false, message: "id is not in a valid format"});
@@ -78,7 +77,8 @@ router.get("/:id/stats", mustAuthorize, async (req, res) => {
         status: true, 
         message: "stats of the url",
         data: {
-            stats: await url.getStats()
+            stats: await url.getStats(),
+            url: await url.getAsObject()
         }
     });
 });

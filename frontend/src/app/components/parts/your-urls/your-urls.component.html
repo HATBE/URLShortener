@@ -1,5 +1,5 @@
 
-<div class="border mb-2 rounded overflow-hidden">
+<div class="border rounded overflow-hidden">
   <h4 class="text-light border-bottom p-3 mb-0 bg-gradient-1">Your URLs</h4>
 
   <div class="py-4 w-100 d-flex justify-content-center" *ngIf="isLoading">
@@ -8,11 +8,11 @@
     </div>
   </div>
 
-  <div class="m-3" *ngIf="!isLoading">
-    <div class="w-100 " *ngIf="myUrls != null && myUrls.length <= 0">
-      Currently you don't have any URLs! <button class="btn btn-outline-primary" routerLink="/">Create one</button>
+  <div class="overflow-x-scroll hide-scrollbar" *ngIf="!isLoading">
+    <div class="w-100 p-3 " *ngIf="myUrls != null && myUrls.length <= 0">
+      Currently you don't have any URLs! <button class="ms-3 btn btn-outline-primary" routerLink="/">Create one</button>
     </div>
-    <table class="overflow-x-scroll table table-dark table-striped" *ngIf="myUrls != null && myUrls.length > 0">
+    <table class="table table-dark table-striped m-0" *ngIf="myUrls != null && myUrls.length > 0">
       <thead>
         <tr>
           <th>#</th>
@@ -40,7 +40,7 @@
           <td>
             {{url.date}}
           </td>
-          <td class="d-flex justify-content-end">
+          <td class="h-100 d-flex justify-content-end">
             <div routerLink="/urlstats/{{url.shorturl}}" class="d-flex justify-content-end">
               <button class="mx-1 btn btn-primary"><fa-icon [icon]="faEye"></fa-icon></button>
             </div>

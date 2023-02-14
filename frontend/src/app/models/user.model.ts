@@ -1,3 +1,5 @@
 export interface User {
-  username: string
+  password: string,
+  username: string,
+  isAdmin: boolean
 }

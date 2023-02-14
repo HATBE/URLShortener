@@ -8,6 +8,7 @@ class User {
     #id;
     #username;
     #password;
+    #isAdmin;
 
     static async getCount() {
         return await UserModel.count();
@@ -25,6 +26,7 @@ class User {
         this.#id = user._id;
         this.#username = user.username;
         this.#password = user.password;
+        this.#isAdmin = user.isAdmin;
     }
 
     getRawId() {
@@ -37,6 +39,10 @@ class User {
 
     getUsername() {
         return this.#username;
+    }
+
+    isAdmin() {
+        return this.#isAdmin;
     }
 
     async delete() {
@@ -70,7 +76,8 @@ class User {
     getAsObject() {
         return {
             id: this.getId(),
-            username: this.getUsername()
+            username: this.getUsername(),
+            isAdmin: this.isAdmin()
         }
     }
 

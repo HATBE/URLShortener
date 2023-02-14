@@ -1,4 +1,24 @@
-<h3>Url Stats</h3>
-<div>
-  clicked: {{data}}
+<h3>Stats</h3>
+
+<div class="w-100 w-md-50 border rounded overflow-hidden">
+  <h4 class="text-light border-bottom p-3 mb-0 bg-gradient-1">{{urlTitle}}</h4>
+  <div class="p-3">
+    <div class="py-4 w-100 d-flex justify-content-center" *ngIf="isLoading">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div *ngIf="!error && !isLoading">
+      Url: {{data.url.url}} <br>
+      Shorturl: {{data.url.shorturl}} <br>
+      Date: {{data.url.date}} <br>
+      <hr>
+      Clicked: <div class="badge bg-primary">{{data.stats.clicked}}</div>
+    </div>
+
+    <div *ngIf="error && !isLoading">
+      {{error}}
+    </div>
+  </div>
 </div>

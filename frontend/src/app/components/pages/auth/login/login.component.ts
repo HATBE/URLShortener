@@ -68,11 +68,12 @@ export class LoginComponent implements OnInit {
 
   successLogin(data: any) {
     localStorage.setItem('authtoken', data.data.token); // save token in localstorage
+    localStorage.setItem('isAdmin', data.data.isAdmin); // save if user is admin (no worries, this will not affect security (will not be sent to server for authorization, just for frontend))
 
     setTimeout(() => {
       Emiters.authEmitter.emit(true);
       this.isLoading = false;
-      this.router.navigate(['/']);
+      window.location.href = "/dashboard"; // refresh pages (sometimes a bug occurres that the token is not in the localstorage otherwise)
     }, 500); // 0.5 sec timeout (until browser saved token)
   }
 

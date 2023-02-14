@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Validate = require('../classes/Validate');
 const Auth = require('../classes/Auth');
+const User = require('../classes/User');
 
 // register
 router.post('/register', async (req, res) => {
@@ -52,11 +53,14 @@ router.post('/login', async (req, res) => {
         return res.status(401).json({status: false, message: "Invalid credentials"});
     }
 
+    const user = new User(login.user);
+
     res.status(200).json({
         status: true, 
         message: "successfully loggedin",
         data: {
-            token: login.token
+            token: login.token,
+            isAdmin: user.isAdmin()
         }, 
     });
 });
