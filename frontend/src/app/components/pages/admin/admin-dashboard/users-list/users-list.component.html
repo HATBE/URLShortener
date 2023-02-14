@@ -1,0 +1,40 @@
+<div class="w-100 w-md-50 border rounded overflow-hidden">
+  <h4 class="text-light border-bottom p-3 mb-0 bg-gradient-1">User list</h4>
+
+  <div class="py-4 w-100 d-flex justify-content-center" *ngIf="isLoading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div class="overflow-x-scroll hide-scrollbar" *ngIf="!isLoading">
+    <table class="table table-dark table-striped m-0" *ngIf="userList != null && userList.length > 0">
+      <thead class="border-bottom border-secondary">
+        <tr>
+          <th>Username</th>
+          <th>Group</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of userList; let i = index">
+          <td>
+            {{user.username}}
+          </td>
+          <td>
+            {{user.isAdmin ? "Admin" : "User"}}
+          </td>
+          <td class="h-100 d-flex justify-content-end">
+            <div class="d-flex justify-content-end">
+              <button class="mx-1 btn btn-primary"><fa-icon [icon]="faEye"></fa-icon></button>
+            </div>
+            <div  class="d-flex justify-content-end">
+              <button class="mx-1 btn btn-danger"><fa-icon [icon]="faTrash"></fa-icon></button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

@@ -45,7 +45,8 @@ class Auth {
         // create new user (write it to database)
         const user = new UserModel({
             username: username,
-            password: hashedPassword
+            password: hashedPassword,
+            isAdmin: false
         });
 
         const result = await user.save(); // save user

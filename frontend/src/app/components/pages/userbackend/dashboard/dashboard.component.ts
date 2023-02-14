@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { faGear } from '@fortawesome/free-solid-svg-icons';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,8 +10,13 @@ import { faGear } from '@fortawesome/free-solid-svg-icons';
 })
 export class DashboardComponent implements OnInit {
   faGear = faGear;
+  loggedInUserUsername: string = "";
 
-  constructor() { }
+  constructor(
+    private userService: UserService,
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loggedInUserUsername = this.userService.getUsername();
+  }
 }

@@ -2,7 +2,6 @@ const UserModel = require('../models/user');
 const UrlModel = require('../models/url');
 const bcrypt = require('bcryptjs');
 const Validate = require('../classes/Validate');
-const jwt = require('jsonwebtoken');
 
 class User {
     #id;
@@ -18,6 +17,18 @@ class User {
         const user = await UserModel.findOne({_id: id});
         if(!user) return false;
         return new User(user);
+    }
+
+    static async getAll() {
+        let finalUsers = [];
+        const users = await UserModel.find();
+        if(!users) return false;
+        users.forEach(user => {
+            finalUsers.push(new User(user).getAsObject());
+        });
+        console.log(finalUsers)
+        finalUsers.sort(user => {if(user.isAdmin)  return -1}); // list admin at the beginning
+        return finalUsers;
     }
 
     constructor(user) {

@@ -5,6 +5,19 @@ const Validate = require('../classes/Validate');
 const Auth = require('../classes/Auth');
 const User = require('../classes/User');
 
+const mustAuthorize = require('../middleware/mustAuthorize');
+
+// get loggedin user data
+router.get('/loggedInUser', mustAuthorize, async (req, res) => {
+    res.status(200).json({
+        status: true, 
+        message: "userdata received",
+        data: {
+            user: req.user.getAsObject()
+        }
+    });
+});
+
 // register
 router.post('/register', async (req, res) => {
     // check if username and password was provided
@@ -60,7 +73,8 @@ router.post('/login', async (req, res) => {
         message: "successfully loggedin",
         data: {
             token: login.token,
-            isAdmin: user.isAdmin()
+            isAdmin: user.isAdmin(),
+            username: user.getUsername()
         }, 
     });
 });

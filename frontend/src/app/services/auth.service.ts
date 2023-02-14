@@ -8,8 +8,7 @@ import { Emiters } from '../emitters/emitters';
   providedIn: 'root'
 })
 export class AuthService {
-  private authApiEndpoint = `${environment.apiEndpoint}/auth/`;
-  private usersApiEndpoint = `${environment.apiEndpoint}/users/`;
+  private apiEndpoint = `${environment.apiEndpoint}/auth/`;
 
   private authHeader = new HttpHeaders({'Authorization': `Bearer ${localStorage.getItem('authtoken')}`});
 
@@ -21,7 +20,7 @@ export class AuthService {
   isLoggedIn() {
     // if authtoken isset in localstorage, login == true
     // every x minutes its checked if this token exists / if this token is valid, if not, remove from localstorage...
-    if(localStorage.getItem('authtoken')) {
+    if(localStorage.getItem('authtoken') !== null) {
       return true;
     }
     return false;
@@ -38,15 +37,15 @@ export class AuthService {
   }
 
   getLoggedInUser() {
-    return this.http.get<{status: boolean, data: String}>(this.usersApiEndpoint, {headers: this.authHeader});
+    return this.http.get<{status: boolean, data: String}>(this.apiEndpoint, {headers: this.authHeader});
   }
 
   login(username: string, password: string) {
-    return this.http.post(this.authApiEndpoint + 'login', {username: username, password: password}, {});
+    return this.http.post(this.apiEndpoint + 'login', {username: username, password: password}, {});
   }
 
   register(username: string, password: string) {
-    return this.http.post(this.authApiEndpoint + 'register', {username: username, password: password}, {});
+    return this.http.post(this.apiEndpoint + 'register', {username: username, password: password}, {});
   }
 
   logout() {

@@ -19,8 +19,10 @@ import { FooterComponent } from './components/parts/footer/footer.component';
 import { StatsComponent } from './components/parts/stats/stats.component';
 import { UrlstatsComponent } from './components/pages/userbackend/urlstats/urlstats.component';
 import { SettingsComponent } from './components/pages/userbackend/settings/settings.component';
-import { YourUrlsComponent } from './components/parts/your-urls/your-urls.component';
+import { YourUrlsComponent } from './components/pages/userbackend/dashboard/your-urls/your-urls.component';
 import { ChangePasswordComponent } from './components/parts/change-password/change-password.component';
+import { AdminDashboardComponent } from './components/pages/admin/admin-dashboard/admin-dashboard.component';
+import { UsersListComponent } from './components/pages/admin/admin-dashboard/users-list/users-list.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { ChangePasswordComponent } from './components/parts/change-password/chan
     UrlstatsComponent,
     SettingsComponent,
     YourUrlsComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    AdminDashboardComponent,
+    UsersListComponent
   ],
   imports: [
     BrowserModule,

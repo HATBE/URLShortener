@@ -30,24 +30,24 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  // check if user is already loggedin
-  if(this.authService.isLoggedIn()) {
-    this.loggedIn = true;
-    this.router.navigate(['/dashboard']);
-    return;
-  };
+    // check if user is already loggedin
+    if(this.authService.isLoggedIn()) {
+      this.loggedIn = true;
+      this.router.navigate(['/dashboard']);
+      return;
+    };
 
-  if(window.location.search) {
-    const param = new URLSearchParams(window.location.search);
+    if(window.location.search) {
+      const param = new URLSearchParams(window.location.search);
 
-    if(param.has('freshregisteras')) {
-      this.form.patchValue({username: param.get("freshregisteras")});
-      this.freshLoggedInName = param.get("freshregisteras");
+      if(param.has('freshregisteras')) {
+        this.form.patchValue({username: param.get("freshregisteras")});
+        this.freshLoggedInName = param.get("freshregisteras");
 
-      this.renderer.selectRootElement('#passwordInput').focus(); // select password field if user freshly registred
+        this.renderer.selectRootElement('#passwordInput').focus(); // select password field if user freshly registred
+      }
     }
   }
-}
 
   onSubmitLogin() {
     this.isLoading = true;
@@ -69,11 +69,16 @@ export class LoginComponent implements OnInit {
   successLogin(data: any) {
     localStorage.setItem('authtoken', data.data.token); // save token in localstorage
     localStorage.setItem('isAdmin', data.data.isAdmin); // save if user is admin (no worries, this will not affect security (will not be sent to server for authorization, just for frontend))
+    localStorage.setItem('username', data.data.username);
 
     setTimeout(() => {
       Emiters.authEmitter.emit(true);
       this.isLoading = false;
-      window.location.href = "/dashboard"; // refresh pages (sometimes a bug occurres that the token is not in the localstorage otherwise)
+      if(data.data.isAdmin) {
+        window.location.href = "/admin/dashboard";
+      } else {
+        window.location.href = "/dashboard";
+      }
     }, 500); // 0.5 sec timeout (until browser saved token)
   }
 

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AdminDashboardComponent } from './components/pages/admin/admin-dashboard/admin-dashboard.component';
 import { LoginComponent } from './components/pages/auth/login/login.component';
 import { RegisterComponent } from './components/pages/auth/register/register.component';
 import { IndexComponent } from './components/pages/index/index.component';
@@ -7,6 +8,7 @@ import { RedirectComponent } from './components/pages/redirect/redirect.componen
 import { DashboardComponent } from './components/pages/userbackend/dashboard/dashboard.component';
 import { SettingsComponent } from './components/pages/userbackend/settings/settings.component';
 import { UrlstatsComponent } from './components/pages/userbackend/urlstats/urlstats.component';
+import { AdminGuard } from './guards/admin.guard';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -16,6 +18,7 @@ const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent, title: "Dashboard", canActivate: [AuthGuard]},
   {path: 'urlstats/:id', component: UrlstatsComponent, title: "Stats", canActivate: [AuthGuard]},
   {path: 'settings', component: SettingsComponent, title: "Settings", canActivate: [AuthGuard]},
+  {path: 'admin/dashboard', component: AdminDashboardComponent, title: "Admin Dashboard", canActivate: [AdminGuard]},
   {path: ':id', component: RedirectComponent, title: "Redirect..."},
   {path:'**', component: IndexComponent}
 ];

@@ -2,16 +2,19 @@ const express = require("express");
 const router = express.Router();
 
 const Url = require('../classes/Url');
+const User = require('../classes/User');
 
 const mustAuthorize = require('../middleware/mustAuthorize');
+const onlyAdmin = require('../middleware/onlyAdmin');
 
-// get loggedin user data
-router.get('/', mustAuthorize, async (req, res) => {
+// get a list of all users
+router.get('/', mustAuthorize, onlyAdmin, async (req, res) => {
+    const users = await User.getAll();
     res.status(200).json({
         status: true, 
-        message: "userdata received",
+        message: "users",
         data: {
-            user: req.user.getAsObject()
+            users: users
         }
     });
 });

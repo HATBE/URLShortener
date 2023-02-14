@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { faGauge, faRightFromBracket, faRightToBracket, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faGauge, faGear, faRightFromBracket, faRightToBracket, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthService } from 'src/app/services/auth.service';
+import { UserService } from 'src/app/services/user.service';
 import { Emiters } from '../../../emitters/emitters';
 
 @Component({
@@ -14,12 +15,16 @@ export class HeaderComponent implements OnInit {
   faRightToBracket = faRightToBracket;
   faUserPlus = faUserPlus;
   faGauge = faGauge;
+  faGear = faGear;
 
   loggedIn: boolean = false;
+  isAdmin: boolean = false;
 
   constructor(
     private authService: AuthService,
+    private userService: UserService,
   ) {
+    this.isAdmin = this.userService.isAdmin();
     this.authService.getLoggedInUser().subscribe((res) => {
       this.loggedIn = true;
     });

@@ -1,3 +1,10 @@
 a.active {
   color: var(--bs-primary) !important;
 }
+a.high {
+  color: #f73434 !important;
+}
+
+a.high.active {
+  color: #a32323 !important;
+}

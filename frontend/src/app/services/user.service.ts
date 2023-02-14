@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from 'src/environments/environment';
-import { Router } from '@angular/router';
+import { AuthService } from './auth.service';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +13,35 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private authService: AuthService
   ) { }
 
   delete() {
     return this.http.delete(this.apiEndpoint, {headers: this.authHeader});
+  }
+
+  getUsers() {
+    return this.http.get<{message: string, data: {users: [User]}}>(this.apiEndpoint, {headers: this.authHeader});
+  }
+
+  isAdmin(): boolean {
+    if(!this.authService.isLoggedIn()) {
+      return false;
+    }
+    if(localStorage.getItem('isAdmin') !== null) {
+      return localStorage.getItem('isAdmin') === 'true' ? true : false;
+    }
+    return false;
+  }
+
+  getUsername(): string {
+    if(!this.authService.isLoggedIn()) {
+      return "null";
+    }
+    if(localStorage.getItem('username') !== null) {
+      return `${localStorage.getItem('username')}`;
+    }
+    return "null";
   }
 
   deleteUrls() {

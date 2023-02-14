@@ -12,6 +12,7 @@ export class HeaderButtonComponent implements OnInit {
   @Input() link: string | null = "";
   @Input() noActive: boolean = false;
   @Input() icon: IconDefinition  = faIcons;
+  @Input() color: boolean = false;
 
   active: string = 'active';
 
