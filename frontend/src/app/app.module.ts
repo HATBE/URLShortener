@@ -20,9 +20,13 @@ import { StatsComponent } from './components/parts/stats/stats.component';
 import { UrlstatsComponent } from './components/pages/userbackend/urlstats/urlstats.component';
 import { SettingsComponent } from './components/pages/userbackend/settings/settings.component';
 import { YourUrlsComponent } from './components/pages/userbackend/dashboard/your-urls/your-urls.component';
-import { ChangePasswordComponent } from './components/parts/change-password/change-password.component';
+import { ChangePasswordComponent } from './components/pages/userbackend/settings/change-password/change-password.component';
 import { AdminDashboardComponent } from './components/pages/admin/admin-dashboard/admin-dashboard.component';
 import { UsersListComponent } from './components/pages/admin/admin-dashboard/users-list/users-list.component';
+import { DangerSettingsComponent } from './components/pages/userbackend/settings/danger-settings/danger-settings.component';
+import { UrlDetailComponent } from './components/pages/userbackend/urlstats/url-detail/url-detail.component';
+import { UrlAccessListComponent } from './components/pages/userbackend/urlstats/url-access-list/url-access-list.component';
+import { UrlChartComponent } from './components/pages/userbackend/urlstats/url-chart/url-chart.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +46,11 @@ import { UsersListComponent } from './components/pages/admin/admin-dashboard/use
     YourUrlsComponent,
     ChangePasswordComponent,
     AdminDashboardComponent,
-    UsersListComponent
+    UsersListComponent,
+    DangerSettingsComponent,
+    UrlDetailComponent,
+    UrlAccessListComponent,
+    UrlChartComponent,
   ],
   imports: [
     BrowserModule,

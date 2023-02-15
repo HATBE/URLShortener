@@ -33,7 +33,7 @@ router.post("/", async (req, res) => {
     });
 });
 
-// get all posts by user
+// get all urls by user
 router.get('/my', mustAuthorize, async (req, res) => {
     let urls = await UrlModel.find({userid: req.user.getId()});
         
@@ -83,8 +83,36 @@ router.get("/:id/stats", mustAuthorize, async (req, res) => {
     });
 });
 
+// get url accesslist with id
+router.get("/:id/accesslist", mustAuthorize, async (req, res) => {
+    // check if id is right
+    if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
+        return res.status(400).json({status: false, message: "id is not in a valid format"});
+    }
+   
+    const url = await Url.getFromShorturl(req.params.id);
 
-// get post with id
+    if(!url) {
+        return res.status(404).json({status: false, message: "url not found"});
+    }
+
+    // check if user is the owner of this url
+    if((await url.getUser()).getId() != req.user.getId()) {
+        return res.status(401).json({status: false, message: "Unauthorized"});
+    }
+
+    return res.status(200).json({
+        status: true, 
+        message: "stats of the url",
+        data: {
+            accesslist: await url.getTrackers(),
+            url: await url.getAsObject()
+        }
+    });
+});
+
+
+// get urls  with id
 router.get("/:id", async (req, res) => {
     // check if id is right
     if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {

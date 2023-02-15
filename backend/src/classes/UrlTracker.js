@@ -27,11 +27,12 @@ class UrlTracker {
     }
 
     constructor(urlTracker) {
-        urlTracker = url.toJSON();
+        urlTracker = urlTracker.toJSON();
 
-        this.#id = JSON.stringify(url._id).replace(/['"]+/g, ''); // mongose ids are objects :(
-        this.#url = url.url;
-        this.#date = url.date;
+        this.#id = JSON.stringify(urlTracker._id).replace(/['"]+/g, ''); // mongose ids are objects :(
+        this.#url = urlTracker.url;
+        this.#date = urlTracker.date;
+        this.#ip = urlTracker.ip;
     }
 
     getId() {
@@ -51,7 +52,6 @@ class UrlTracker {
     }
 
     async getAsObject() {
-        const user = await this.getUser();
         return {
             id: this.getId(),
             url: this.getUrl(),

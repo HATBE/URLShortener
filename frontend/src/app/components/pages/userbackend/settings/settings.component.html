@@ -1,33 +1,6 @@
-<!-- MODAL START -->
-<div class="user-select-none modal d-block" style="background-color: rgba(0,0,0, 0.7);" *ngIf="modalData.state == 1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content bg-dark border-light">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5">{{modalData.title}}</h1>
-      </div>
-      <div class="modal-body text-light">
-        {{modalData.text}}
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" (click)="onConfirmModal()">{{modalData.confirmBtnText}}</button>
-        <button type="button" class="btn btn-secondary" (click)="onModalClose()">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- MODAL END -->
-
 <h3>Settings</h3>
 
-<app-change-password></app-change-password>
-
-<div class="w-100 w-md-50 border rounded overflow-hidden">
-  <h4 class="text-light border-bottom p-3 mb-0 bg-gradient-3">Danger Settings</h4>
-  <div class="m-3">
-    <div class="d-flex flex-column align-items-start">
-      <button (click)="onDeleteAccount()" style="width: 200px;" class="mb-2 btn btn-danger">Delete Account</button>
-      <button (click)="onDeleteAllUrls()" style="width: 200px;" class="mb-2 btn btn-danger">Delete all my URLs</button>
-      <button (click)="onLogout()" style="width: 200px;" class="btn btn-warning">Logout</button>
-    </div>
-  </div>
+<div class="row gx-2">
+  <app-change-password class="p-2 col-12 col-xl-6"></app-change-password>
+  <app-danger-settings class="p-2 col-12 col-xl-6"></app-danger-settings>
 </div>
