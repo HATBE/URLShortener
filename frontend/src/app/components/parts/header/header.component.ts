@@ -18,13 +18,10 @@ export class HeaderComponent implements OnInit {
   faGear = faGear;
 
   loggedIn: boolean = false;
-  isAdmin: boolean = false;
 
   constructor(
     private authService: AuthService,
-    private userService: UserService,
   ) {
-    this.isAdmin = this.userService.isAdmin();
     this.authService.getLoggedInUser().subscribe((res) => {
       this.loggedIn = true;
     });

@@ -26,7 +26,6 @@ class User {
         users.forEach(user => {
             finalUsers.push(new User(user).getAsObject());
         });
-        console.log(finalUsers)
         finalUsers.sort(user => {if(user.isAdmin)  return -1}); // list admin at the beginning
         return finalUsers;
     }

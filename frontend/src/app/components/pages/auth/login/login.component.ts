@@ -68,8 +68,9 @@ export class LoginComponent implements OnInit {
 
   successLogin(data: any) {
     localStorage.setItem('authtoken', data.data.token); // save token in localstorage
-    localStorage.setItem('isAdmin', data.data.isAdmin); // save if user is admin (no worries, this will not affect security (will not be sent to server for authorization, just for frontend))
-    localStorage.setItem('username', data.data.username);
+    localStorage.setItem('isAdmin', data.data.user.isAdmin); // save if user is admin (no worries, this will not affect security (will not be sent to server for authorization, just for frontend))
+    localStorage.setItem('username', data.data.user.username);
+    localStorage.setItem('userid', data.data.user.id);
 
     setTimeout(() => {
       Emiters.authEmitter.emit(true);

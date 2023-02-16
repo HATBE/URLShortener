@@ -8,7 +8,7 @@ const User = require('../classes/User');
 const mustAuthorize = require('../middleware/mustAuthorize');
 
 // get loggedin user data
-router.get('/loggedInUser', mustAuthorize, async (req, res) => {
+router.get('/loggedinuser', mustAuthorize, async (req, res) => {
     res.status(200).json({
         status: true, 
         message: "userdata received",
@@ -22,7 +22,7 @@ router.get('/loggedInUser', mustAuthorize, async (req, res) => {
 router.post('/register', async (req, res) => {
     // check if username and password was provided
     if(!req.body.password || !req.body.username) {
-        return res.status(400).json({status: false, message: "please provide a username and password"});
+        return res.status(400).json({status: false, message: "Please provide a username and password"});
     }
 
     const rUsername = req.body.username;
@@ -30,7 +30,7 @@ router.post('/register', async (req, res) => {
 
     // check if username and pw are in range
     if(!Validate.username(rUsername) || !Validate.password(rPassword)) {
-        return res.status(400).json({status: false, message: "username or password not in range"});
+        return res.status(400).json({status: false, message: "Username or password not in range"});
     }
 
     const register = await Auth.register(rUsername, rPassword);
@@ -43,10 +43,9 @@ router.post('/register', async (req, res) => {
     console.log(`[AUTH] user "${rUsername}" registered successfully.`);
     return res.status(201).json({
         status: true, 
-        message: "successfully, created user", 
+        message: "Successfully, created user", 
         data: {
-            username: register.user.getUsername(),
-            id: register.user.getId()
+            user: register.user.getAsObject()
         }
     });
 });
@@ -73,8 +72,7 @@ router.post('/login', async (req, res) => {
         message: "successfully loggedin",
         data: {
             token: login.token,
-            isAdmin: user.isAdmin(),
-            username: user.getUsername()
+            user: user.getAsObject()
         }, 
     });
 });

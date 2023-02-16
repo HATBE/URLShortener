@@ -15,7 +15,7 @@ class Auth {
 
         // compare passwords (submited and from db), if they dont match, return
         if(!await bcrypt.compare(password, user.password)) {
-            console.warn(`[AUTH] The user "${username}" failed to login. reason: wrong password!`); // write failed login to log
+            console.warn(`[AUTH] The user "${username}" failed to login. Reason: Wrong password!`); // write failed login to log
             return {status: false};
         }
         

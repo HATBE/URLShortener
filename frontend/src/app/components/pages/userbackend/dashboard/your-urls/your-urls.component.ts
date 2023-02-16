@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
 
 import { UrlService } from 'src/app/services/url.service';
 
@@ -15,6 +15,8 @@ import en from 'javascript-time-ago/locale/en'
   styleUrls: ['./your-urls.component.css']
 })
 export class YourUrlsComponent implements OnInit {
+  @Input() newAdd: any | null = null;
+
   myUrls: Url[] | null = null;
   localUrl: string = window.location.origin + '/';
 
@@ -29,10 +31,10 @@ export class YourUrlsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.isLoading = true;
-
     TimeAgo.addDefaultLocale(en)
     const timeAgo = new TimeAgo('en-US');
+
+    this.isLoading = true;
 
     this.urlService.getMyUrls().subscribe(data => {
       const urls = data.data.urls;
@@ -42,6 +44,18 @@ export class YourUrlsComponent implements OnInit {
       this.myUrls = urls;
       this.isLoading = false;
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    TimeAgo.addDefaultLocale(en)
+    const timeAgo = new TimeAgo('en-US');
+
+    if(this.newAdd != null) {
+      this.newAdd.date = timeAgo.format(new Date(this.newAdd.date * 1000));
+      this.myUrls?.unshift(this.newAdd)
+
+      this.myUrls?.sort()
+    }
   }
 
   deleteUrl(shortUrl: string) {

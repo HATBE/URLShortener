@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { Emiters } from '../emitters/emitters';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +38,7 @@ export class AuthService {
   }
 
   getLoggedInUser() {
-    return this.http.get<{status: boolean, data: String}>(this.apiEndpoint, {headers: this.authHeader});
+    return this.http.get<{status: boolean, data: String}>(this.apiEndpoint + "loggedinuser", {headers: this.authHeader});
   }
 
   login(username: string, password: string) {
@@ -45,14 +46,20 @@ export class AuthService {
   }
 
   register(username: string, password: string) {
-    return this.http.post(this.apiEndpoint + 'register', {username: username, password: password}, {});
+    return this.http.post<{data: {message: any, data: {user: User}} | any}>(this.apiEndpoint + 'register', {username: username, password: password}, {});
   }
 
-  logout() {
+  logout(navigate: boolean = true) {
     // if user is logged in: logout, else, do nothing
     if(this.isLoggedIn()) {
       Emiters.authEmitter.emit(false);
       localStorage.removeItem('authtoken');
+      localStorage.removeItem('isAdmin');
+      localStorage.removeItem('username');
+
+      if(navigate) {
+        this.router.navigate(['/login']);
+      }
     }
   }
 
@@ -64,6 +71,5 @@ export class AuthService {
     // if saved token is invalid or some other error occurred, logout (delete auth token)
     this.logout();
     alert('you have been logged out now');
-    this.router.navigate(['/']);
   }
 }

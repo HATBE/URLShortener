@@ -123,14 +123,12 @@ class Url {
     }
 
     async getTrackers() {
-        const trackers = await UrlTrackerModel.find({url: this.getRawId()});
+        const trackers = await UrlTrackerModel.find({url: this.getRawId()}).sort({date: -1});
         const classTrackers = [];
 
         trackers.forEach(async tracker => {
             classTrackers.push(await (new UrlTracker(tracker)).getAsObject())
         });
-
-        console.log(classTrackers)
 
         return classTrackers;
     }

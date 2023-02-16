@@ -60,7 +60,9 @@ h1,h2,h3,h4,h5,h6 {
   border: var(--bs-primary) !important;
   filter: brightness(85%) !important;
 }
-
+.cursor-pointer {
+  cursor: pointer;
+}
 .link-primary:hover, .link-primary:focus {
   color: var(--bs-primary) !important;
   filter: brightness(85%) !important;
@@ -103,4 +105,13 @@ h1,h2,h3,h4,h5,h6 {
 }
 .hide-scrollbar::-webkit-scrollbar{
   display: none;
+}
+th {
+  user-select: none;
+}
+.table th, .table td {
+  vertical-align: middle;
+}
+.table tr:last-child {
+  border-bottom: none;
 }

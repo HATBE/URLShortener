@@ -27,11 +27,15 @@ export class UrlService {
     return this.http.post<{message: any; data: { url: Url} | any}>(this.apiEndpoint, {url: url}, {headers: this.authHeader});
   }
 
-  getStats(id: string | null) {
-    return this.http.get<{message: any; data: {stats: any} | any}>(this.apiEndpoint +"/" + id + "/stats", {headers: this.authHeader});
+  getStats(shorturl: string | null) {
+    return this.http.get<{message: any; data: {stats: any} | any}>(this.apiEndpoint + shorturl + "/stats", {headers: this.authHeader});
   }
 
   delete(shorturl: string) {
     return this.http.delete<{message: any;}>(this.apiEndpoint + shorturl, {headers: this.authHeader});
+  }
+
+  getAccessList(shorturl: string) {
+    return this.http.get<{message: any; data: {acessList: any} | any}>(this.apiEndpoint + shorturl + "/accesslist", {headers: this.authHeader});
   }
 }

@@ -68,21 +68,20 @@ export class DangerSettingsComponent implements OnInit {
   }
 
   onDeleteAllUrls() {
-    this.launchModal('Are you sure?', 'Are you shure you want to delete all your Urls?', 'Yes, delete them', this.modalTypes.url);
+    this.launchModal('Are you sure?', 'Are you sure you want to delete all your Urls?', 'Yes, delete them', this.modalTypes.url);
 
   }
 
   onDeleteAccount() {
-    this.launchModal('Are you sure?', 'Are you shure you want to delete your account?', 'Yes, delete it', this.modalTypes.account);
+    this.launchModal('Are you sure?', 'Are you sure you want to delete your account?', 'Yes, delete it', this.modalTypes.account);
   }
 
   onLogout() {
     this.authService.logout();
-    this.router.navigate(['/login']);
   }
 
   confirmDeleteAccount() {
-      this.userService.delete().subscribe(data => {
+      this.userService.delete(`${localStorage.getItem('userid')}`).subscribe(data => {
         this.authService.logout();
         this.router.navigate(['/login']);
       });

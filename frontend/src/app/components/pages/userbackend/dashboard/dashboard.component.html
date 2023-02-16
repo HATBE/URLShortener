@@ -1,13 +1,24 @@
-<h3>Dashboard</h3>
+<div class="row">
 
-<h4 class="text-white">
-  Welcome <span class="badge bg-gradient-2">{{loggedInUserUsername}}</span>
-</h4>
+  <div class="p-2 col-12">
+    <div class="bg-gradient-1 rounded d-flex justify-content-between align-items-center p-3">
+      <h3 class="m-0 text-light">Dashboard</h3>
+      <h3 class="m-0 text-light fw-lighter">
+        Welcome <span class="fw-bold">{{loggedInUserUsername}}</span>
+      </h3>
+    </div>
+  </div>
 
-<div class="my-3">
-  <button routerLink="/settings" class="btn btn-large btn-primary">
-    <fa-icon [icon]="faGear"></fa-icon> Settings
-  </button>
+  <div class="p-2 col-12">
+    <button routerLink="/settings" class="btn btn-large btn-primary">
+      <fa-icon [icon]="faGear"></fa-icon> Settings
+    </button>
+    <button *ngIf="isAdmin" routerLink="/admin/dashboard" class="ms-2 btn btn-large btn-danger bg-gradient-3">
+      <fa-icon [icon]="faHammer"></fa-icon> Admin
+    </button>
+  </div>
+
+  <app-shortener [border]="true" (addedNewUrl)="onAddedNewUrl($event)" class="p-2 col-12"></app-shortener>
+  <app-your-urls [newAdd]="newAdd" class="p-2 col-12"></app-your-urls>
+
 </div>
-
-<app-your-urls></app-your-urls>

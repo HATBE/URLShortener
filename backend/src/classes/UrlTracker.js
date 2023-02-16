@@ -14,7 +14,7 @@ class UrlTracker {
         const urlTracker = new UrlTrackerModel({
             url: urlId,
             date: Math.round(Date.now() / 1000),
-            ip: ip
+            ip: ip ==='::1' || ip === '127.0.0.1' ? 'localhost' : ip
         });
 
         const save = await urlTracker.save();

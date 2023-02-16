@@ -27,6 +27,8 @@ import { DangerSettingsComponent } from './components/pages/userbackend/settings
 import { UrlDetailComponent } from './components/pages/userbackend/urlstats/url-detail/url-detail.component';
 import { UrlAccessListComponent } from './components/pages/userbackend/urlstats/url-access-list/url-access-list.component';
 import { UrlChartComponent } from './components/pages/userbackend/urlstats/url-chart/url-chart.component';
+import { CreateUserComponent } from './components/pages/admin/admin-dashboard/create-user/create-user.component';
+import { ViewUserComponent } from './components/pages/admin/view-user/view-user.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,8 @@ import { UrlChartComponent } from './components/pages/userbackend/urlstats/url-c
     UrlDetailComponent,
     UrlAccessListComponent,
     UrlChartComponent,
+    CreateUserComponent,
+    ViewUserComponent,
   ],
   imports: [
     BrowserModule,

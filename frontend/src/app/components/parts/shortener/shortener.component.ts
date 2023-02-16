@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { Url } from '../../../models/url.model'
 import { User } from 'src/app/models/user.model';
 import { UrlService } from 'src/app/services/url.service';
@@ -10,6 +10,9 @@ import { faClipboard } from '@fortawesome/free-regular-svg-icons';
   styleUrls: ['./shortener.component.css']
 })
 export class ShortenerComponent implements OnInit {
+  @Output() addedNewUrl = new EventEmitter<Url>();
+  @Input() border: boolean = false
+
   error: string = "";
   info: string = "";
   url: string = ""
@@ -52,7 +55,8 @@ export class ShortenerComponent implements OnInit {
     }
     this.error = '';
 
-    this.urlService.add(this.url).subscribe({
+    this.urlService.add(this.url)
+    .subscribe({
       next: this.successAddingUrl.bind(this),
       error: this.errorAddingUrl.bind(this)
     });
@@ -61,6 +65,7 @@ export class ShortenerComponent implements OnInit {
   successAddingUrl(data: {message: string, data: {url: Url}}) {
     this.shorturl = window.location.origin + '/' + data.data.url.shorturl;
     this.isLoading = false;
+    this.addedNewUrl.emit(data.data.url);
   }
 
   errorAddingUrl(error: {status: string, statusText: string}) {

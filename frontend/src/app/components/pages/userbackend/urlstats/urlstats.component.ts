@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Title } from '@angular/platform-browser';
 
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { UrlService } from 'src/app/services/url.service';
 
 @Component({
@@ -21,6 +21,7 @@ export class UrlstatsComponent implements OnInit {
   constructor(
     private urlService: UrlService,
     private route: ActivatedRoute,
+    private router: Router,
     private title: Title
   ) { }
 
@@ -44,6 +45,13 @@ export class UrlstatsComponent implements OnInit {
   errorLoadingStats(data: any) {
     this.error = data.error.message;
     this.title.setTitle(`Error loading ${this.shorturl}`)
+  }
+
+  onDelete() {
+    this.urlService.delete(`${this.shorturl}`) // send delete request to backend
+    .subscribe(res => {
+      this.router.navigate(['/dashboard']);
+    });
   }
 
 }

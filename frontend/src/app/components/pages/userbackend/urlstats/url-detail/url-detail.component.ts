@@ -2,6 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { UrlService } from 'src/app/services/url.service';
 import { Url } from 'src/app/models/url.model';
 
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en'
+
 @Component({
   selector: 'app-url-detail',
   templateUrl: './url-detail.component.html',
@@ -14,6 +17,8 @@ export class UrlDetailComponent implements OnInit {
   data: any = null;
   isLoading: boolean = false;
   error: string = '';
+
+  urlDate: string = '';
 
   constructor(
     private urlService: UrlService
@@ -28,8 +33,9 @@ export class UrlDetailComponent implements OnInit {
   }
 
   successLoadingStats(data: {data: {stats: {clicked: number}, url: Url}}) {
+    this.urlDate = `${new Date(data.data.url.date * 1000).toLocaleDateString("de-CH", {day: "numeric", month: "numeric", year: "2-digit", hour: "numeric", minute: "numeric"})}`;
+
     this.data = data.data;
-    this.data.urlTitle = `Stats of "${data.data.url.shorturl}"`;
     this.isLoading = false;
   }
 

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from './components/pages/admin/admin-dashboard/admin-dashboard.component';
+import { ViewUserComponent } from './components/pages/admin/view-user/view-user.component';
 import { LoginComponent } from './components/pages/auth/login/login.component';
 import { RegisterComponent } from './components/pages/auth/register/register.component';
 import { IndexComponent } from './components/pages/index/index.component';
@@ -19,6 +20,7 @@ const routes: Routes = [
   {path: 'urlstats/:id', component: UrlstatsComponent, title: "Stats", canActivate: [AuthGuard]},
   {path: 'settings', component: SettingsComponent, title: "Settings", canActivate: [AuthGuard]},
   {path: 'admin/dashboard', component: AdminDashboardComponent, title: "Admin Dashboard", canActivate: [AdminGuard]},
+  {path: 'admin/view-user/:id', component: ViewUserComponent, title: "View User", canActivate: [AdminGuard]},
   {path: ':id', component: RedirectComponent, title: "Redirect..."},
   {path:'**', component: IndexComponent}
 ];

@@ -13,20 +13,20 @@ const mustAuthorize = require('../middleware/mustAuthorize');
 router.post("/", async (req, res) => {
     // check if url is passed in the body
     if(!req.body.url) {
-        return res.status(400).json({status: false, message: "please provide a url"});
+        return res.status(400).json({status: false, message: "Please provide a url!"});
     }
 
     const rUrl = req.body.url;
 
     if(!Validate.url(rUrl)) {
-        return res.status(400).json({status: false, message: "please provide a valid url"});
+        return res.status(400).json({status: false, message: "Please provide a valid url!"});
     }
 
     const myurl = await Url.create(rUrl, req.user);
 
     res.status(200).json({
         status: true, 
-        message: "successfully added a url",
+        message: "Successfully added a url.",
         data: {
             url: await myurl.getAsObject()
         }
@@ -59,18 +59,18 @@ router.get('/my', mustAuthorize, async (req, res) => {
 router.get("/:id/stats", mustAuthorize, async (req, res) => {
     // check if id is right
     if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
-        return res.status(400).json({status: false, message: "id is not in a valid format"});
+        return res.status(400).json({status: false, message: "The id is not in a valid format!"});
     }
    
     const url = await Url.getFromShorturl(req.params.id);
 
     if(!url) {
-        return res.status(404).json({status: false, message: "url not found"});
+        return res.status(404).json({status: false, message: "The url was not found!"});
     }
 
     // check if user is the owner of this url
     if((await url.getUser()).getId() != req.user.getId()) {
-        return res.status(401).json({status: false, message: "Unauthorized"});
+        return res.status(401).json({status: false, message: "You are unauthorized!"});
     }
 
     return res.status(200).json({
@@ -87,23 +87,23 @@ router.get("/:id/stats", mustAuthorize, async (req, res) => {
 router.get("/:id/accesslist", mustAuthorize, async (req, res) => {
     // check if id is right
     if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
-        return res.status(400).json({status: false, message: "id is not in a valid format"});
+        return res.status(400).json({status: false, message: "The id is not in a valid format!"});
     }
    
     const url = await Url.getFromShorturl(req.params.id);
 
     if(!url) {
-        return res.status(404).json({status: false, message: "url not found"});
+        return res.status(404).json({status: false, message: "The url was not found!"});
     }
 
     // check if user is the owner of this url
     if((await url.getUser()).getId() != req.user.getId()) {
-        return res.status(401).json({status: false, message: "Unauthorized"});
+        return res.status(401).json({status: false, message: "You are unauthorized!"});
     }
 
     return res.status(200).json({
         status: true, 
-        message: "stats of the url",
+        message: "accesslist of the url",
         data: {
             accesslist: await url.getTrackers(),
             url: await url.getAsObject()
@@ -116,21 +116,21 @@ router.get("/:id/accesslist", mustAuthorize, async (req, res) => {
 router.get("/:id", async (req, res) => {
     // check if id is right
     if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
-        return res.status(400).json({status: false, message: "id is not in a valid format"});
+        return res.status(400).json({status: false, message: "The id is not in a valid format!"});
     }
    
     const url = await Url.getFromShorturl(req.params.id);
 
     if(!url) {
-        return res.status(404).json({status: false, message: "url not found"});
+        return res.status(404).json({status: false, message: "The url was not found!"});
     }
 
     // enter data from user into url tracker
-    UrlTracker.create(await url.getRawId(), process.env.LOG_LOG_USER_IPS == "1" ? req.socket.remoteAddress : null);
+    UrlTracker.create(await url.getRawId(), process.env.LOG_LOG_USER_IPS == "1" ? req.socket.remoteAddress : "feauture disabled");
 
     return res.status(200).json({
         status: true, 
-        message: "url found",
+        message: "The url was found.",
         data: {
             url: await url.getAsObject()
         }
@@ -141,7 +141,7 @@ router.get("/:id", async (req, res) => {
 router.delete("/:id", mustAuthorize, async (req, res) => {
     // check if id is right
     if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
-        return res.status(400).json({status: false, message: "id is not in a valid format"});
+        return res.status(400).json({status: false, message: "The id is not in a valid format!"});
     }
 
     const del = await Url.deleteForUser(req.params.id, req.user);

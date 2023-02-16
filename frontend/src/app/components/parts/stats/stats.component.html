@@ -1,14 +1,16 @@
-<table class="m-0 user-select-none table table-dark stats-table">
-  <tr>
-    <th [reanimateOnClick]="false" [countUp]="urlsCount" [options]="{ duration: 1 }"></th>
-    <td>URLs shortened</td>
-  </tr>
-  <tr>
-    <th [reanimateOnClick]="false" [countUp]="usersCount" [options]="{ duration: 1 }"></th>
-    <td>Registerd users</td>
-  </tr>
-  <tr>
-    <th [reanimateOnClick]="false" [countUp]="urlsClicked" [options]="{ duration: 1 }"></th>
-    <td>URLs clicked</td>
-  </tr>
-</table>
+<div class="bg-gradient-2 rounded p-4 d-flex justify-content-center">
+  <table style="max-width: 300px;" class="m-0 user-select-none table table-dark stats-table">
+    <tr>
+      <th [reanimateOnClick]="false" [countUp]="urlsCount" [options]="{ duration: 1 }"></th>
+      <td>URLs shortened</td>
+    </tr>
+    <tr>
+      <th [reanimateOnClick]="false" [countUp]="usersCount" [options]="{ duration: 1 }"></th>
+      <td>Registerd users</td>
+    </tr>
+    <tr>
+      <th [reanimateOnClick]="false" [countUp]="urlsClicked" [options]="{ duration: 1 }"></th>
+      <td>URLs clicked</td>
+    </tr>
+  </table>
+</div>
