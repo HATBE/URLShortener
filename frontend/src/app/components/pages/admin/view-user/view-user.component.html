@@ -1,1 +1,26 @@
-<p>view-user works!</p>
+<div *ngIf="error">
+  <div class="alert alert-danger">
+    <span class="fw-bold">Error!</span> {{error}}
+  </div>
+</div>
+
+<div *ngIf="!error && data" class="row">
+
+  <div class="p-2 col-12">
+    <h3 class="m-0 text-light p-3 rounded bg-gradient-3">Data of <span class="fw-lighter">{{data.user.username}}</span></h3>
+  </div>
+
+  <div class="p-2 col-12">
+    <button routerLink="/admin/dashboard" class="btn btn-large btn-danger bg-gradient-3">
+      &lt; Back
+    </button>
+    <button *ngIf="!data.user.isAdmin" (click)="onDelete()" class="ms-2 btn btn-large btn-danger">
+      Delete
+    </button>
+  </div>
+
+  <div class="p-2 col-12 col-xl-6">User details</div>
+  <div class="p-2 col-12 col-xl-6">All Urls</div>
+  <div class="p-2 col-12 col-xl-6">Add/delete user to/from admin group</div>
+
+</div>

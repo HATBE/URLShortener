@@ -22,6 +22,28 @@ router.get('/', mustAuthorize, onlyAdmin, async (req, res) => {
     });
 });
 
+router.get('/:id', mustAuthorize, onlyAdmin, async (req,res) => {
+    // check id id is a valid mongoose id
+    if(!mongoose.isValidObjectId(req.params.id)) {
+        return res.status(400).json({status: false, message: "The id is not in a valid format!"});
+    }
+
+    // check if user exists
+    if(!await userModel.exists({_id: req.params.id})) {
+        return res.status(404).json({status: false, message: "This user was not found"});
+    }
+
+    const user = new User(await userModel.findOne({_id: req.params.id}))
+
+    return res.status(200).json({
+        status: true, 
+        message: "The user was found.",
+        data: {
+            user: user.getAsObject()
+        }
+    });
+});
+
 // delete a user
 router.delete('/:id', mustAuthorize, async (req, res) => {
     // check id id is a valid mongoose id
@@ -38,12 +60,12 @@ router.delete('/:id', mustAuthorize, async (req, res) => {
 
     // if you are not logged in as the user and are no admin: then
     if((req.user.getId() !== user.getId() && !req.user.isAdmin())) {
-        return res.status(404).json({status: false, message: "You are unauthorized!"});
+        return res.status(401).json({status: false, message: "You are unauthorized!"});
     }
 
     // if user is an admin and wants to delete himself
     if(req.user.isAdmin() && req.user.getId() === user.getId()) {
-        return res.status(404).json({status: false, message: "You can't delete yourself, your an admin!"});
+        return res.status(400).json({status: false, message: "You can't delete yourself, your an admin!"});
     }
     
     await Url.deleteAllUrlsFromUser(req.params.id);

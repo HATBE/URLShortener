@@ -34,6 +34,10 @@ export class UserService {
     return false;
   }
 
+  getUser(id: string | null) {
+    return this.http.get<{message: string, data: {user: User}}>(this.apiEndpoint + id, {headers: this.authHeader});
+  }
+
   getUsername(): string {
     if(!this.authService.isLoggedIn()) {
       return "null";

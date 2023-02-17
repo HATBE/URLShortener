@@ -3,8 +3,6 @@
 - admin dashboard statistics
 - !big refactor! restructor services, components, usw.
 - find auth bug (sometimes 401 unauth. when freshly logged in / or inactive)
-- admin view user / stats / urls, ....
-- refactor api, use ids for everithing (not just logged in user), this helps keeping the code small
 - move modal from danger settings to own components, implement on root (maybe)
 - make table component -> inject data in table
 - make some more comments in code
