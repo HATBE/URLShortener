@@ -43,7 +43,7 @@ router.delete('/:id', mustAuthorize, async (req, res) => {
 
     // if user is an admin and wants to delete himself
     if(req.user.isAdmin() && req.user.getId() === user.getId()) {
-        return res.status(404).json({status: false, message: "You can't yourself, your an admin!"});
+        return res.status(404).json({status: false, message: "You can't delete yourself, your an admin!"});
     }
     
     await Url.deleteAllUrlsFromUser(req.params.id);
