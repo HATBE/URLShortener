@@ -56,6 +56,7 @@ export class AuthService {
       localStorage.removeItem('authtoken');
       localStorage.removeItem('isAdmin');
       localStorage.removeItem('username');
+      localStorage.removeItem('userid');
 
       if(navigate) {
         this.router.navigate(['/login']);

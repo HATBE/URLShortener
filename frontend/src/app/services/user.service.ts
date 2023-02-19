@@ -49,10 +49,14 @@ export class UserService {
   }
 
   deleteUrls() {
-    return this.http.delete(this.apiEndpoint + 'urls', {headers: this.authHeader});
+    return this.http.delete<{message: string, data: {user: User}}>(this.apiEndpoint + 'urls', {headers: this.authHeader});
   }
 
   changePassword(oldPassword: string, newPassword: string) {
     return this.http.patch(this.apiEndpoint + "password", {oldpassword: oldPassword, newpassword: newPassword}, {headers: this.authHeader});
+  }
+
+  toggleAdmin(id: string) {
+    return this.http.patch(this.apiEndpoint + id + "/toggleadmin", {}, {headers: this.authHeader});
   }
 }

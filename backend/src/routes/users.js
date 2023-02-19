@@ -12,7 +12,9 @@ const onlyAdmin = require('../middleware/onlyAdmin');
 
 // get a list of all users
 router.get('/', mustAuthorize, onlyAdmin, async (req, res) => {
+    // get a list of all users
     const users = await User.getAll();
+
     res.status(200).json({
         status: true, 
         message: "users",
@@ -103,6 +105,35 @@ router.patch('/password', mustAuthorize, async (req, res) => {
     res.status(200).json({
         status: true, 
         message: "Password successfully changed",
+    });
+});
+
+// toggles admin state
+router.patch('/:id/toggleadmin', mustAuthorize, onlyAdmin, async (req,res) => {
+    // check id id is a valid mongoose id
+    if(!mongoose.isValidObjectId(req.params.id)) {
+        return res.status(400).json({status: false, message: "The id is not in a valid format!"});
+    }
+
+    // check if user exists
+    if(!await userModel.exists({id: req.params.id})) {
+        return res.status(404).json({status: false, message: "This user was not found"});
+    }
+
+    const user = new User(await userModel.findOne({_id: req.params.id}))
+
+    // if user wants to toggle himself
+    if(req.user.getId() === user.getId()) {
+        return res.status(400).json({status: false, message: "You can't toggle admin state yourself, you are yourself!"});
+    }
+
+    const update = await userModel.findByIdAndUpdate(req.params.id, {isAdmin: !user.isAdmin()});
+    
+    update.save();
+
+    res.status(200).json({
+        status: true, 
+        message: `Successfully set admin state to ${!user.isAdmin()}`,
     });
 });
 

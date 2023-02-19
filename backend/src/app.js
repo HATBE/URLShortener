@@ -40,7 +40,7 @@ app.use(express.json());                        // JSON parser
 app.use(process.env.API_ENDPOINT_PREFIX, authJwt, routes); // /api/* routes
 
 app.all('*', (req, res) => {                    // Default route
-  res.json({"error":"route not found"});
+  res.status(404).json({"error":"route not found"});
 });
 
 app.listen(process.env.PORT || 3000, () => {

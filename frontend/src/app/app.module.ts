@@ -29,6 +29,7 @@ import { UrlAccessListComponent } from './components/pages/userbackend/urlstats/
 import { UrlChartComponent } from './components/pages/userbackend/urlstats/url-chart/url-chart.component';
 import { CreateUserComponent } from './components/pages/admin/admin-dashboard/create-user/create-user.component';
 import { ViewUserComponent } from './components/pages/admin/view-user/view-user.component';
+import { UserDetailComponent } from './components/pages/admin/view-user/user-detail/user-detail.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { ViewUserComponent } from './components/pages/admin/view-user/view-user.
     UrlChartComponent,
     CreateUserComponent,
     ViewUserComponent,
+    UserDetailComponent,
   ],
   imports: [
     BrowserModule,

@@ -2,9 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { UrlService } from 'src/app/services/url.service';
 import { Url } from 'src/app/models/url.model';
 
-import TimeAgo from 'javascript-time-ago';
-import en from 'javascript-time-ago/locale/en'
-
 @Component({
   selector: 'app-url-detail',
   templateUrl: './url-detail.component.html',
