@@ -10,7 +10,8 @@ const User = require('../classes/User');
 const mustAuthorize = require('../middleware/mustAuthorize');
 const onlyAdmin = require('../middleware/onlyAdmin');
 
-// get a list of all users
+// -> get a list of all users
+// this list can only be retrieved by an admin
 router.get('/', mustAuthorize, onlyAdmin, async (req, res) => {
     // get a list of all users
     const users = await User.getAll();
@@ -24,6 +25,8 @@ router.get('/', mustAuthorize, onlyAdmin, async (req, res) => {
     });
 });
 
+// -> get a user by his id
+// this data can only be retrieved by an admin
 router.get('/:id', mustAuthorize, onlyAdmin, async (req,res) => {
     // check id id is a valid mongoose id
     if(!mongoose.isValidObjectId(req.params.id)) {
@@ -46,7 +49,7 @@ router.get('/:id', mustAuthorize, onlyAdmin, async (req,res) => {
     });
 });
 
-// delete a user
+// -> delete a user by his id
 router.delete('/:id', mustAuthorize, async (req, res) => {
     // check id id is a valid mongoose id
     if(!mongoose.isValidObjectId(req.params.id)) {
@@ -80,23 +83,39 @@ router.delete('/:id', mustAuthorize, async (req, res) => {
     });
 });
 
-// delete logged in users urls
-router.delete('/urls', mustAuthorize, async (req, res) => {
-    await Url.deleteAllUrlsFromUser(req.user.getId());
-    res.status(200).json({
-        status: true, 
-        message: "urls deleted",
-    });
-});
-
-// change logged in users password
-router.patch('/password', mustAuthorize, async (req, res) => {
-    if(!req.body.oldpassword || !req.body.newpassword) {
-        return res.status(400).json({status: false, message: "please provide a old and new password"});
+// -> change the password of a user by his id
+router.patch('/:id/password', mustAuthorize, async (req, res) => {
+    // check id id is a valid mongoose id
+    if(!mongoose.isValidObjectId(req.params.id)) {
+        return res.status(400).json({status: false, message: "The id is not in a valid format!"});
     }
 
-    const change = await req.user.changePassword(req.body.oldpassword, req.body.newpassword);
+    // check if user exists
+    if(!await userModel.exists({id: req.params.id})) {
+        return res.status(404).json({status: false, message: "This user was not found"});
+    }
 
+    const user = new User(await userModel.findOne({_id: req.params.id}))
+
+    // if you are not logged in as the user and are no admin: then
+    if((req.user.getId() !== user.getId() && !req.user.isAdmin())) {
+        return res.status(401).json({status: false, message: "You are unauthorized!"});
+    }
+
+    let change = null;
+
+    console.log( req.body.newpassword)
+
+    // bypass oldpassword if logged in as admin
+    if(req.user.isAdmin()) {
+        change = await User.resetPassword(user, req.body.newpassword);
+    } else {
+        if((!req.body.oldpassword || !req.body.newpassword)) {
+            return res.status(400).json({status: false, message: "please provide a old and new password"});
+        }
+        change = await User.changePassword(user, req.body.oldpassword, req.body.newpassword);
+    }
+   
     if(!change.status) {
         // if password change failed
         return res.status(401).json({status: false, message: change.reason});
@@ -108,7 +127,17 @@ router.patch('/password', mustAuthorize, async (req, res) => {
     });
 });
 
-// toggles admin state
+// -> delete the urls of the logged in user
+router.delete('/urls', mustAuthorize, async (req, res) => {
+    await Url.deleteAllUrlsFromUser(req.user.getId());
+    res.status(200).json({
+        status: true, 
+        message: "urls deleted",
+    });
+});
+
+// -> toggle the admin stats of a user by his id
+// only a admin user can do this
 router.patch('/:id/toggleadmin', mustAuthorize, onlyAdmin, async (req,res) => {
     // check id id is a valid mongoose id
     if(!mongoose.isValidObjectId(req.params.id)) {

@@ -26,10 +26,10 @@ import { UsersListComponent } from './components/pages/admin/admin-dashboard/use
 import { DangerSettingsComponent } from './components/pages/userbackend/settings/danger-settings/danger-settings.component';
 import { UrlDetailComponent } from './components/pages/userbackend/urlstats/url-detail/url-detail.component';
 import { UrlAccessListComponent } from './components/pages/userbackend/urlstats/url-access-list/url-access-list.component';
-import { UrlChartComponent } from './components/pages/userbackend/urlstats/url-chart/url-chart.component';
 import { CreateUserComponent } from './components/pages/admin/admin-dashboard/create-user/create-user.component';
 import { ViewUserComponent } from './components/pages/admin/view-user/view-user.component';
 import { UserDetailComponent } from './components/pages/admin/view-user/user-detail/user-detail.component';
+import { ResetPasswordComponent } from './components/pages/admin/view-user/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -53,10 +53,10 @@ import { UserDetailComponent } from './components/pages/admin/view-user/user-det
     DangerSettingsComponent,
     UrlDetailComponent,
     UrlAccessListComponent,
-    UrlChartComponent,
     CreateUserComponent,
     ViewUserComponent,
     UserDetailComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,

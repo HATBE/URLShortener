@@ -5,6 +5,7 @@ const User = require('../classes/User');
 const Url = require('../classes/Url');
 const UrlTracker = require("../classes/UrlTracker");
 
+// -> get stats of the whole application
 router.get('/', async (req, res) => {
     usersCount = await User.getCount();
     urlsCount = await Url.getCount();

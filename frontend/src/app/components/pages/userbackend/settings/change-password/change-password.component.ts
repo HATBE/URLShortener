@@ -52,7 +52,7 @@ export class ChangePasswordComponent implements OnInit {
       return;
     }
 
-    this.userService.changePassword(oldPassword, newPassword)
+    this.userService.changePassword(localStorage.getItem('userid'), oldPassword, newPassword)
     .subscribe({
       next: this.successPwChange.bind(this),
       error: this.errorPwChange.bind(this)

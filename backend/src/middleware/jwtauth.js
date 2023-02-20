@@ -1,51 +1,48 @@
 const jwt = require('jsonwebtoken');
 
-const UserModel = require('../models/user');
 const User = require('../classes/User');
 
 async function authJwt(req, res, next) {
     if(!req.headers['authorization']) {
+        // if the authorization header is not set, the user is not logged in
         req.user = null;
         return next();
     }
 
     const bearerToken = req.headers['authorization'].split(' ')[1];
 
-    if(bearerToken == "null") {
+    if(!bearerToken || bearerToken == "null") {
+        // if the token is falsy or null, the user is not logged in
         req.user = null;
         return next();
     }
 
-    if(!bearerToken) {
-        // no token, failed
-        req.user = null;
-        return next();
-    }
+    let claim;
 
-    let claim
     try {
-        claim = jwt.verify(bearerToken, process.env.JWT_SECRET)
+        claim = jwt.verify(bearerToken, process.env.JWT_SECRET);
     } catch (error) {
-        // token cannot be verified, maybe malformed
-        return res.status(401).json({status: false, message: "You are not authorized!"});
+        // the token cannot be verified (maybe malformed, expired?), the user is not logged in
+        return res.status(401).json({status: false, message: "You are not authorized!", detail: error.message});
     }
 
     if(!claim) {
-        // claim failed
+        // if the claim failed, the user is not logged in
         req.user = null;
         return next();
     }
 
-    const user = await UserModel.findOne({_id: claim.id});
+    const user = await User.getFromId(claim.id);
 
     if(!user) {
-        // no user with this id found (maybe the user was deleted after the login?)
+        // no user with this id found (maybe the user was deleted while the token is still valid?), the user is not logged in
         req.user = null;
         return next();
     }
 
-    req.user = new User(user);
-    next();
+    req.user = user; // set the loggedin backend user to the userclass with the loggedin user id
+
+    return next();
 }
 
 module.exports = authJwt;

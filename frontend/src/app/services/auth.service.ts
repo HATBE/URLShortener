@@ -38,7 +38,7 @@ export class AuthService {
   }
 
   getLoggedInUser() {
-    return this.http.get<{status: boolean, data: String}>(this.apiEndpoint + "loggedinuser", {headers: this.authHeader});
+    return this.http.get<{status: boolean, data: String}>(this.apiEndpoint + "loggedin", {headers: this.authHeader});
   }
 
   login(username: string, password: string) {

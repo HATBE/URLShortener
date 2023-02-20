@@ -7,8 +7,8 @@ const User = require('../classes/User');
 
 const mustAuthorize = require('../middleware/mustAuthorize');
 
-// get loggedin user data
-router.get('/loggedinuser', mustAuthorize, async (req, res) => {
+// -> get data of the currently loggedin user
+router.get('/loggedin', mustAuthorize, async (req, res) => {
     res.status(200).json({
         status: true, 
         message: "userdata received",
@@ -18,7 +18,7 @@ router.get('/loggedinuser', mustAuthorize, async (req, res) => {
     });
 });
 
-// register
+// -> register as a new user
 router.post('/register', async (req, res) => {
     // check if username and password was provided
     if(!req.body.password || !req.body.username) {
@@ -50,7 +50,7 @@ router.post('/register', async (req, res) => {
     });
 });
 
-// login
+// -> login as a new user
 router.post('/login', async (req, res) => {
     // check if inputs are as required
     if(!req.body.password || !req.body.username) {

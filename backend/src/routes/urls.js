@@ -9,7 +9,7 @@ const Validate = require("../classes/Validate");
 
 const mustAuthorize = require('../middleware/mustAuthorize');
 
-// create url
+// -> create a url
 router.post("/", async (req, res) => {
     // check if url is passed in the body
     if(!req.body.url) {
@@ -33,7 +33,7 @@ router.post("/", async (req, res) => {
     });
 });
 
-// get all urls by user
+// g-> get all urls from the loggedin user
 router.get('/my', mustAuthorize, async (req, res) => {
     let urls = await UrlModel.find({userid: req.user.getId()});
         
@@ -55,7 +55,7 @@ router.get('/my', mustAuthorize, async (req, res) => {
     });
 });
 
-// get url stats  with id
+// -> get stats of a url by its id
 router.get("/:id/stats", mustAuthorize, async (req, res) => {
     // check if id is right
     if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
@@ -83,7 +83,7 @@ router.get("/:id/stats", mustAuthorize, async (req, res) => {
     });
 });
 
-// get url accesslist with id
+// -> get the accesslist of a url by its id
 router.get("/:id/accesslist", mustAuthorize, async (req, res) => {
     // check if id is right
     if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
@@ -112,7 +112,7 @@ router.get("/:id/accesslist", mustAuthorize, async (req, res) => {
 });
 
 
-// get urls  with id
+// -> get a url with its id
 router.get("/:id", async (req, res) => {
     // check if id is right
     if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
@@ -137,7 +137,7 @@ router.get("/:id", async (req, res) => {
     });
 });
 
-// delete url with id
+// -> delete a url with its id
 router.delete("/:id", mustAuthorize, async (req, res) => {
     // check if id is right
     if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {

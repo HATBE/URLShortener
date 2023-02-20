@@ -52,8 +52,8 @@ export class UserService {
     return this.http.delete<{message: string, data: {user: User}}>(this.apiEndpoint + 'urls', {headers: this.authHeader});
   }
 
-  changePassword(oldPassword: string, newPassword: string) {
-    return this.http.patch(this.apiEndpoint + "password", {oldpassword: oldPassword, newpassword: newPassword}, {headers: this.authHeader});
+  changePassword(userid: any, oldPassword: string | null, newPassword: string) {
+    return this.http.patch(this.apiEndpoint + userid + "/password", {oldpassword: oldPassword, newpassword: newPassword}, {headers: this.authHeader});
   }
 
   toggleAdmin(id: string) {
