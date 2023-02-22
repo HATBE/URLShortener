@@ -17,10 +17,10 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent, title: "Login"},
   {path: 'register', component: RegisterComponent, title: "Register"},
   {path: 'dashboard', component: DashboardComponent, title: "Dashboard", canActivate: [AuthGuard]},
-  {path: 'view-url/:id', component: ViewUrlComponent, title: "Stats", canActivate: [AuthGuard]},
+  {path: 'view-url/:id', component: ViewUrlComponent, title: "View url", canActivate: [AuthGuard]},
   {path: 'settings', component: SettingsComponent, title: "Settings", canActivate: [AuthGuard]},
   {path: 'admin/dashboard', component: AdminDashboardComponent, title: "Admin Dashboard", canActivate: [AdminGuard]},
-  {path: 'admin/view-user/:id', component: ViewUserComponent, title: "View User", canActivate: [AdminGuard]},
+  {path: 'admin/view-user/:id', component: ViewUserComponent, title: "View user", canActivate: [AdminGuard]},
   {path: ':id', component: RedirectComponent, title: "Redirect..."},
   {path:'**', component: IndexComponent}
 ];

@@ -21,6 +21,15 @@ router.post("/", async (req, res) => {
     if(!Validate.url(rUrl)) {
         return res.status(400).json({status: false, message: "Please provide a valid url!"});
     }
+    
+    if(req.user) {
+        // if user is logged in
+        const foundOld = await UrlModel.findOne({userid: req.user.getId(), url: rUrl});
+        if(foundOld) {
+            // if the same user tried to shorten this url in the past
+            return res.status(400).json({status: false, message: `You already shortened this url! ID: "${foundOld.shorturl}"` });
+        }
+    }
 
     const myurl = await Url.create(rUrl, req.user);
 

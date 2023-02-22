@@ -68,8 +68,13 @@ export class ShortenerComponent implements OnInit {
     this.addedNewUrl.emit(data.data.url);
   }
 
-  errorAddingUrl(error: {status: string, statusText: string}) {
-    this.error = `${error.status} ${error.statusText}`;
+  errorAddingUrl(error: any) {
+    if(error.error.message) {
+      this.error = `${error.error.message}`;
+    } else {
+      this.error = `${error.status} ${error.statusText}`;
+    }
+
     this.isLoading = false;
   }
 
