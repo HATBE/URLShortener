@@ -28,11 +28,7 @@
                       </div>
                       <div class="pt-1 mb-4">
                           <button class="btn btn-primary btn-lg btn-block" type="submit">
-                            <div *ngIf="isLoading" class="w-100 d-flex justify-content-center">
-                              <div  class="spinner-border text-darg" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                              </div>
-                            </div>
+                            <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
                             <span *ngIf="!isLoading">Login</span>
                           </button>
                       </div>

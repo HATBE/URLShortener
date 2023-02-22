@@ -6,14 +6,14 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { UrlService } from 'src/app/services/url.service';
 
 @Component({
-  selector: 'app-urlstats',
-  templateUrl: './urlstats.component.html',
-  styleUrls: ['./urlstats.component.css'],
+  selector: 'app-view-url',
+  templateUrl: './view-url.component.html',
+  styleUrls: ['./view-url.component.css'],
   providers: [
     Title
   ],
 })
-export class UrlstatsComponent implements OnInit {
+export class ViewUrlComponent implements OnInit {
   shorturl: string | null = '';
   data: any = '';
   error: boolean = false;

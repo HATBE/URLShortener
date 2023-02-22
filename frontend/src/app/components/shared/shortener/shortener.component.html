@@ -13,11 +13,7 @@
           <button type="button" (click)="onShorten()" class="w-100 btn btn-outline-light">Shorten</button>
         </div>
       </div>
-      <div class="py-4 w-100 d-flex justify-content-center" *ngIf="isLoading">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </div>
+      <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
     </div>
     <div class="text-light" *ngIf="shorturl">
       <div>

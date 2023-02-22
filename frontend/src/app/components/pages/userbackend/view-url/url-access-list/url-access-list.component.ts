@@ -35,7 +35,7 @@ export class UrlAccessListComponent implements OnInit {
     });
   }
 
-  successLoadingData(data: {data: {accesslist: [{id: string, url: string, data: number, ip:string}], url: Url}}) {
+  successLoadingData(data: {data: {accesslist: [{id: string, url: string, date: number, ip:string}], url: Url}}) {
     TimeAgo.addDefaultLocale(en)
     const timeAgo = new TimeAgo('en-US');
 
@@ -43,7 +43,13 @@ export class UrlAccessListComponent implements OnInit {
       url.date = timeAgo.format(new Date(url.date * 1000));
     });
 
-    this.data = data.data;
+    let list: any[] = [];
+
+    data.data.accesslist.forEach(e => {
+      list.push([e.date, e.ip]);
+    });
+
+    this.data = list
     this.isLoading = false;
   }
 

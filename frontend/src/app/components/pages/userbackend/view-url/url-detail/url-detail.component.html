@@ -1,12 +1,8 @@
 <div class="w-100 border rounded overflow-hidden">
-  <h4 class="text-light border-bottom p-3 mb-0 bg-gradient-1">Data</h4>
+  <h4 class="text-light border-bottom p-3 mb-0 bg-gradient-1">Detail</h4>
   <div class="p-3">
 
-    <div class="py-4 w-100 d-flex justify-content-center" *ngIf="isLoading">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
+    <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
     <div *ngIf="!isLoading">
       <table class="m-0 table table-dark">

@@ -8,7 +8,7 @@ import { IndexComponent } from './components/pages/index/index.component';
 import { RedirectComponent } from './components/pages/redirect/redirect.component';
 import { DashboardComponent } from './components/pages/userbackend/dashboard/dashboard.component';
 import { SettingsComponent } from './components/pages/userbackend/settings/settings.component';
-import { UrlstatsComponent } from './components/pages/userbackend/urlstats/urlstats.component';
+import { ViewUrlComponent } from './components/pages/userbackend/view-url/view-url.component';
 import { AdminGuard } from './guards/admin.guard';
 import { AuthGuard } from './guards/auth.guard';
 
@@ -17,7 +17,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent, title: "Login"},
   {path: 'register', component: RegisterComponent, title: "Register"},
   {path: 'dashboard', component: DashboardComponent, title: "Dashboard", canActivate: [AuthGuard]},
-  {path: 'urlstats/:id', component: UrlstatsComponent, title: "Stats", canActivate: [AuthGuard]},
+  {path: 'view-url/:id', component: ViewUrlComponent, title: "Stats", canActivate: [AuthGuard]},
   {path: 'settings', component: SettingsComponent, title: "Settings", canActivate: [AuthGuard]},
   {path: 'admin/dashboard', component: AdminDashboardComponent, title: "Admin Dashboard", canActivate: [AdminGuard]},
   {path: 'admin/view-user/:id', component: ViewUserComponent, title: "View User", canActivate: [AdminGuard]},
