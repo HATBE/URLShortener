@@ -22,23 +22,26 @@ export class UsersListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.userService.getUsers().subscribe(data => {
+      this.isLoading = false;
       this.userList = data.data.users;
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if(this.newAdd != null) {
-      this.userList?.push(this.newAdd)
+      this.userList?.push(this.newAdd);
     }
   }
 
   deleteUser(id: string) {
     if(this.userList![this.userList?.findIndex(o => {return o.id == id}) || 0].isAdmin) {
+      // if user to delete is admin -> exit.
       return;
     };
     this.userService.delete(id).subscribe(data => {
-      this.userList?.splice(this.userList?.findIndex(o => {return o.id == id}) || 0, 1) // remove entry from gui
+      this.userList?.splice(this.userList?.findIndex(o => {return o.id == id}) || 0, 1); // remove entry from gui
     });
   }
 

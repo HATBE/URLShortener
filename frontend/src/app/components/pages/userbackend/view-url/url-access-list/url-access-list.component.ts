@@ -35,8 +35,8 @@ export class UrlAccessListComponent implements OnInit {
     });
   }
 
-  successLoadingData(data: {data: {accesslist: [{id: string, url: string, date: number, ip:string}], url: Url}}) {
-    TimeAgo.addDefaultLocale(en)
+  successLoadingData(data: {data: {accesslist: [{id: string, url: string, date: number, ip: string}], url: Url}}) {
+    TimeAgo.addDefaultLocale(en);
     const timeAgo = new TimeAgo('en-US');
 
     data.data.accesslist.map((url: any) => {

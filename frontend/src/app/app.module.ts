@@ -32,6 +32,7 @@ import { UserDetailComponent } from './components/pages/admin/view-user/user-det
 import { ResetPasswordComponent } from './components/pages/admin/view-user/reset-password/reset-password.component';
 import { TableComponent } from './components/shared/table/table.component';
 import { LoadingSpinnerComponent } from './components/shared/loading-spinner/loading-spinner.component';
+import { ToastComponent } from './components/shared/toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { LoadingSpinnerComponent } from './components/shared/loading-spinner/loa
     ResetPasswordComponent,
     TableComponent,
     LoadingSpinnerComponent,
+    ToastComponent,
   ],
   imports: [
     BrowserModule,

@@ -39,12 +39,12 @@ export class ViewUrlComponent implements OnInit {
   }
 
   successLoadingStats() {
-    this.title.setTitle(`Stats of ${this.shorturl}`)
+    this.title.setTitle(`Stats of ${this.shorturl}`);
   }
 
   errorLoadingStats(data: any) {
     this.error = data.error.message;
-    this.title.setTitle(`Error loading ${this.shorturl}`)
+    this.title.setTitle(`Error loading ${this.shorturl}`);
   }
 
   onDelete() {
