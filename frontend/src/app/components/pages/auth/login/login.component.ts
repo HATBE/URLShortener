@@ -3,7 +3,7 @@ import { AuthService } from 'src/app/services/auth.service';
 
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Emiters } from '../../../../emitters/emitters';
+import { Emitters } from '../../../../emitters/emitters';
 
 @Component({
   selector: 'app-login',
@@ -73,7 +73,7 @@ export class LoginComponent implements OnInit {
     localStorage.setItem('userid', data.data.user.id);
 
     setTimeout(() => {
-      Emiters.authEmitter.emit(true);
+      Emitters.authEmitter.emit(true);
       this.isLoading = false;
       if(data.data.isAdmin) {
         window.location.href = "/admin/dashboard";

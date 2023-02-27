@@ -19,10 +19,6 @@ export class ShortenerComponent implements OnInit {
   shorturl: string = "";
   isLoading: boolean = false;
 
-  copyBtnPressed = false;
-
-  faClipboard = faClipboard;
-
   loggedIn: boolean = false;
   user: User | null = null;
 
@@ -78,11 +74,6 @@ export class ShortenerComponent implements OnInit {
     this.isLoading = false;
   }
 
-  onClickCopyToClipboard() {
-    navigator.clipboard.writeText(this.shorturl);
-    this.copyBtnPressed = true;
-  }
-
   reset() {
     // this function is called on the "back" button in the html component
     this.shorturl = '';
@@ -90,6 +81,5 @@ export class ShortenerComponent implements OnInit {
     this.url = '';
     this.error = '';
     this.info = '';
-    this.copyBtnPressed = false;
   }
 }

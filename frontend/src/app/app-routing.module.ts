@@ -19,7 +19,7 @@ const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent, title: "Dashboard", canActivate: [AuthGuard]},
   {path: 'view-url/:id', component: ViewUrlComponent, title: "View url", canActivate: [AuthGuard]},
   {path: 'settings', component: SettingsComponent, title: "Settings", canActivate: [AuthGuard]},
-  {path: 'admin/dashboard', component: AdminDashboardComponent, title: "Admin Dashboard", canActivate: [AdminGuard]},
+  {path: 'admin/dashboard', component: AdminDashboardComponent, title: "Admin dashboard", canActivate: [AdminGuard]},
   {path: 'admin/view-user/:id', component: ViewUserComponent, title: "View user", canActivate: [AdminGuard]},
   {path: ':id', component: RedirectComponent, title: "Redirect..."},
   {path:'**', component: IndexComponent}

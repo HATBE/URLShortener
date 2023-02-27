@@ -1,8 +1,4 @@
 - pagination for every list / table
 - !big refactor! restructor services, components, usw.
-- move modal from danger settings to own components, implement on root (maybe)
-- make table component -> inject data in table
-- make some more comments in code
-- on shorten url: check if the exact same url was already shortened by the loggein user
 
 - restructure backend to reduce circular dependencies.

@@ -25,8 +25,9 @@
       <h3 class="text-light">
         Your new url is:
       </h3>
-      <div [ngClass]="{'border-primary border': copyBtnPressed}" class="p-3 rounded d-flex justify-content-between h4" style="background-color: #000;">
-        <a class="link-primary" id="url" target="_blank" href="{{shorturl}}">{{shorturl}}</a> <fa-icon class="text-light hover-primary cursor-default" (click)="onClickCopyToClipboard()" [icon]="faClipboard"></fa-icon>
+      <div class="p-3 rounded d-flex justify-content-between h4" style="background-color: #000;">
+        <a class="link-primary" id="url" target="_blank" href="{{shorturl}}">{{shorturl}}</a>
+        <app-copy-to-clipboard [textToCopy]="shorturl"></app-copy-to-clipboard>
       </div>
     </div>
   </div>

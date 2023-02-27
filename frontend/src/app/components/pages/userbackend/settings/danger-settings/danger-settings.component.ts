@@ -29,7 +29,6 @@ export class DangerSettingsComponent implements OnInit {
     private router: Router
   ) {}
 
-
   ngOnInit(): void {
 
   }

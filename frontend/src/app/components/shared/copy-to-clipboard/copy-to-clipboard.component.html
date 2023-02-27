@@ -1,0 +1,4 @@
+<div class="d-inline-block copy-btn">
+  <fa-icon *ngIf="!copyBtnPressed" class="text-light hover-primary cursor-pointer" title="copy to clipboard" (click)="onClickCopyToClipboard()" [icon]="faClipboard"></fa-icon>
+  <fa-icon *ngIf="copyBtnPressed" class="text-success" [icon]="faCheck"></fa-icon>
+</div>

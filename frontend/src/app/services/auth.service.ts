@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
-import { Emiters } from '../emitters/emitters';
+import { Emitters } from '../emitters/emitters';
 import { User } from '../models/user.model';
 
 @Injectable({
@@ -52,7 +52,7 @@ export class AuthService {
   logout(navigate: boolean = true) {
     // if user is logged in: logout, else, do nothing
     if(this.isLoggedIn()) {
-      Emiters.authEmitter.emit(false);
+      Emitters.authEmitter.emit(false);
       localStorage.removeItem('authtoken');
       localStorage.removeItem('isAdmin');
       localStorage.removeItem('username');

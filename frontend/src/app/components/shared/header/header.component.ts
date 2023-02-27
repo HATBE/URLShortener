@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { faGauge, faGear, faRightFromBracket, faRightToBracket, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthService } from 'src/app/services/auth.service';
-import { UserService } from 'src/app/services/user.service';
-import { Emiters } from '../../../emitters/emitters';
+import { Emitters } from '../../../emitters/emitters';
 
 @Component({
   selector: 'app-header',
@@ -22,10 +21,10 @@ export class HeaderComponent implements OnInit {
   constructor(
     private authService: AuthService,
   ) {
-    this.authService.getLoggedInUser().subscribe((res) => {
+    this.authService.getLoggedInUser().subscribe(res => {
       this.loggedIn = true;
     });
-    Emiters.authEmitter.subscribe(
+    Emitters.authEmitter.subscribe(
       (auth: boolean) => {
         this.loggedIn = auth;
       }

@@ -4,7 +4,7 @@
 
     <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
-    <app-table *ngIf="!isLoading" [dataset]="data" [headers]="['Time', 'IP']"></app-table>
+    <app-table *ngIf="!isLoading" [noDataMessage]="'No one has accessed your URL yet!'" [dataset]="data" [headers]="['Time', 'IP']"></app-table>
 
   </div>
 </div>

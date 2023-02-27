@@ -33,6 +33,7 @@ import { ResetPasswordComponent } from './components/pages/admin/view-user/reset
 import { TableComponent } from './components/shared/table/table.component';
 import { LoadingSpinnerComponent } from './components/shared/loading-spinner/loading-spinner.component';
 import { ToastComponent } from './components/shared/toast/toast.component';
+import { CopyToClipboardComponent } from './components/shared/copy-to-clipboard/copy-to-clipboard.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { ToastComponent } from './components/shared/toast/toast.component';
     TableComponent,
     LoadingSpinnerComponent,
     ToastComponent,
+    CopyToClipboardComponent,
   ],
   imports: [
     BrowserModule,

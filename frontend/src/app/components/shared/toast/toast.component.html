@@ -1,9 +1,9 @@
 <div class="toast-container">
-  <div *ngFor="let toast of toasts" class="toast d-block bg-dark border-light" role="alert" aria-live="assertive" aria-atomic="true">
+  <div *ngFor="let toast of toasts; let idx = index" class="toast d-block bg-dark border-light" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-header text-light bg-gradient-1 ">
       <strong class="me-auto">{{toast.title}}</strong>
       <small>{{toast.state}}</small>
-      <button (click)="onClose()" type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      <button (click)="onClose(idx)" type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
     <div class="toast-body">
       {{toast.message}}
