@@ -62,7 +62,6 @@ export class YourUrlsComponent implements OnInit {
       this.maxCount = data.data.pagination.maxCount;
       this.limit = data.data.pagination.limit;
 
-
       this.myUrls = urls;
       this.isLoading = false;
     });

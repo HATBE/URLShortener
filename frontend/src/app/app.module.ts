@@ -35,6 +35,7 @@ import { LoadingSpinnerComponent } from './components/shared/loading-spinner/loa
 import { ToastComponent } from './components/shared/toast/toast.component';
 import { CopyToClipboardComponent } from './components/shared/copy-to-clipboard/copy-to-clipboard.component';
 import { PaginationComponent } from './components/shared/pagination/pagination.component';
+import { BackBtnComponent } from './components/shared/back-btn/back-btn.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { PaginationComponent } from './components/shared/pagination/pagination.c
     ToastComponent,
     CopyToClipboardComponent,
     PaginationComponent,
+    BackBtnComponent,
   ],
   imports: [
     BrowserModule,
