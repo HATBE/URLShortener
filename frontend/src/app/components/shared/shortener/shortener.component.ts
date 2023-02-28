@@ -2,7 +2,6 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { Url } from '../../../models/url.model'
 import { User } from 'src/app/models/user.model';
 import { UrlService } from 'src/app/services/url.service';
-import { faClipboard } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-shortener',

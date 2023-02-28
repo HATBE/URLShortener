@@ -8,10 +8,23 @@
     <div class="w-100 p-3 " *ngIf="myUrls != null && myUrls.length <= 0">
       Currently you don't have any URLs!
     </div>
+
+    <div class="p-2" *ngIf="myUrls != null && myUrls.length > 0 && maxPages > 1">
+      Urls {{page*limit-limit+1}} - {{page == maxPages ? maxCount : page*limit}}
+      of {{maxCount}} on page {{page}} of {{maxPages}}
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center" *ngIf="myUrls != null && myUrls.length > 0 && maxPages > 1">
+      <button [disabled]="!hasLast" (click)="pageBack()" class="btn btn-primary m-2"><fa-icon [icon]="arrowLeft"></fa-icon></button>
+      <div class="user-select-none badge h-100 bg-primary d-flex justify-content-center align-items-center">
+        {{page}}
+      </div>
+      <button [disabled]="!hasNext" (click)="pageForward()" class="btn btn-primary m-2"> <fa-icon [icon]="arrowRight"></fa-icon></button>
+    </div>
+
     <table class="table table-dark table-striped m-0" *ngIf="myUrls != null && myUrls.length > 0">
       <thead class="border-bottom border-secondary">
         <tr>
-          <th>#</th>
           <th>Url</th>
           <th></th>
           <th>ShortUrl</th>
@@ -20,10 +33,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let url of myUrls; let i = index">
-          <th>
-            {{i + 1}}
-          </th>
+        <tr *ngFor="let url of myUrls">
           <td>
             <a target="_blank" class="link-light text-decoration-none" href="{{url.url}}">{{url.url}}</a>
           </td>
@@ -50,5 +60,6 @@
         </tr>
       </tbody>
     </table>
+
   </div>
 </div>

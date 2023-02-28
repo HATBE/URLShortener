@@ -26,6 +26,21 @@ class Validate {
         }
         return true;
     }
+
+    static pageNumber(number) {
+        if(typeof number != "string") {
+            return false
+        }  
+        
+        if(isNaN(number)) {
+            return false;
+        }
+
+        if(number <= 0) {
+            return false;
+        }
+        return true;
+    }
 }
 
 module.exports = Validate;

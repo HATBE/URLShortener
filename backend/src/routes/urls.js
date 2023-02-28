@@ -44,22 +44,49 @@ router.post("/", async (req, res) => {
 
 // g-> get all urls from the loggedin user
 router.get('/my', mustAuthorize, async (req, res) => {
-    let urls = await UrlModel.find({userid: req.user.getId()});
-        
-    let date = Math.round(Date.now() / 1000);
-    urls.sort(url => {if(url.date < date) return -1});
+    const limit = 7;
+    let page = 1;
+
+    if(Validate.pageNumber(req.query.page)) {
+        page = req.query.page;
+    }
+
+    const maxCount = await UrlModel.find({userid: req.user.getId()}).count();
+    const maxPages = Math.ceil(maxCount / limit);
+
+    if(page > maxPages) {
+        page = maxPages;
+    }
+
+    let skip = page*limit-limit;
+    skip = skip <= 0 ? 0 : skip;
+
+    let urls = await UrlModel.find(
+        {userid: req.user.getId()}, 
+        {}, 
+        {limit: limit, skip: skip}
+    )
+    .sort( '-date' );
 
     let newUrls = [];
 
     for (let i = 0; i < urls.length; i++) {
-        newUrls.push(await (await Url.getFromId(urls[i]._id)).getAsObject());
+        newUrls.push(await (new Url(urls[i])).getAsObject());
     }
 
     res.status(200).json({
         status: true,
         message: "success",
         data: {
-            urls: newUrls
+            urls: newUrls,
+            pagination: {
+                currentPage: +page,
+                maxPages: +maxPages,
+                maxCount: maxCount,
+                hasNext: (page <= maxPages - 1 ? true : false),
+                hasLast: (page > 1 ? true : false),
+                limit: limit
+            }
         }
     });
 });

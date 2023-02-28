@@ -15,6 +15,11 @@ export class ToastComponent implements OnInit {
   ngOnInit(): void {
     Emitters.toastEmitter.subscribe(res => {
       this.toasts.push(res);
+
+      // delete toast after 40 seconds
+      setTimeout(() => {this.toasts.splice(0, 1)}, 40_000);
+
+      // only allow max number of posts, if exeeded, delete oldest
       if(this.toasts.length > this.maxToasts) {
         this.toasts.pop();
       }

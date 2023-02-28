@@ -119,3 +119,6 @@ th {
 .table tr:last-child {
   border-bottom: none;
 }
+.btn:disabled {
+  background-color: grey;
+}
