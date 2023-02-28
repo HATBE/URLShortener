@@ -2,3 +2,5 @@
 - !big refactor! restructor services, components, usw.
 
 - restructure backend to reduce circular dependencies.
+- finish pagination component
+- backbtn component

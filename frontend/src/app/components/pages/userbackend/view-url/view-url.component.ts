@@ -39,7 +39,7 @@ export class ViewUrlComponent implements OnInit {
   }
 
   successLoadingStats() {
-    this.title.setTitle(`Stats of ${this.shorturl}`);
+    this.title.setTitle(`Data of ${this.shorturl}`);
   }
 
   errorLoadingStats(data: any) {
