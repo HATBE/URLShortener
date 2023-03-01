@@ -2,6 +2,4 @@
 - !big refactor! restructor services, components, usw.
 
 - restructure backend to reduce circular dependencies.
-- finish pagination component
-- backbtn component
 - add sorting for myUrl/filter and admin interface user list.

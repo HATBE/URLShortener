@@ -2,6 +2,7 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { Url } from '../../../models/url.model'
 import { User } from 'src/app/models/user.model';
 import { UrlService } from 'src/app/services/url.service';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-shortener',
@@ -20,6 +21,8 @@ export class ShortenerComponent implements OnInit {
 
   loggedIn: boolean = false;
   user: User | null = null;
+
+  faArrowLeft = faArrowLeft;
 
   constructor(
     private urlService: UrlService

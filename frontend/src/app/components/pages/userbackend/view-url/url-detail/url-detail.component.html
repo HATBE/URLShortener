@@ -9,7 +9,7 @@
         <tr><th>Url</th><td><a class="link-light p-0 m-0 text-decoration-none" target="_blank" href="{{data.url.url}}">{{data.url.url}}</a></td></tr>
         <tr><th>Shorturl</th><td><a class="link-light p-0 m-0 text-decoration-none" target="_blank" href="/{{data.url.shorturl}}">{{data.url.shorturl}}</a></td></tr>
         <tr><th class="pb-3 ">Date</th><td class="pb-3 ">{{urlDate}}</td></tr>
-        <tr class="user-select-none border-top border-secondary"><th class="pt-3">Accessed</th> <td class="pt-3"><span class="badge bg-primary">{{data.stats.clicked}} times</span> <span class="ms-2 pt-0 text-muted">More information in access list</span></td></tr>
+        <tr class="user-select-none border-top border-secondary"><th class="pt-3">Accessed</th> <td class="pt-3"><span class="badge bg-primary">{{data.stats.clicked}} time{{data.stats.clicked == 1 ? "" : "s"}}</span> <span class="ms-2 pt-0 text-muted">More information in access list</span></td></tr>
         </table>
       </div>
 

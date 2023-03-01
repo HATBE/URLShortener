@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { faArrowLeft, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -16,6 +17,9 @@ export class ViewUserComponent implements OnInit {
   id: string | null = '';
   error: boolean = false;
   data: any = null;
+
+  faArrowLeft = faArrowLeft;
+  faTrash = faTrash;
 
   constructor(
     private userService: UserService,

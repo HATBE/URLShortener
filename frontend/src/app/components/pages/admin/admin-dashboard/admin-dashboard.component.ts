@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { User } from 'src/app/models/user.model';
 
 @Component({
@@ -8,6 +9,8 @@ import { User } from 'src/app/models/user.model';
 })
 export class AdminDashboardComponent implements OnInit {
   newAdd: User | null = null;
+
+  faArrowLeft = faArrowLeft;
 
   constructor() { }
 

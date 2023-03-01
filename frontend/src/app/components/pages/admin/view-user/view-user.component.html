@@ -12,10 +12,10 @@
 
   <div class="p-2 col-12">
     <button routerLink="/admin/dashboard" class="btn btn-large btn-danger bg-gradient-3">
-      &lt; Back
+      <fa-icon [icon]="faArrowLeft"></fa-icon> Back
     </button>
     <button *ngIf="!data.user.isAdmin" (click)="onDelete()" class="ms-2 btn btn-large btn-danger">
-      Delete
+      <fa-icon [icon]="faTrash"></fa-icon> Delete
     </button>
   </div>
 

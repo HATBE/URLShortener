@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { faArrowLeft, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { UrlService } from 'src/app/services/url.service';
 
 @Component({
@@ -17,6 +18,9 @@ export class ViewUrlComponent implements OnInit {
   shorturl: string | null = '';
   data: any = '';
   error: boolean = false;
+
+  faArrowLeft = faArrowLeft;
+  faTrash = faTrash;
 
   constructor(
     private urlService: UrlService,

@@ -4,6 +4,7 @@ import { Url } from 'src/app/models/url.model';
 import { Title } from '@angular/platform-browser';
 
 import { UrlService } from 'src/app/services/url.service';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-redirect',
@@ -16,6 +17,8 @@ export class RedirectComponent implements OnInit {
 
   id: string | null = '';
   error: string = '';
+
+  faArrowLeft = faArrowLeft;
 
   constructor(
     private route: ActivatedRoute,

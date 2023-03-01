@@ -17,7 +17,7 @@
     </div>
     <div class="text-light" *ngIf="shorturl">
       <div>
-        <button (click)="reset()" class="mb-2 btn btn-outline-light">&lt; Back</button>
+        <button (click)="reset()" class="mb-2 btn btn-outline-light"><fa-icon [icon]="faArrowLeft"></fa-icon> Back</button>
       </div>
       <div class="w-100 alert alert-info" *ngIf="info != ''">
         <span class="fw-bold">Info!</span> {{info}}

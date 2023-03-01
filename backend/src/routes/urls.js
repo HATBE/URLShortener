@@ -80,7 +80,7 @@ router.get('/my', mustAuthorize, async (req, res) => {
         data: {
             urls: newUrls,
             pagination: {
-                currentPage: +page,
+                page: +page,
                 maxPages: +maxPages,
                 maxCount: maxCount,
                 hasNext: (page <= maxPages - 1 ? true : false),
