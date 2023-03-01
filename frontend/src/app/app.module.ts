@@ -34,7 +34,8 @@ import { TableComponent } from './components/shared/table/table.component';
 import { LoadingSpinnerComponent } from './components/shared/loading-spinner/loading-spinner.component';
 import { ToastComponent } from './components/shared/toast/toast.component';
 import { CopyToClipboardComponent } from './components/shared/copy-to-clipboard/copy-to-clipboard.component';
-import { PaginationComponent } from './components/shared/pagination/pagination.component';
+import { PaginationButtonComponent } from './components/shared/pagination/pagination-button/pagination-button.component';
+import { PaginationInfoComponent } from './components/shared/pagination/pagination-info/pagination-info.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { PaginationComponent } from './components/shared/pagination/pagination.c
     LoadingSpinnerComponent,
     ToastComponent,
     CopyToClipboardComponent,
-    PaginationComponent,
+    PaginationButtonComponent,
+    PaginationInfoComponent,
   ],
   imports: [
     BrowserModule,

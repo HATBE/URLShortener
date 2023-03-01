@@ -4,15 +4,13 @@ import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { Pagination } from 'src/app/models/pagination.model';
 
 @Component({
-  selector: 'app-pagination',
-  templateUrl: './pagination.component.html',
-  styleUrls: ['./pagination.component.css']
+  selector: 'app-pagination-button',
+  templateUrl: './pagination-button.component.html',
+  styleUrls: ['./pagination-button.component.css']
 })
-export class PaginationComponent implements OnInit {
+export class PaginationButtonComponent implements OnInit {
   @Input() pagination: Pagination = {page: 1, limit: 1, maxPages: 1, maxCount: 1, hasLast: false, hasNext: false};
   @Input() isLoading: boolean = false;
-
-  btnDisable = false;
 
   page: number = 1;
   limit: number = 1;

@@ -1,13 +1,8 @@
-<div class="user-select-none d-flex justify-content-center p-2" >
-  {{page*limit-limit+1}} - {{page == maxPages ? maxCount : page*limit}}
-  of {{maxCount}} on page {{page}} of {{maxPages}}
-</div>
-
 <div class="d-flex justify-content-center align-items-center">
   <button [disabled]="!hasLast" (click)="pageBack()" class="btn btn-primary m-2">
     <fa-icon [icon]="arrowLeft"></fa-icon>
   </button>
-  <div class="user-select-none badge h-100 bg-primary d-flex justify-content-center align-items-center">
+  <div style="height: 36px; width: 38px" class="user-select-none badge bg-primary d-flex justify-content-center align-items-center">
     <app-loading-spinner [small]="true" *ngIf="isLoading"></app-loading-spinner>
     <span *ngIf="!isLoading">{{page}}</span>
   </div>
