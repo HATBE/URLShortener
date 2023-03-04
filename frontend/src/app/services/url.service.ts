@@ -35,7 +35,7 @@ export class UrlService {
     return this.http.delete<{message: any;}>(this.apiEndpoint + shorturl, {headers: this.authHeader});
   }
 
-  getAccessList(shorturl: string) {
-    return this.http.get<{message: any; data: {acessList: any} | any}>(this.apiEndpoint + shorturl + "/accesslist", {headers: this.authHeader});
+  getAccessList(shorturl: string, page: number = 1) {
+    return this.http.get<{message: any; data: {acessList: any, pagination: {maxPages: number}}} | any>(this.apiEndpoint + shorturl + "/accesslist?page=" + page, {headers: this.authHeader});
   }
 }

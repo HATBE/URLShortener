@@ -6,6 +6,7 @@ import { faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en'
+import { Pagination } from 'src/app/models/pagination.model';
 
 @Component({
   selector: 'app-url-access-list',
@@ -15,12 +16,16 @@ import en from 'javascript-time-ago/locale/en'
 export class UrlAccessListComponent implements OnInit {
   @Input() shorturl: any;
 
+  pagination: Pagination = {page: 1, limit: 1, maxPages: 1, maxCount: 1, hasLast: false, hasNext: false};
+
   data: any = null;
   isLoading: boolean = false;
   error: string = '';
 
   faEye = faEye;
   faTrash = faTrash;
+
+  isReLoading: boolean = false;
 
   constructor(
     private urlService: UrlService
@@ -29,13 +34,17 @@ export class UrlAccessListComponent implements OnInit {
   ngOnInit(): void {
 
     this.isLoading = true;
-    this.urlService.getAccessList(this.shorturl).subscribe({
+    this.getNewAccessList();
+  }
+
+  private getNewAccessList() {
+    this.urlService.getAccessList(this.shorturl, this.pagination.page).subscribe({
       next: this.successLoadingData.bind(this),
       error: this.errorLoadingData.bind(this)
     });
   }
 
-  successLoadingData(data: {data: {accesslist: [{id: string, url: string, date: number, ip: string}], url: Url}}) {
+  successLoadingData(data: {data: {accesslist: [{id: string, url: string, date: number, ip: string}], url: Url, pagination: Pagination}}) {
     TimeAgo.addDefaultLocale(en);
     const timeAgo = new TimeAgo('en-US');
 
@@ -45,17 +54,27 @@ export class UrlAccessListComponent implements OnInit {
 
     let list: any[] = [];
 
+    console.log(data)
+
     data.data.accesslist.forEach(e => {
       list.push([e.date, e.ip]);
     });
 
+    this.pagination = data.data.pagination;
     this.data = list
+    this.isReLoading = false;
     this.isLoading = false;
   }
 
   errorLoadingData(data: any) {
     this.isLoading = false;
+    this.isReLoading = false;
     this.error = data.error.message;
+  }
+
+  onPageSwitch(event: any) {
+    this.pagination.page = event;
+    this.getNewAccessList();
   }
 
 }

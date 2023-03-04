@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const UrlModel = require('../models/url');
+const UrlTrackerModel = require('../models/urlTracker');
 
 const Url = require('../classes/Url');
 const UrlTracker = require('../classes/UrlTracker');
@@ -123,6 +124,13 @@ router.get("/:id/stats", mustAuthorize, async (req, res) => {
 
 // -> get the accesslist of a url by its id
 router.get("/:id/accesslist", mustAuthorize, async (req, res) => {
+    const limit = 7;
+    let page = 1;
+
+    if(Validate.pageNumber(req.query.page)) {
+        page = req.query.page;
+    }
+
     // check if id is right
     if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
         return res.status(400).json({status: false, message: "The id is not in a valid format!"});
@@ -139,12 +147,45 @@ router.get("/:id/accesslist", mustAuthorize, async (req, res) => {
         return res.status(401).json({status: false, message: "You are unauthorized!"});
     }
 
+    const maxCount = await UrlTrackerModel.find({url: url.getRawId()}).count();
+    const maxPages = Math.ceil(maxCount / limit);
+
+    if(page > maxPages) {
+        page = maxPages;
+    }
+
+    let skip = page*limit-limit;
+    skip = skip <= 0 ? 0 : skip;
+
+    const trackers  = await UrlTrackerModel.find(
+        {url: url.getRawId()}, 
+        {}, 
+        {limit: limit, skip: skip}
+    )
+    .sort({date: -1});
+
+    if(!trackers) return false;
+
+    const classTrackers = [];
+
+    for (let i = 0; i < trackers.length; i++) {
+        classTrackers.push(await (new UrlTracker(trackers[i])).getAsObject());
+    }
+
     return res.status(200).json({
         status: true, 
         message: "accesslist of the url",
         data: {
-            accesslist: await url.getTrackers(),
-            url: await url.getAsObject()
+            accesslist: classTrackers,
+            url: await url.getAsObject(),
+            pagination: {
+                page: +page,
+                maxPages: +maxPages,
+                maxCount: maxCount,
+                hasNext: (page <= maxPages - 1 ? true : false),
+                hasLast: (page > 1 ? true : false),
+                limit: limit
+            }
         }
     });
 });

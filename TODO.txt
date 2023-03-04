@@ -1,5 +1,5 @@
-- pagination for every list / table
 - !big refactor! restructor services, components, usw.
 
 - restructure backend to reduce circular dependencies.
 - add sorting for myUrl/filter and admin interface user list.
+- pagination class in backend

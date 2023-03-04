@@ -37,7 +37,7 @@ router.get('/', mustAuthorize, onlyAdmin, async (req, res) => {
         {}, 
         {limit: limit, skip: skip}
     )
-    .sort('-isAdmin');
+    .sort({isAdmin: -1, username: 1});
 
     if(!users) return false;
 

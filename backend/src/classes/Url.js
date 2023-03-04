@@ -122,17 +122,6 @@ class Url {
         }
     }
 
-    async getTrackers() {
-        const trackers = await UrlTrackerModel.find({url: this.getRawId()}).sort({date: -1});
-        const classTrackers = [];
-
-        trackers.forEach(async tracker => {
-            classTrackers.push(await (new UrlTracker(tracker)).getAsObject())
-        });
-
-        return classTrackers;
-    }
-
     async delete() {
         await UrlTrackerModel.deleteMany({url: this.getRawId()}); // delete all trackers
         await UrlModel.deleteOne({_id: this.getRawId()}); // delete url

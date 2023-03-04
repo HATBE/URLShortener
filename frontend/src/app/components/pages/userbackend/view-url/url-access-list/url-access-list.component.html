@@ -4,7 +4,11 @@
 
     <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
+    <app-pagination-info [pagination]="pagination" *ngIf="data && pagination.maxPages > 1"></app-pagination-info>
+
     <app-table *ngIf="!isLoading" [noDataMessage]="'No one has accessed your URL yet!'" [dataset]="data" [headers]="['Time', 'IP']"></app-table>
+
+    <app-pagination-button [isLoading]="isReLoading" (pageSwitchEvent)="onPageSwitch($event)" [pagination]="pagination" *ngIf="data && pagination.maxPages > 1"></app-pagination-button>
 
   </div>
 </div>
