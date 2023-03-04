@@ -11,11 +11,18 @@
   </div>
 
   <div class="p-2 col-12">
-    <button routerLink="/admin/dashboard" class="btn btn-large btn-danger bg-gradient-3">
+    <button routerLink="/admin/dashboard" class="btn btn-danger bg-gradient-3">
       <fa-icon [icon]="faArrowLeft"></fa-icon> Back
     </button>
-    <button *ngIf="!data.user.isAdmin" (click)="onDelete()" class="ms-2 btn btn-large btn-danger">
+    <button [disabled]="yourself" (click)="onDelete()" class="ms-2 btn btn-danger">
       <fa-icon [icon]="faTrash"></fa-icon> Delete
+    </button>
+
+    <button *ngIf="!data.user.isAdmin" [disabled]="yourself" (click)="onToggleAdmin($event)" class="ms-2 btn btn-danger">
+      <fa-icon [icon]="faUserPlus"></fa-icon> Promote to admin
+    </button>
+    <button *ngIf="data.user.isAdmin" [disabled]="yourself" (click)="onToggleAdmin($event)" class="ms-2 btn btn-primary">
+      <fa-icon [icon]="faUserMinus"></fa-icon> Demote to user
     </button>
   </div>
 

@@ -6,10 +6,9 @@
 
     <div *ngIf="!isLoading">
       <table class="m-0 table table-dark">
-        <tr><th>Username</th><td>{{data.user.username}}</td></tr>
-        <tr><th>Is admin</th><td><input [disabled]="yourself" (change)="toggleAdmin($event)" class="form-check-input border-light" type="checkbox" [checked]="data.user.isAdmin"></td></tr>
+        <tr><th style="width: 100px !important;">Username</th><td>{{data.user.username}}</td></tr>
+        <tr><th style="width: 100px !important;">Is admin</th><td [ngClass]="{'text-success': data.user.isAdmin, 'text-danger': !data.user.isAdmin}">{{data.user.isAdmin ? "True" : "False"}}</td></tr>
       </table>
     </div>
-
   </div>
 </div>

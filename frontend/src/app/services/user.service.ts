@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from 'src/environments/environment';
 import { AuthService } from './auth.service';
 import { User } from '../models/user.model';
+import { Pagination } from '../models/pagination.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,8 @@ export class UserService {
     return this.http.delete(this.apiEndpoint + '/' + id, {headers: this.authHeader});
   }
 
-  getUsers() {
-    return this.http.get<{message: string, data: {users: [User]}}>(this.apiEndpoint, {headers: this.authHeader});
+  getUsers(page: number = 1) {
+    return this.http.get<{message: string, data: {users: [User], pagination: Pagination}}>(this.apiEndpoint + "?page=" + page, {headers: this.authHeader});
   }
 
   isAdmin(): boolean {

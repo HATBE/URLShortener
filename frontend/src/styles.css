@@ -121,4 +121,5 @@ th {
 }
 .btn:disabled {
   background-color: grey;
+  border-color: gray;
 }

@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { faArrowLeft, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faTrash, faUserMinus, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from 'src/app/services/user.service';
+
+import { Emitters } from '../../../../emitters/emitters';
 
 @Component({
   selector: 'app-view-user',
@@ -18,8 +20,12 @@ export class ViewUserComponent implements OnInit {
   error: boolean = false;
   data: any = null;
 
+  yourself: boolean = false;
+
   faArrowLeft = faArrowLeft;
   faTrash = faTrash;
+  faUserPlus = faUserPlus;
+  faUserMinus = faUserMinus;
 
   constructor(
     private userService: UserService,
@@ -43,7 +49,11 @@ export class ViewUserComponent implements OnInit {
 
   successLoadingUser(data: any) {
     this.data = data.data
-    this.title.setTitle(`Stats of ${data.data.user.username}`);
+    this.title.setTitle(`Data of ${data.data.user.username}`);
+
+    if(data.data.user.id == localStorage.getItem('userid')) {
+      this.yourself = true;
+    }
   }
 
   errorLoadingUser(data: any) {
@@ -59,4 +69,16 @@ export class ViewUserComponent implements OnInit {
       this.router.navigate(['/admin/dashboard']);
     });
   }
+
+  onToggleAdmin(event: any) {
+    this.userService.toggleAdmin(`${this.id}`).subscribe(data => {
+      Emitters.toastEmitter.emit({
+        title: `Successfully ${this.data.user.isAdmin ? 'demoted to user' : 'promoted to Admin'}`,
+        state: "success",
+        message: `Successfully ${this.data.user.isAdmin ? 'demoted ' + this.data.user.username + ' to user'  : 'promoted ' + this.data.user.username + ' to admin'}`,
+      });
+      this.router.navigate(['/admin/dashboard']);
+    });
+  }
+
 }

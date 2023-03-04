@@ -2,8 +2,6 @@
 <div class="border rounded overflow-hidden">
   <h4 class="text-light border-bottom p-3 mb-0 bg-gradient-1">Your URLs</h4>
 
-
-
   <app-loading-spinner class="m-3" *ngIf="isLoading"></app-loading-spinner>
 
   <div class="overflow-x-scroll hide-scrollbar" *ngIf="!isLoading">
@@ -25,7 +23,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let url of myUrls">
-          <td>
+          <td style="width: 200px !important; max-width: 200px !important;" class="overflow-hidden">
             <a target="_blank" class="link-light text-decoration-none" href="{{url.url}}">{{url.url}}</a>
           </td>
           <td>
@@ -52,6 +50,7 @@
       </tbody>
     </table>
   </div>
+
   <app-pagination-button [isLoading]="isReLoading" (pageSwitchEvent)="onPageSwitch($event)" [pagination]="pagination" *ngIf="myUrls != null && myUrls.length > 0 && pagination.maxPages > 1"></app-pagination-button>
 
 </div>

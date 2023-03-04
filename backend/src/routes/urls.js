@@ -68,6 +68,8 @@ router.get('/my', mustAuthorize, async (req, res) => {
     )
     .sort( '-date' );
 
+    if(!urls) return false;
+
     let newUrls = [];
 
     for (let i = 0; i < urls.length; i++) {

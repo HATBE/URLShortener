@@ -58,17 +58,6 @@ class User {
         return new User(user);
     }
 
-    static async getAll() {
-        let finalUsers = [];
-        const users = await UserModel.find();
-        if(!users) return false;
-        users.forEach(user => {
-            finalUsers.push(new User(user).getAsObject());
-        });
-        finalUsers.sort(user => {if(user.isAdmin)  return -1}); // list admin at the beginning
-        return finalUsers;
-    }
-
     constructor(user) {
         user = user.toJSON();
 

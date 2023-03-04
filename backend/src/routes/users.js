@@ -2,10 +2,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 
-const userModel = require('../models/user');
+const UserModel = require('../models/user');
 
 const Url = require('../classes/Url');
 const User = require('../classes/User');
+const Validate = require("../classes/Validate");
 
 const mustAuthorize = require('../middleware/mustAuthorize');
 const onlyAdmin = require('../middleware/onlyAdmin');
@@ -13,14 +14,52 @@ const onlyAdmin = require('../middleware/onlyAdmin');
 // -> get a list of all users
 // this list can only be retrieved by an admin
 router.get('/', mustAuthorize, onlyAdmin, async (req, res) => {
+    const limit = 7;
+    let page = 1;
+
+    if(Validate.pageNumber(req.query.page)) {
+        page = req.query.page;
+    }
+
+    const maxCount = await UserModel.find().count();
+    const maxPages = Math.ceil(maxCount / limit);
+
+    if(page > maxPages) {
+        page = maxPages;
+    }
+
+    let skip = page*limit-limit;
+    skip = skip <= 0 ? 0 : skip;
+
     // get a list of all users
-    const users = await User.getAll();
+    const users  = await UserModel.find(
+        {}, 
+        {}, 
+        {limit: limit, skip: skip}
+    )
+    .sort('-isAdmin');
+
+    if(!users) return false;
+
+    let finalUsers = [];
+
+    for (let i = 0; i < users.length; i++) {
+        finalUsers.push((new User(users[i])).getAsObject());
+    }
 
     res.status(200).json({
         status: true, 
-        message: "users",
+        message: "successfully fetched all users",
         data: {
-            users: users
+            users: finalUsers,
+            pagination: {
+                page: +page,
+                maxPages: +maxPages,
+                maxCount: maxCount,
+                hasNext: (page <= maxPages - 1 ? true : false),
+                hasLast: (page > 1 ? true : false),
+                limit: limit
+            }
         }
     });
 });
@@ -34,11 +73,11 @@ router.get('/:id', mustAuthorize, onlyAdmin, async (req,res) => {
     }
 
     // check if user exists
-    if(!await userModel.exists({_id: req.params.id})) {
+    if(!await UserModel.exists({_id: req.params.id})) {
         return res.status(404).json({status: false, message: "This user was not found"});
     }
 
-    const user = new User(await userModel.findOne({_id: req.params.id}))
+    const user = new User(await UserModel.findOne({_id: req.params.id}))
 
     return res.status(200).json({
         status: true, 
@@ -57,11 +96,11 @@ router.delete('/:id', mustAuthorize, async (req, res) => {
     }
 
     // check if user exists
-    if(!await userModel.exists({id: req.params.id})) {
+    if(!await UserModel.exists({id: req.params.id})) {
         return res.status(404).json({status: false, message: "This user was not found"});
     }
     
-    const user = new User(await userModel.findOne({_id: req.params.id}))
+    const user = new User(await UserModel.findOne({_id: req.params.id}))
 
     // if you are not logged in as the user and are no admin: then
     if((req.user.getId() !== user.getId() && !req.user.isAdmin())) {
@@ -91,11 +130,11 @@ router.patch('/:id/password', mustAuthorize, async (req, res) => {
     }
 
     // check if user exists
-    if(!await userModel.exists({id: req.params.id})) {
+    if(!await UserModel.exists({id: req.params.id})) {
         return res.status(404).json({status: false, message: "This user was not found"});
     }
 
-    const user = new User(await userModel.findOne({_id: req.params.id}))
+    const user = new User(await UserModel.findOne({_id: req.params.id}))
 
     // if you are not logged in as the user and are no admin: then
     if((req.user.getId() !== user.getId() && !req.user.isAdmin())) {
@@ -145,18 +184,18 @@ router.patch('/:id/toggleadmin', mustAuthorize, onlyAdmin, async (req,res) => {
     }
 
     // check if user exists
-    if(!await userModel.exists({id: req.params.id})) {
+    if(!await UserModel.exists({id: req.params.id})) {
         return res.status(404).json({status: false, message: "This user was not found"});
     }
 
-    const user = new User(await userModel.findOne({_id: req.params.id}))
+    const user = new User(await UserModel.findOne({_id: req.params.id}))
 
     // if user wants to toggle himself
     if(req.user.getId() === user.getId()) {
         return res.status(400).json({status: false, message: "You can't toggle admin state yourself, you are yourself!"});
     }
 
-    const update = await userModel.findByIdAndUpdate(req.params.id, {isAdmin: !user.isAdmin()});
+    const update = await UserModel.findByIdAndUpdate(req.params.id, {isAdmin: !user.isAdmin()});
     
     update.save();
 
