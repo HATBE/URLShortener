@@ -10,46 +10,49 @@ const Validate = require("../classes/Validate");
 const Pagination = require("../classes/Pagination");
 
 const mustAuthorize = require('../middleware/mustAuthorize');
+const UrlManager = require("../classes/UrlManager");
 
 // -> create a url
 router.post("/", async (req, res) => {
+    const {url} = req.body;
+
     // check if url is passed in the body
-    if(!req.body.url) {
+    if(!url) {
         return res.status(400).json({status: false, message: "Please provide a url!"});
     }
 
-    const rUrl = req.body.url;
-
-    if(!Validate.url(rUrl)) {
+    // check if url is valid 
+    if(!Validate.url(url)) {
         return res.status(400).json({status: false, message: "Please provide a valid url!"});
     }
     
     if(req.user) {
         // if user is logged in
-        const foundOld = await UrlModel.findOne({userid: req.user.getId(), url: rUrl});
+        const foundOld = await UrlModel.findOne({userid: req.user.getId(), url: url});
         if(foundOld) {
             // if the same user tried to shorten this url in the past
             return res.status(400).json({status: false, message: `You already shortened this url! ID: "${foundOld.shorturl}"` });
         }
     }
 
-    const myurl = await Url.create(rUrl, req.user);
+    const myurl = await UrlManager.create(url, req.user);
 
     res.status(200).json({
         status: true, 
-        message: "Successfully added a url.",
+        message: "Successfully added a url to you'r account.",
         data: {
             url: await myurl.getAsObject()
         }
     });
 });
 
-// g-> get all urls from the loggedin user
+// -> get all urls from the loggedin user
 router.get('/my', mustAuthorize, async (req, res) => {
-    let page = 1;
-
-    if(Validate.pageNumber(req.query.page)) {
-        page = req.query.page;
+    let {page} = req.query;
+ 
+    // if page is not valid e.g. string, not in range, ...
+    if(!Validate.pageNumber(req.query.page)) {
+        page = 1;
     }
 
     const pagination = new Pagination(page, await UrlModel.find({userid: req.user.getId()}).count())
@@ -89,7 +92,7 @@ router.get("/:id/stats", mustAuthorize, async (req, res) => {
         return res.status(400).json({status: false, message: "The id is not in a valid format!"});
     }
    
-    const url = await Url.getFromShorturl(req.params.id);
+    const url = await UrlManager.getFromShorturl(req.params.id);
 
     if(!url) {
         return res.status(404).json({status: false, message: "The url was not found!"});
@@ -123,7 +126,7 @@ router.get("/:id/accesslist", mustAuthorize, async (req, res) => {
         return res.status(400).json({status: false, message: "The id is not in a valid format!"});
     }
    
-    const url = await Url.getFromShorturl(req.params.id);
+    const url = await UrlManager.getFromShorturl(req.params.id);
 
     if(!url) {
         return res.status(404).json({status: false, message: "The url was not found!"});
@@ -173,7 +176,7 @@ router.get("/:id", async (req, res) => {
         return res.status(400).json({status: false, message: "The id is not in a valid format!"});
     }
    
-    const url = await Url.getFromShorturl(req.params.id);
+    const url = await UrlManager.getFromShorturl(req.params.id);
 
     if(!url) {
         return res.status(404).json({status: false, message: "The url was not found!"});
@@ -198,7 +201,7 @@ router.delete("/:id", mustAuthorize, async (req, res) => {
         return res.status(400).json({status: false, message: "The id is not in a valid format!"});
     }
 
-    const del = await Url.deleteForUser(req.params.id, req.user);
+    const del = await UrlManager.deleteForUser(req.params.id, req.user);
 
     if(!del.state) {
         return res.status(400).json({status: false, message: del.reason});

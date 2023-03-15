@@ -17,7 +17,7 @@ class Validate {
 
     static url(url) {
         // check if url is valid
-        if(!/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/.test(url)) {
+        if(!new RegExp(/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/).test(url)) {
            return false;
         }
         // check if url is in range

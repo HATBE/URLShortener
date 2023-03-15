@@ -14,7 +14,7 @@
     <button routerLink="/admin/dashboard" class="btn btn-danger bg-gradient-3">
       <fa-icon [icon]="faArrowLeft"></fa-icon> Back
     </button>
-    <button [disabled]="yourself" (click)="onDelete()" class="ms-2 btn btn-danger">
+    <button *ngIf="!data.user.isAdmin" [disabled]="yourself" (click)="onDelete()" class="ms-2 btn btn-danger">
       <fa-icon [icon]="faTrash"></fa-icon> Delete
     </button>
 

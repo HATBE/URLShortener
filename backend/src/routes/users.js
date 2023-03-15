@@ -4,13 +4,14 @@ const router = express.Router();
 
 const UserModel = require('../models/user');
 
-const Url = require('../classes/Url');
 const User = require('../classes/User');
 const Validate = require("../classes/Validate");
 
 const mustAuthorize = require('../middleware/mustAuthorize');
 const onlyAdmin = require('../middleware/onlyAdmin');
 const Pagination = require("../classes/Pagination");
+const UrlManager = require("../classes/UrlManager");
+const UserManager = require("../classes/UserManager");
 
 // -> get a list of all users
 // this list can only be retrieved by an admin
@@ -100,7 +101,7 @@ router.delete('/:id', mustAuthorize, async (req, res) => {
         return res.status(400).json({status: false, message: "You can't delete yourself, your an admin!"});
     }
     
-    await Url.deleteAllUrlsFromUser(req.params.id);
+    await UrlManager.deleteAllUrlsFromUser(req.params.id);
 
     await user.delete();
 
@@ -135,12 +136,12 @@ router.patch('/:id/password', mustAuthorize, async (req, res) => {
 
     // bypass oldpassword if logged in as admin
     if(req.user.isAdmin()) {
-        change = await User.resetPassword(user, req.body.newpassword);
+        change = await UserManager.resetPassword(user, req.body.newpassword);
     } else {
         if((!req.body.oldpassword || !req.body.newpassword)) {
             return res.status(400).json({status: false, message: "please provide a old and new password"});
         }
-        change = await User.changePassword(user, req.body.oldpassword, req.body.newpassword);
+        change = await UserManager.changePassword(user, req.body.oldpassword, req.body.newpassword);
     }
    
     if(!change.status) {
@@ -156,7 +157,7 @@ router.patch('/:id/password', mustAuthorize, async (req, res) => {
 
 // -> delete the urls of the logged in user
 router.delete('/urls', mustAuthorize, async (req, res) => {
-    await Url.deleteAllUrlsFromUser(req.user.getId());
+    await UrlManager.deleteAllUrlsFromUser(req.user.getId());
     res.status(200).json({
         status: true, 
         message: "urls deleted",

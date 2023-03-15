@@ -46,7 +46,7 @@ export class ShortenerComponent implements OnInit {
       this.url = `https://${this.url}`;
       this.info = "A protocol (https://) was added.";
     }
-    if(!/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/.test(this.url)) {
+    if(!new RegExp(/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/).test(this.url)) {
         this.error = "URL format is wrong! Use http(s)://url.com(/*)";
         this.isLoading = false;
         return;
