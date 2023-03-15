@@ -7,6 +7,7 @@ const UrlTrackerModel = require('../models/urlTracker');
 const Url = require('../classes/Url');
 const UrlTracker = require('../classes/UrlTracker');
 const Validate = require("../classes/Validate");
+const Pagination = require("../classes/Pagination");
 
 const mustAuthorize = require('../middleware/mustAuthorize');
 
@@ -45,27 +46,21 @@ router.post("/", async (req, res) => {
 
 // g-> get all urls from the loggedin user
 router.get('/my', mustAuthorize, async (req, res) => {
-    const limit = 7;
     let page = 1;
 
     if(Validate.pageNumber(req.query.page)) {
         page = req.query.page;
     }
 
-    const maxCount = await UrlModel.find({userid: req.user.getId()}).count();
-    const maxPages = Math.ceil(maxCount / limit);
-
-    if(page > maxPages) {
-        page = maxPages;
-    }
-
-    let skip = page*limit-limit;
-    skip = skip <= 0 ? 0 : skip;
+    const pagination = new Pagination(page, await UrlModel.find({userid: req.user.getId()}).count())
 
     let urls = await UrlModel.find(
         {userid: req.user.getId()}, 
         {}, 
-        {limit: limit, skip: skip}
+        {
+            limit: pagination.getLimit(), 
+            skip: pagination.getSkip()
+        }
     )
     .sort( '-date' );
 
@@ -82,14 +77,7 @@ router.get('/my', mustAuthorize, async (req, res) => {
         message: "success",
         data: {
             urls: newUrls,
-            pagination: {
-                page: +page,
-                maxPages: +maxPages,
-                maxCount: maxCount,
-                hasNext: (page <= maxPages - 1 ? true : false),
-                hasLast: (page > 1 ? true : false),
-                limit: limit
-            }
+            pagination: pagination.getAsObject()
         }
     });
 });
@@ -124,7 +112,6 @@ router.get("/:id/stats", mustAuthorize, async (req, res) => {
 
 // -> get the accesslist of a url by its id
 router.get("/:id/accesslist", mustAuthorize, async (req, res) => {
-    const limit = 7;
     let page = 1;
 
     if(Validate.pageNumber(req.query.page)) {
@@ -147,20 +134,15 @@ router.get("/:id/accesslist", mustAuthorize, async (req, res) => {
         return res.status(401).json({status: false, message: "You are unauthorized!"});
     }
 
-    const maxCount = await UrlTrackerModel.find({url: url.getRawId()}).count();
-    const maxPages = Math.ceil(maxCount / limit);
-
-    if(page > maxPages) {
-        page = maxPages;
-    }
-
-    let skip = page*limit-limit;
-    skip = skip <= 0 ? 0 : skip;
+    const pagination = new Pagination(page, await UrlTrackerModel.find({url: url.getRawId()}).count())
 
     const trackers  = await UrlTrackerModel.find(
         {url: url.getRawId()}, 
         {}, 
-        {limit: limit, skip: skip}
+        {
+            limit: pagination.getLimit(), 
+            skip: pagination.getSkip()
+        }
     )
     .sort({date: -1});
 
@@ -178,14 +160,7 @@ router.get("/:id/accesslist", mustAuthorize, async (req, res) => {
         data: {
             accesslist: classTrackers,
             url: await url.getAsObject(),
-            pagination: {
-                page: +page,
-                maxPages: +maxPages,
-                maxCount: maxCount,
-                hasNext: (page <= maxPages - 1 ? true : false),
-                hasLast: (page > 1 ? true : false),
-                limit: limit
-            }
+            pagination: pagination.getAsObject()
         }
     });
 });

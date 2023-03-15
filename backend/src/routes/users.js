@@ -10,32 +10,27 @@ const Validate = require("../classes/Validate");
 
 const mustAuthorize = require('../middleware/mustAuthorize');
 const onlyAdmin = require('../middleware/onlyAdmin');
+const Pagination = require("../classes/Pagination");
 
 // -> get a list of all users
 // this list can only be retrieved by an admin
 router.get('/', mustAuthorize, onlyAdmin, async (req, res) => {
-    const limit = 7;
     let page = 1;
 
-    if(Validate.pageNumber(req.query.page)) {
+    if(Validate.pageNumber(req.query.page,)) {
         page = req.query.page;
     }
 
-    const maxCount = await UserModel.find().count();
-    const maxPages = Math.ceil(maxCount / limit);
-
-    if(page > maxPages) {
-        page = maxPages;
-    }
-
-    let skip = page*limit-limit;
-    skip = skip <= 0 ? 0 : skip;
+    const pagination = new Pagination(page, await UserModel.find().count())
 
     // get a list of all users
     const users  = await UserModel.find(
         {}, 
         {}, 
-        {limit: limit, skip: skip}
+        {
+            limit: pagination.getLimit(), 
+            skip: pagination.getSkip()
+        }
     )
     .sort({isAdmin: -1, username: 1});
 
@@ -52,14 +47,7 @@ router.get('/', mustAuthorize, onlyAdmin, async (req, res) => {
         message: "successfully fetched all users",
         data: {
             users: finalUsers,
-            pagination: {
-                page: +page,
-                maxPages: +maxPages,
-                maxCount: maxCount,
-                hasNext: (page <= maxPages - 1 ? true : false),
-                hasLast: (page > 1 ? true : false),
-                limit: limit
-            }
+            pagination: pagination.getAsObject()
         }
     });
 });
