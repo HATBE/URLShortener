@@ -1,6 +1,8 @@
 const User = require('./User');
 const Validate = require('./Validate');
 
+const bcrypt = require('bcryptjs');
+
 const UserModel = require('../models/user');
 
 class UserManager {
