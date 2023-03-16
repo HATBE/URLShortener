@@ -87,12 +87,14 @@ router.get('/my', mustAuthorize, async (req, res) => {
 
 // -> get stats of a url by its id
 router.get("/:id/stats", mustAuthorize, async (req, res) => {
+    let {id} = req.params;
+
     // check if id is right
-    if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
+    if(id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
         return res.status(400).json({status: false, message: "The id is not in a valid format!"});
     }
    
-    const url = await UrlManager.getFromShorturl(req.params.id);
+    const url = await UrlManager.getFromShorturl(id);
 
     if(!url) {
         return res.status(404).json({status: false, message: "The url was not found!"});
@@ -115,18 +117,19 @@ router.get("/:id/stats", mustAuthorize, async (req, res) => {
 
 // -> get the accesslist of a url by its id
 router.get("/:id/accesslist", mustAuthorize, async (req, res) => {
-    let page = 1;
+    let {page} = req.query;
+    let {id} = req.params;
 
-    if(Validate.pageNumber(req.query.page)) {
-        page = req.query.page;
+    if(!Validate.pageNumber(page)) {
+        page = 1;
     }
 
     // check if id is right
-    if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
+    if(id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
         return res.status(400).json({status: false, message: "The id is not in a valid format!"});
     }
    
-    const url = await UrlManager.getFromShorturl(req.params.id);
+    const url = await UrlManager.getFromShorturl(id);
 
     if(!url) {
         return res.status(404).json({status: false, message: "The url was not found!"});
@@ -171,12 +174,14 @@ router.get("/:id/accesslist", mustAuthorize, async (req, res) => {
 
 // -> get a url with its id
 router.get("/:id", async (req, res) => {
+    let {id} = req.params;
+
     // check if id is right
-    if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
+    if(id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
         return res.status(400).json({status: false, message: "The id is not in a valid format!"});
     }
    
-    const url = await UrlManager.getFromShorturl(req.params.id);
+    const url = await UrlManager.getFromShorturl(id);
 
     if(!url) {
         return res.status(404).json({status: false, message: "The url was not found!"});
@@ -196,12 +201,14 @@ router.get("/:id", async (req, res) => {
 
 // -> delete a url with its id
 router.delete("/:id", mustAuthorize, async (req, res) => {
+    let {id} = req.params;
+
     // check if id is right
-    if(req.params.id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
+    if(id.length !== (+process.env.SHORTURL_LENGTH || 9)) {
         return res.status(400).json({status: false, message: "The id is not in a valid format!"});
     }
 
-    const del = await UrlManager.deleteForUser(req.params.id, req.user);
+    const del = await UrlManager.deleteForUser(id, req.user);
 
     if(!del.state) {
         return res.status(400).json({status: false, message: del.reason});

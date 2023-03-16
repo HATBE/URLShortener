@@ -16,10 +16,10 @@ const UserManager = require("../classes/UserManager");
 // -> get a list of all users
 // this list can only be retrieved by an admin
 router.get('/', mustAuthorize, onlyAdmin, async (req, res) => {
-    let page = 1;
+    let {page} = req.query;
 
-    if(Validate.pageNumber(req.query.page,)) {
-        page = req.query.page;
+    if(!Validate.pageNumber(page)) {
+        page = 1;
     }
 
     const pagination = new Pagination(page, await UserModel.find().count())
@@ -79,17 +79,18 @@ router.get('/:id', mustAuthorize, onlyAdmin, async (req,res) => {
 
 // -> delete a user by his id
 router.delete('/:id', mustAuthorize, async (req, res) => {
+    let {id} = req.params;
     // check id id is a valid mongoose id
-    if(!mongoose.isValidObjectId(req.params.id)) {
+    if(!mongoose.isValidObjectId(id)) {
         return res.status(400).json({status: false, message: "The id is not in a valid format!"});
     }
 
     // check if user exists
-    if(!await UserModel.exists({id: req.params.id})) {
+    if(!await UserModel.exists({id: id})) {
         return res.status(404).json({status: false, message: "This user was not found"});
     }
     
-    const user = new User(await UserModel.findOne({_id: req.params.id}))
+    const user = new User(await UserModel.findOne({_id: id}))
 
     // if you are not logged in as the user and are no admin: then
     if((req.user.getId() !== user.getId() && !req.user.isAdmin())) {
@@ -101,7 +102,7 @@ router.delete('/:id', mustAuthorize, async (req, res) => {
         return res.status(400).json({status: false, message: "You can't delete yourself, your an admin!"});
     }
     
-    await UrlManager.deleteAllUrlsFromUser(req.params.id);
+    await UrlManager.deleteAllUrlsFromUser(id);
 
     await user.delete();
 
@@ -113,17 +114,20 @@ router.delete('/:id', mustAuthorize, async (req, res) => {
 
 // -> change the password of a user by his id
 router.patch('/:id/password', mustAuthorize, async (req, res) => {
+    let {id} = req.params;
+    let {newpassword, oldpassword} = req.body;
+
     // check id id is a valid mongoose id
-    if(!mongoose.isValidObjectId(req.params.id)) {
+    if(!mongoose.isValidObjectId(id)) {
         return res.status(400).json({status: false, message: "The id is not in a valid format!"});
     }
 
     // check if user exists
-    if(!await UserModel.exists({id: req.params.id})) {
+    if(!await UserModel.exists({id: id})) {
         return res.status(404).json({status: false, message: "This user was not found"});
     }
 
-    const user = new User(await UserModel.findOne({_id: req.params.id}))
+    const user = new User(await UserModel.findOne({_id: id}))
 
     // if you are not logged in as the user and are no admin: then
     if((req.user.getId() !== user.getId() && !req.user.isAdmin())) {
@@ -132,16 +136,14 @@ router.patch('/:id/password', mustAuthorize, async (req, res) => {
 
     let change = null;
 
-    console.log( req.body.newpassword)
-
     // bypass oldpassword if logged in as admin
     if(req.user.isAdmin()) {
-        change = await UserManager.resetPassword(user, req.body.newpassword);
+        change = await UserManager.resetPassword(user, newpassword);
     } else {
-        if((!req.body.oldpassword || !req.body.newpassword)) {
+        if((!oldpassword || !newpassword)) {
             return res.status(400).json({status: false, message: "please provide a old and new password"});
         }
-        change = await UserManager.changePassword(user, req.body.oldpassword, req.body.newpassword);
+        change = await UserManager.changePassword(user, oldpassword, newpassword);
     }
    
     if(!change.status) {
@@ -167,24 +169,26 @@ router.delete('/urls', mustAuthorize, async (req, res) => {
 // -> toggle the admin stats of a user by his id
 // only a admin user can do this
 router.patch('/:id/toggleadmin', mustAuthorize, onlyAdmin, async (req,res) => {
+    let {id} = req.params;
+
     // check id id is a valid mongoose id
-    if(!mongoose.isValidObjectId(req.params.id)) {
+    if(!mongoose.isValidObjectId(id)) {
         return res.status(400).json({status: false, message: "The id is not in a valid format!"});
     }
 
     // check if user exists
-    if(!await UserModel.exists({id: req.params.id})) {
+    if(!await UserModel.exists({id: id})) {
         return res.status(404).json({status: false, message: "This user was not found"});
     }
 
-    const user = new User(await UserModel.findOne({_id: req.params.id}))
+    const user = new User(await UserModel.findOne({_id: id}))
 
     // if user wants to toggle himself
     if(req.user.getId() === user.getId()) {
         return res.status(400).json({status: false, message: "You can't toggle admin state yourself, you are yourself!"});
     }
 
-    const update = await UserModel.findByIdAndUpdate(req.params.id, {isAdmin: !user.isAdmin()});
+    const update = await UserModel.findByIdAndUpdate(id, {isAdmin: !user.isAdmin()});
     
     update.save();
 

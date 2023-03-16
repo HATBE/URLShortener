@@ -20,27 +20,26 @@ router.get('/loggedin', mustAuthorize, async (req, res) => {
 
 // -> register as a new user
 router.post('/register', async (req, res) => {
+    let {password, username} = req.body;
+
     // check if username and password was provided
-    if(!req.body.password || !req.body.username) {
+    if(!password || !username) {
         return res.status(400).json({status: false, message: "Please provide a username and password"});
     }
 
-    const rUsername = req.body.username;
-    const rPassword = req.body.password;
-
     // check if username and pw are in range
-    if(!Validate.username(rUsername) || !Validate.password(rPassword)) {
+    if(!Validate.username(username) || !Validate.password(password)) {
         return res.status(400).json({status: false, message: "Username or password not in range"});
     }
 
-    const register = await Auth.register(rUsername, rPassword);
+    const register = await Auth.register(username, password);
 
     if(!register.status) {
-        console.log(`[AUTH] user "${rUsername}" failed to register.`);
+        console.log(`[AUTH] user "${username}" failed to register.`);
         return res.status(400).json({status: false, message: register.reason});
     }
     
-    console.log(`[AUTH] user "${rUsername}" registered successfully.`);
+    console.log(`[AUTH] user "${username}" registered successfully.`);
     return res.status(201).json({
         status: true, 
         message: "Successfully, created user", 
@@ -52,13 +51,15 @@ router.post('/register', async (req, res) => {
 
 // -> login as a new user
 router.post('/login', async (req, res) => {
+    let {password, username} = req.body;
+
     // check if inputs are as required
-    if(!req.body.password || !req.body.username) {
+    if(!password || !username) {
         return res.status(400).json({status: false, message: "please provide a username and password"});
     }
 
     // login
-    const login = await Auth.login(res, req.body.username, req.body.password);
+    const login = await Auth.login(res, username, password);
     
     if(!login.status) {
         // if login failed
