@@ -11,7 +11,7 @@ const mustAuthorize = require('../middleware/mustAuthorize');
 router.get('/loggedin', mustAuthorize, async (req, res) => {
     res.status(200).json({
         status: true, 
-        message: "userdata received",
+        message: "Successfully received the date of the currently loggedin user.",
         data: {
             user: req.user.getAsObject()
         }
@@ -24,25 +24,31 @@ router.post('/register', async (req, res) => {
 
     // check if username and password was provided
     if(!password || !username) {
-        return res.status(400).json({status: false, message: "Please provide a username and password"});
+        return res.status(400).json({status: false, message: "Please provide a username and a password!"});
     }
 
-    // check if username and pw are in range
-    if(!Validate.username(username) || !Validate.password(password)) {
-        return res.status(400).json({status: false, message: "Username or password not in range"});
+    // check if the format of the username is valid
+    if(!Validate.username(username)) {
+        return res.status(400).json({status: false, message: "The username is in a wrong format!"});
+    }
+    // check if the format of the password is valid
+    if(!Validate.password(password)) {
+        return res.status(400).json({status: false, message: "The password is in a wrong format!"});
     }
 
     const register = await Auth.register(username, password);
 
+    // if register failed, throw error
     if(!register.status) {
-        console.log(`[AUTH] user "${username}" failed to register.`);
+        console.log(`[AUTH] user "${username}" failed to register. Because: ${register.reason}`);
         return res.status(400).json({status: false, message: register.reason});
     }
     
     console.log(`[AUTH] user "${username}" registered successfully.`);
+
     return res.status(201).json({
         status: true, 
-        message: "Successfully, created user", 
+        message: `Successfully, created the user "${username}"`, 
         data: {
             user: register.user.getAsObject()
         }
