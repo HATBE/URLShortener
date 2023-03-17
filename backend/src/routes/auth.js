@@ -3,7 +3,6 @@ const router = express.Router();
 
 const Validate = require('../classes/Validate');
 const Auth = require('../classes/Auth');
-const User = require('../classes/User');
 
 const mustAuthorize = require('../middleware/mustAuthorize');
 
@@ -11,7 +10,7 @@ const mustAuthorize = require('../middleware/mustAuthorize');
 router.get('/loggedin', mustAuthorize, async (req, res) => {
     res.status(200).json({
         status: true, 
-        message: "Successfully received the date of the currently loggedin user.",
+        message: "Successfully received the data of the currently loggedin user.",
         data: {
             user: req.user.getAsObject()
         }
@@ -31,26 +30,27 @@ router.post('/register', async (req, res) => {
     if(!Validate.username(username)) {
         return res.status(400).json({status: false, message: "The username is in a wrong format!"});
     }
+
     // check if the format of the password is valid
     if(!Validate.password(password)) {
         return res.status(400).json({status: false, message: "The password is in a wrong format!"});
     }
 
-    const register = await Auth.register(username, password);
+    const registerAttempt = await Auth.register(username, password);
 
     // if register failed, throw error
-    if(!register.status) {
-        console.log(`[AUTH] user "${username}" failed to register. Because: ${register.reason}`);
-        return res.status(400).json({status: false, message: register.reason});
+    if(!registerAttempt.status) {
+        console.log(`[AUTH] THe user "${username}" failed to register! Reason: ${registerAttempt.reason}`);
+        return res.status(400).json({status: false, message: registerAttempt.reason});
     }
     
-    console.log(`[AUTH] user "${username}" registered successfully.`);
+    console.log(`[AUTH] The user "${username}" registered successfully.`);
 
     return res.status(201).json({
         status: true, 
-        message: `Successfully, created the user "${username}"`, 
+        message: `Successfully created the user "${username}".`, 
         data: {
-            user: register.user.getAsObject()
+            user: registerAttempt.user.getAsObject()
         }
     });
 });
@@ -61,25 +61,26 @@ router.post('/login', async (req, res) => {
 
     // check if inputs are as required
     if(!password || !username) {
-        return res.status(400).json({status: false, message: "please provide a username and password"});
+        return res.status(400).json({status: false, message: "Please provide a username and a password!"});
     }
 
     // login
-    const login = await Auth.login(res, username, password);
+    const loginAttempt = await Auth.login(username, password);
     
-    if(!login.status) {
+    if(!loginAttempt.status) {
         // if login failed
-        return res.status(401).json({status: false, message: "Invalid credentials"});
+        console.log(`[AUTH] The user "${username}" failed to login! Reason: ${loginAttempt.reason}`);
+        return res.status(401).json({status: false, message: "Invalid credentials!"}); // DON'T USE loginAttempt.reason here (ONLY PRINT TO LOGS)!!!!!! (for security reasons)
     }
 
-    const user = new User(login.user);
+    console.log(`[AUTH] The user "${username}" loggedin successfully.`); // write successful login to log
 
     res.status(200).json({
         status: true, 
-        message: "successfully loggedin",
+        message: "Successfully loggedin.",
         data: {
-            token: login.token,
-            user: user.getAsObject()
+            token: loginAttempt.token,
+            user: loginAttempt.user.getAsObject()
         }, 
     });
 });

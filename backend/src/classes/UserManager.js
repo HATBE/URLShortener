@@ -6,6 +6,17 @@ const bcrypt = require('bcryptjs');
 const UserModel = require('../models/user');
 
 class UserManager {
+    static async create(username, password) {
+        // build new user
+        const user = await new UserModel({
+            username: username,
+            password: password,
+            isAdmin: false
+        }).save();
+
+        return new User(user); // save user
+    }
+
     static async getCount() {
         return await UserModel.count();
     }
@@ -48,12 +59,22 @@ class UserManager {
 
         return {status: true};
     }
-
     
     static async getFromId(id) {
         const user = await UserModel.findOne({_id: id});
+        
         if(!user) return false;
         return new User(user);
+    }
+
+    static async getFromUsername(username) {
+        const user = await UserModel.findOne({username: username});
+        if(!user) return false;
+        return new User(user);
+    }
+
+    static async usernameExists(username) {
+        return await UserModel.exists({username: username});
     }
 }
 

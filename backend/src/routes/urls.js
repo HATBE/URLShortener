@@ -18,30 +18,43 @@ router.post("/", async (req, res) => {
 
     // check if url is passed in the body
     if(!url) {
-        return res.status(400).json({status: false, message: "Please provide a url!"});
+        return res.status(400).json({
+            status: false, 
+            message: "Please provide a url!"
+        });
     }
 
     // check if url is valid 
     if(!Validate.url(url)) {
-        return res.status(400).json({status: false, message: "Please provide a valid url!"});
+        return res.status(400).json({
+            status: false, 
+            message: "Please provide a valid url!"
+        });
     }
     
     if(req.user) {
         // if user is logged in
-        const foundOld = await UrlModel.findOne({userid: req.user.getId(), url: url});
-        if(foundOld) {
+        const foundOldUrl = await UrlModel.findOne({
+                                userid: req.user.getId(), 
+                                url: url
+                            });
+
+        if(foundOldUrl) {
             // if the same user tried to shorten this url in the past
-            return res.status(400).json({status: false, message: `You already shortened this url! ID: "${foundOld.shorturl}"` });
+            return res.status(400).json({
+                status: false, 
+                message: `You already shortened this url! ID: "${foundOldUrl.shorturl}"`
+            });
         }
     }
 
-    const myurl = await UrlManager.create(url, req.user);
+    const newUrl = await UrlManager.create(url, req.user);
 
     res.status(200).json({
         status: true, 
-        message: "Successfully added a url to you'r account.",
+        message: "Successfully added the url to your account.",
         data: {
-            url: await myurl.getAsObject()
+            url: await newUrl.getAsObject()
         }
     });
 });
@@ -58,7 +71,9 @@ router.get('/my', mustAuthorize, async (req, res) => {
     const pagination = new Pagination(page, await UrlModel.find({userid: req.user.getId()}).count())
 
     let urls = await UrlModel.find(
-        {userid: req.user.getId()}, 
+        {
+            userid: req.user.getId()
+        }, 
         {}, 
         {
             limit: pagination.getLimit(), 

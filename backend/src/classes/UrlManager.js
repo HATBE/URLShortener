@@ -21,31 +21,30 @@ class UrlManager {
         return new Url(url);
     }
 
-    static async create(rUrl, user) {
+    static async create(url, user) {
         let shorturl;
-        let rep = false;
+        let rpt = false;
+
         do {
             // generate new shorturl, check if it already exists in db, if exists, repeat
             shorturl = randomString.generate({
                 length: +process.env.SHORTURL_LENGTH || 9
             });
     
-            const result = await UrlModel.exists({shorturl: shorturl})
-            if(result) rep = true;
-        } while(rep);
+            if(await UrlManager.shorturlExists(shorturl)) {
+                rpt = true;
+            }
+        } while(rpt);
 
         // build urlmodel
-        const url = new UrlModel({
-            url: rUrl,
+        let newUrl = await new UrlModel({
+            url: url,
             shorturl: shorturl,
             date: Math.round(Date.now() / 1000),
             userid: user ? user.getId() : null || null
-        });
-
-         // save urlmodel
-        const save = await url.save();
-
-        return new Url(save);
+        }).save();
+        
+        return new Url(newUrl);
     }
 
     static async deleteForUser(shorturl, user) {
@@ -73,6 +72,10 @@ class UrlManager {
             const cUrl = await UrlManager.getFromId(url._id);
             cUrl.delete();
         });
+    }
+
+    static async shorturlExists(shorturl) {
+        return await UrlModel.exists({shorturl: shorturl});
     }
 }
 

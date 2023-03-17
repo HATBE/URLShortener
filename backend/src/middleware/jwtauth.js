@@ -33,7 +33,7 @@ async function authJwt(req, res, next) {
         req.user = null;
         return next();
     }
-
+    
     const user = await UserManager.getFromId(claim.id); // get user from id saved in token / claim
 
     if(!user) {

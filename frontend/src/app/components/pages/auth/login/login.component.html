@@ -9,9 +9,9 @@
               <div class="card-body p-4 p-lg-5 text-white">
                   <form [formGroup]="form" (submit)="onSubmitLogin()">
                       <div class="d-flex align-items-center mb-3 pb-1">
-                          <span class="h1 fw-bold mb-0 text-primary">Login</span>
+                          <h2 class="h1 fw-bold mb-0 text-primary">Login</h2>
                       </div>
-                      <div class="fw-normal mb-3 pb-3 h5" style="letter-spacing: 1px;">Sign into your account</div>
+                      <h5 class="text-light fw-normal mb-3 pb-3 h5" style="letter-spacing: 1px;">Sign into your account</h5>
                       <div class="w-100 alert alert-danger" *ngIf="error">
                         <span class="fw-bold">Error!</span> {{error}}
                       </div>

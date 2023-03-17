@@ -16,7 +16,7 @@ class Pagination {
             this.#page = this.#maxPages;
         }
 
-        this.#skip = this.#page*this.#limit-this.#limit;
+        this.#skip = this.#page * this.#limit - this.#limit;
         this.#skip = this.#skip <= 0 ? 0 : this.#skip;
         
         this.#hasLast = this.#page > 1 ? true : false;

@@ -54,8 +54,6 @@ export class UrlAccessListComponent implements OnInit {
 
     let list: any[] = [];
 
-    console.log(data)
-
     data.data.accesslist.forEach(e => {
       list.push([e.date, e.ip]);
     });

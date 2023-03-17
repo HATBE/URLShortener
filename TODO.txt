@@ -1,5 +1,2 @@
-- !big refactor! restructor services, components, usw.
-
-- restructure backend to reduce circular dependencies.
+- !big refactor! (frontend) restructor services, components, usw.
 - add sorting for myUrl/filter and admin interface user list.
-- make errors more dynamic
