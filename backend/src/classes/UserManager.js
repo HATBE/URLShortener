@@ -34,11 +34,9 @@ class UserManager {
         const salt = await bcrypt.genSalt(10); // generate salt
         const hashedPassword = await bcrypt.hash(newpassword, salt); // hash password
 
-        const update = await UserModel.findByIdAndUpdate(user.getRawId(), {
+        const updatedUser = await UserModel.findByIdAndUpdate(user.getRawId(), {
             password: hashedPassword
-        });
-
-        const result = await update.save(); // save user
+        }).save();
 
         return {status: true};
     }
@@ -51,11 +49,9 @@ class UserManager {
         const salt = await bcrypt.genSalt(10); // generate salt
         const hashedPassword = await bcrypt.hash(newpassword, salt); // hash password
 
-        const update = await UserModel.findByIdAndUpdate(user.getRawId(), {
+        const updatedUser = await UserModel.findByIdAndUpdate(user.getRawId(), {
             password: hashedPassword
-        });
-
-        const result = await update.save(); // save user
+        }).save(); // save user
 
         return {status: true};
     }

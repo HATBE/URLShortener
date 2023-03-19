@@ -153,7 +153,7 @@ router.patch('/:id/password', mustAuthorize, async (req, res) => {
 
     res.status(200).json({
         status: true, 
-        message: "Password successfully changed",
+        message: "Successully changed your password.",
     });
 });
 
@@ -162,13 +162,13 @@ router.delete('/urls', mustAuthorize, async (req, res) => {
     await UrlManager.deleteAllUrlsFromUser(req.user.getId());
     res.status(200).json({
         status: true, 
-        message: "urls deleted",
+        message: "Successfully deleted your urls.",
     });
 });
 
 // -> toggle the admin stats of a user by his id
 // only a admin user can do this
-router.patch('/:id/toggleadmin', mustAuthorize, onlyAdmin, async (req,res) => {
+router.patch('/:id/toggleadmin', mustAuthorize, onlyAdmin, async (req, res) => {
     let {id} = req.params;
 
     // check id id is a valid mongoose id
@@ -181,16 +181,16 @@ router.patch('/:id/toggleadmin', mustAuthorize, onlyAdmin, async (req,res) => {
         return res.status(404).json({status: false, message: "This user was not found"});
     }
 
-    const user = new User(await UserModel.findOne({_id: id}))
+    const user = new User(await UserModel.findOne({_id: id}));
 
     // if user wants to toggle himself
     if(req.user.getId() === user.getId()) {
         return res.status(400).json({status: false, message: "You can't toggle admin state yourself, you are yourself!"});
     }
 
-    const update = await UserModel.findByIdAndUpdate(id, {isAdmin: !user.isAdmin()});
-    
-    update.save();
+    const updatedUser = await UserModel.findByIdAndUpdate(id, {
+        isAdmin: !user.isAdmin()
+    }).save();
 
     res.status(200).json({
         status: true, 

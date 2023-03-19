@@ -15,11 +15,9 @@ class UrlTracker {
             url: urlId,
             date: Math.round(Date.now() / 1000),
             ip: (ip === '::1' || ip === '127.0.0.1' || ip === '::ffff:127.0.0.1') ? 'localhost' : ip // if access comes from home address, enter localhost as a string
-        });
+        }).save();
 
-        const save = await urlTracker.save();
-
-        return save;
+        return urlTracker;
     }
 
     static async getCountFromUrl(url) {
