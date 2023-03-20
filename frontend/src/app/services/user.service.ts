@@ -18,7 +18,7 @@ export class UserService {
   ) { }
 
   delete(id: string) {
-    return this.http.delete(this.apiEndpoint + '/' + id, {headers: this.authHeader});
+    return this.http.delete(this.apiEndpoint + id, {headers: this.authHeader});
   }
 
   getUsers(page: number = 1) {

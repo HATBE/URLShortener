@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-const User = require('./User');
 const UserManager = require('./UserManager');
 
 class Auth {
@@ -14,7 +13,17 @@ class Auth {
             };
         }
 
+
+        console.log(username)
+
         const user = await UserManager.getFromUsername(username);
+
+        if(!user) {
+            return {
+                status: false, 
+                reason: "User does not exist!"
+            };
+        }
 
         // compare passwords (submited and from db), if they don't match, return
         if(!await user.comparePasswords(password)) {

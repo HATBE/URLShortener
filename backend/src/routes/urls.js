@@ -32,6 +32,8 @@ router.post("/", async (req, res) => {
         });
     }
     
+    console.log(req.user)
+
     if(req.user) {
         // if user is logged in
         const foundOldUrl = await UrlModel.findOne({

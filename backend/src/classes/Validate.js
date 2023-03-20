@@ -8,6 +8,10 @@ class Validate {
     }
 
     static username(username) {
+        // check if url is valid
+        if(!new RegExp(/^[A-Za-z0-9]*$/).test(username)) {
+            return false;
+        }
         // check if username is in range
         if(username.length < 3 || username.length > 16) {
             return false;

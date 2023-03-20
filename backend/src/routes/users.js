@@ -66,7 +66,7 @@ router.get('/:id', mustAuthorize, onlyAdmin, async (req,res) => {
         return res.status(404).json({status: false, message: "This user was not found"});
     }
 
-    const user = new User(await UserModel.findOne({_id: req.params.id}))
+    const user = new User(await UserModel.findOne({_id: req.params.id}));
 
     return res.status(200).json({
         status: true, 
@@ -74,41 +74,6 @@ router.get('/:id', mustAuthorize, onlyAdmin, async (req,res) => {
         data: {
             user: user.getAsObject()
         }
-    });
-});
-
-// -> delete a user by his id
-router.delete('/:id', mustAuthorize, async (req, res) => {
-    let {id} = req.params;
-    // check id id is a valid mongoose id
-    if(!mongoose.isValidObjectId(id)) {
-        return res.status(400).json({status: false, message: "The id is not in a valid format!"});
-    }
-
-    // check if user exists
-    if(!await UserModel.exists({id: id})) {
-        return res.status(404).json({status: false, message: "This user was not found"});
-    }
-    
-    const user = new User(await UserModel.findOne({_id: id}))
-
-    // if you are not logged in as the user and are no admin: then
-    if((req.user.getId() !== user.getId() && !req.user.isAdmin())) {
-        return res.status(401).json({status: false, message: "You are unauthorized!"});
-    }
-
-    // if user is an admin and wants to delete himself
-    if(req.user.isAdmin() && req.user.getId() === user.getId()) {
-        return res.status(400).json({status: false, message: "You can't delete yourself, your an admin!"});
-    }
-    
-    await UrlManager.deleteAllUrlsFromUser(id);
-
-    await user.delete();
-
-    res.status(200).json({
-        status: true, 
-        message: "Successfully deleted user",
     });
 });
 
@@ -190,11 +155,48 @@ router.patch('/:id/toggleadmin', mustAuthorize, onlyAdmin, async (req, res) => {
 
     const updatedUser = await UserModel.findByIdAndUpdate(id, {
         isAdmin: !user.isAdmin()
-    }).save();
+    })
+    
+    updatedUser.save();
 
     res.status(200).json({
         status: true, 
         message: `Successfully set admin state to ${!user.isAdmin()}`,
+    });
+});
+
+// -> delete a user by his id
+router.delete('/:id', mustAuthorize, async (req, res) => {
+    let {id} = req.params;
+    // check id id is a valid mongoose id
+    if(!mongoose.isValidObjectId(id)) {
+        return res.status(400).json({status: false, message: "The id is not in a valid format!"});
+    }
+
+    // check if user exists
+    if(!await UserModel.exists({id: id})) {
+        return res.status(404).json({status: false, message: "This user was not found"});
+    }
+    
+    const user = new User(await UserModel.findOne({_id: id}))
+
+    // if you are not logged in as the user and are no admin: then
+    if((req.user.getId() !== user.getId() && !req.user.isAdmin())) {
+        return res.status(401).json({status: false, message: "You are unauthorized!"});
+    }
+
+    // if user is an admin and wants to delete himself
+    if(req.user.isAdmin() && req.user.getId() === user.getId()) {
+        return res.status(400).json({status: false, message: "You can't delete yourself, your an admin!"});
+    }
+    
+    await UrlManager.deleteAllUrlsFromUser(id);
+
+    await user.delete();
+
+    res.status(200).json({
+        status: true, 
+        message: "Successfully deleted user",
     });
 });
 

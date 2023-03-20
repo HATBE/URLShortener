@@ -1,7 +1,6 @@
 const UrlModel = require('../models/url');
 const UrlTrackerModel = require('../models/urlTracker');
 
-const User = require('./User');
 const UrlTracker = require('./UrlTracker');
 const UserManager = require('./UserManager');
 

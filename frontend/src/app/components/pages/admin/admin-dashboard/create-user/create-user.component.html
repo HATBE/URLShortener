@@ -1,5 +1,5 @@
 <div class="w-100 border rounded overflow-hidden">
-  <h4 class="text-light border-bottom p-3 mb-0 bg-gradient-3">Create User</h4>
+  <h4 class="text-light border-bottom p-3 mb-0 bg-gradient-1">Create User</h4>
 
   <div class="p-3">
     <div class="w-100 alert alert-danger" *ngIf="error">
@@ -18,7 +18,7 @@
         <input formControlName="password" type="password" class="form-control text-light form-control bg-dark" placeholder="Password">
       </div>
       <div>
-        <button type="submit" class="btn btn-danger bg-gradient-3">
+        <button type="submit" class="btn btn-primary">
           <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
           <span *ngIf="!isLoading">Create</span>
         </button>

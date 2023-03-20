@@ -1,5 +1,5 @@
 <div class="w-100 border rounded overflow-hidden">
-  <h4 class="text-light border-bottom p-3 mb-0 bg-gradient-3">Detail</h4>
+  <h4 class="text-light border-bottom p-3 mb-0 bg-gradient-1">Detail</h4>
   <div class="p-3">
 
     <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
@@ -7,7 +7,7 @@
     <div *ngIf="!isLoading">
       <table class="m-0 table table-dark">
         <tr><th style="width: 100px !important;">Username</th><td>{{data.user.username}}</td></tr>
-        <tr><th style="width: 100px !important;">Is admin</th><td [ngClass]="{'text-success': data.user.isAdmin, 'text-danger': !data.user.isAdmin}">{{data.user.isAdmin ? "True" : "False"}}</td></tr>
+        <tr><th style="width: 100px !important;">Group</th><td [ngClass]="{'text-danger': data.user.isAdmin, 'text-primary': !data.user.isAdmin}">{{data.user.isAdmin ? "Admin" : "User"}}</td></tr>
       </table>
     </div>
   </div>

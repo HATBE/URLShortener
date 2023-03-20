@@ -51,7 +51,9 @@ class UserManager {
 
         const updatedUser = await UserModel.findByIdAndUpdate(user.getRawId(), {
             password: hashedPassword
-        }).save(); // save user
+        });
+        
+        updatedUser.save(); 
 
         return {status: true};
     }
