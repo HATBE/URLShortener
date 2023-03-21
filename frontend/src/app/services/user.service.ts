@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { AuthService } from './auth.service';
 import { User } from '../models/user.model';
 import { Pagination } from '../models/pagination.model';
+import { Url } from '../models/url.model';
 
 @Injectable({
   providedIn: 'root'
@@ -49,8 +50,8 @@ export class UserService {
     return "null";
   }
 
-  deleteUrls() {
-    return this.http.delete<{message: string, data: {user: User}}>(this.apiEndpoint + 'urls', {headers: this.authHeader});
+  deleteUrls(userid: any) {
+    return this.http.delete<{message: string, data: {user: User}}>(this.apiEndpoint + userid + '/urls', {headers: this.authHeader});
   }
 
   changePassword(userid: any, oldPassword: string | null, newPassword: string) {
@@ -59,5 +60,9 @@ export class UserService {
 
   toggleAdmin(id: string) {
     return this.http.patch(this.apiEndpoint + id + "/toggleadmin", {}, {headers: this.authHeader});
+  }
+
+  getUrls(userid: any, page: number = 1) {
+    return this.http.get<{message: any; data: {urls: Url[], pagination: {maxPages: number}} | any}>(this.apiEndpoint + userid + "/urls?page=" + page, {headers: this.authHeader});
   }
 }

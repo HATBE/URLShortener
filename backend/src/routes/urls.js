@@ -4,103 +4,12 @@ const router = express.Router();
 const UrlModel = require('../models/url');
 const UrlTrackerModel = require('../models/urlTracker');
 
-const Url = require('../classes/Url');
 const UrlTracker = require('../classes/UrlTracker');
 const Validate = require("../classes/Validate");
 const Pagination = require("../classes/Pagination");
-
-const mustAuthorize = require('../middleware/mustAuthorize');
 const UrlManager = require("../classes/UrlManager");
 
-// -> create a url
-router.post("/", async (req, res) => {
-    const {url} = req.body;
-
-    // check if url is passed in the body
-    if(!url) {
-        return res.status(400).json({
-            status: false, 
-            message: "Please provide a url!"
-        });
-    }
-
-    // check if url is valid 
-    if(!Validate.url(url)) {
-        return res.status(400).json({
-            status: false, 
-            message: "Please provide a valid url!"
-        });
-    }
-    
-    console.log(req.user)
-
-    if(req.user) {
-        // if user is logged in
-        const foundOldUrl = await UrlModel.findOne({
-                                userid: req.user.getId(), 
-                                url: url
-                            });
-
-        if(foundOldUrl) {
-            // if the same user tried to shorten this url in the past
-            return res.status(400).json({
-                status: false, 
-                message: `You already shortened this url! ID: "${foundOldUrl.shorturl}"`
-            });
-        }
-    }
-
-    const newUrl = await UrlManager.create(url, req.user);
-
-    res.status(200).json({
-        status: true, 
-        message: "Successfully added the url to your account.",
-        data: {
-            url: await newUrl.getAsObject()
-        }
-    });
-});
-
-// -> get all urls from the loggedin user
-router.get('/my', mustAuthorize, async (req, res) => {
-    let {page} = req.query;
- 
-    // if page is not valid e.g. string, not in range, ...
-    if(!Validate.pageNumber(req.query.page)) {
-        page = 1;
-    }
-
-    const pagination = new Pagination(page, await UrlModel.find({userid: req.user.getId()}).count())
-
-    let urls = await UrlModel.find(
-        {
-            userid: req.user.getId()
-        }, 
-        {}, 
-        {
-            limit: pagination.getLimit(), 
-            skip: pagination.getSkip()
-        }
-    )
-    .sort( '-date' );
-
-    if(!urls) return false;
-
-    let newUrls = [];
-
-    for (let i = 0; i < urls.length; i++) {
-        newUrls.push(await (new Url(urls[i])).getAsObject());
-    }
-
-    res.status(200).json({
-        status: true,
-        message: "success",
-        data: {
-            urls: newUrls,
-            pagination: pagination.getAsObject()
-        }
-    });
-});
+const mustAuthorize = require('../middleware/mustAuthorize');
 
 // -> get stats of a url by its id
 router.get("/:id/stats", mustAuthorize, async (req, res) => {
@@ -212,6 +121,56 @@ router.get("/:id", async (req, res) => {
         message: "The url was found.",
         data: {
             url: await url.getAsObject()
+        }
+    });
+});
+
+
+// -> create a url
+router.post("/", async (req, res) => {
+    const {url} = req.body;
+
+    // check if url is passed in the body
+    if(!url) {
+        return res.status(400).json({
+            status: false, 
+            message: "Please provide a url!"
+        });
+    }
+
+    // check if url is valid 
+    if(!Validate.url(url)) {
+        return res.status(400).json({
+            status: false, 
+            message: "Please provide a valid url!"
+        });
+    }
+    
+    console.log(req.user)
+
+    if(req.user) {
+        // if user is logged in
+        const foundOldUrl = await UrlModel.findOne({
+                                userid: req.user.getId(), 
+                                url: url
+                            });
+
+        if(foundOldUrl) {
+            // if the same user tried to shorten this url in the past
+            return res.status(400).json({
+                status: false, 
+                message: `You already shortened this url! ID: "${foundOldUrl.shorturl}"`
+            });
+        }
+    }
+
+    const newUrl = await UrlManager.create(url, req.user);
+
+    res.status(200).json({
+        status: true, 
+        message: "Successfully added the url to your account.",
+        data: {
+            url: await newUrl.getAsObject()
         }
     });
 });

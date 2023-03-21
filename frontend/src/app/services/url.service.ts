@@ -19,10 +19,6 @@ export class UrlService {
     return this.http.get<{message: string, data: {url: Url}}>(this.apiEndpoint + id);
   }
 
-  getMyUrls(page: number = 1) {
-    return this.http.get<{message: any; data: {urls: Url[], pagination: {maxPages: number}} | any}>(this.apiEndpoint + "my?page=" + page, {headers: this.authHeader});
-  }
-
   add(url: string) {
     return this.http.post<{message: any; data: { url: Url} | any}>(this.apiEndpoint, {url: url}, {headers: this.authHeader});
   }

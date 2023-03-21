@@ -68,7 +68,6 @@ export class DangerSettingsComponent implements OnInit {
 
   onDeleteAllUrls() {
     this.launchModal('Are you sure?', 'Are you sure you want to delete all your Urls?', 'Yes, delete them', this.modalTypes.url);
-
   }
 
   onDeleteAccount() {
@@ -87,7 +86,7 @@ export class DangerSettingsComponent implements OnInit {
   }
 
   confirmDeleteUrls() {
-     this.userService.deleteUrls().subscribe(data => {
+     this.userService.deleteUrls(`${localStorage.getItem('userid')}`).subscribe(data => {
         this.launchModal("Successfully deleted", "All your URLs are deleted!", "Ok", this.modalTypes.default);
       });
   }

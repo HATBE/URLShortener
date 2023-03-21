@@ -1,7 +1,5 @@
 import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
 
-import { UrlService } from 'src/app/services/url.service';
-
 import { Pagination } from 'src/app/models/pagination.model';
 import { Url } from 'src/app/models/url.model';
 
@@ -10,6 +8,8 @@ import { faArrowAltCircleRight } from '@fortawesome/free-regular-svg-icons';
 
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en'
+import { UserService } from 'src/app/services/user.service';
+import { UrlService } from 'src/app/services/url.service';
 
 @Component({
   selector: 'app-your-urls',
@@ -33,6 +33,7 @@ export class YourUrlsComponent implements OnInit {
 
   constructor(
     private urlService: UrlService,
+    private userService: UserService,
   ) { }
 
   ngOnInit(): void {
@@ -45,7 +46,7 @@ export class YourUrlsComponent implements OnInit {
     TimeAgo.addDefaultLocale(en)
     const timeAgo = new TimeAgo('en-US');
 
-    this.urlService.getMyUrls(this.pagination.page).subscribe(data => {
+    this.userService.getUrls(localStorage.getItem('userid'), this.pagination.page).subscribe(data => {
       const urls = data.data.urls;
       urls.map((url: any) => {
         url.date = timeAgo.format(new Date(url.date * 1000));
