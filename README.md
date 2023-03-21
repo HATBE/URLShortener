@@ -92,12 +92,32 @@ redirect to url
 
 #### 1.3.1.1 GET /loggedin
 
+Example request:
+
 ``` bash
 curl -X GET us.local/api/v1/auth/loggedin \
 -H 'Authorization: Bearer ThiSiSABeaRerTok3n...' 
 ```
 
+Example success response:
+
+``` json
+{
+    "status": true,
+    "message": "Successfully received the data of the currently loggedin user.",
+    "data": {
+        "user": {
+            "id": "6414ae5984ac522db3e31dd1",
+            "username": "user",
+            "isAdmin": false
+        }
+    }
+}
+```
+
 #### 1.3.1.2 POST /login
+
+Example request:
 
 ``` bash
 curl -X POST us.local/api/v1/auth/login \
@@ -107,7 +127,26 @@ curl -X POST us.local/api/v1/auth/login \
     }'
 ```
 
+Example success response:
+
+``` json
+{
+    "status": true,
+    "message": "Successfully loggedin.",
+    "data": {
+        "token": "ThiSiSABeaRerTok3n...",
+        "user": {
+            "id": "6414ae5984ac522db3e31dd1",
+            "username": "user",
+            "isAdmin": false
+        }
+    }
+}
+```
+
 #### 1.3.1.3 POST /register
+
+Example request:
 
 ``` bash
 curl -X POST us.local/api/v1/auth/register \
@@ -117,36 +156,102 @@ curl -X POST us.local/api/v1/auth/register \
     }'
 ```
 
+Example success response:
+
+``` json
+{
+    "status": true,
+    "message": "Successfully created the user \"hatbe1\".",
+    "data": {
+        "user": {
+            "id": "63ee4d1addcb75d94f8a85d1",
+            "username": "user",
+            "isAdmin": false
+        }
+    }
+}
+```
+
 ### 1.3.2 URLs
 
 #### 1.3.2.1 GET /:id
+
+Example request:
 
 ``` bash
 curl -X GET us.local/api/v1/urls/EOhCtWhoY
 ```
 
+Example success response:
+
+``` json
+{
+    "status": true,
+    "message": "The url was found.",
+    "data": {
+        "url": {
+            "id": "63ee4d1addcb75d94f8a85d1",
+            "url": "https://hatbe.ch",
+            "shorturl": "EOhCtWhoY",
+            "date": 1679325770,
+            "user": {
+                "id": "63ee4d1addcb75d94f8a85d1",
+                "username": "user",
+                "isAdmin": false
+            }
+        }
+    }
+}
+```
+
 #### 1.3.2.2 GET /:id/stats
+
+Example request:
 
 ``` bash
 curl -X GET us.local/api/v1/urls/EOhCtWhoY/stats \
 -H 'Authorization: Bearer ThiSiSABeaRerTok3n...'
 ```
 
+Example success response:
+
+``` json
+
+```
+
 #### 1.3.2.3 GET /:id/accesslist
+
+Example request:
 
 ``` bash
 curl -X GET us.local/api/v1/urls/EOhCtWhoY/accesslist \
 -H 'Authorization: Bearer ThiSiSABeaRerTok3n...'
 ```
 
+Example success response:
+
+``` json
+
+```
+
 #### 1.3.2.4 GET /:id/urls
+
+Example request:
 
 ``` bash
 curl -X GET us.local/api/v1/urls/EOhCtWhoY/urls \
 -H 'Authorization: Bearer ThiSiSABeaRerTok3n...'
 ```
 
+Example success response:
+
+``` json
+
+```
+
 #### 1.3.2.5 POST /
+
+Example request:
 
 ``` bash
 curl -X POST us.local/api/v1/urls \
@@ -155,30 +260,78 @@ curl -X POST us.local/api/v1/urls \
     }'
 ```
 
+Example success response:
+
+``` json
+{
+    "status": true,
+    "message": "Successfully added the url to your account.",
+    "data": {
+        "url": {
+            "id": "63ee4d1addcb75d94f8a85d1",
+            "url": "https://hatbe.ch",
+            "shorturl": "EOhCtWhoY",
+            "date": 1679325770,
+            "user": {
+                "id": "63ee4d1addcb75d94f8a85d1",
+                "username": "user",
+                "isAdmin": false
+            }
+        }
+    }
+}
+```
+
 #### 1.3.2.6 DELETE /:id
+
+Example request:
 
 ``` bash
 curl -X DELETE us.local/api/v1/urls/EOhCtWhoY \
 -H 'Authorization: Bearer ThiSiSABeaRerTok3n...' 
 ```
 
+Example success response:
+
+``` json
+
+```
+
 ### 1.3.3 Users
 
 #### 1.3.3.1 GET /
+
+Example request:
 
 ``` bash
 curl -X GET us.local/api/v1/users \
 -H 'Authorization: Bearer ThiSiSABeaRerTok3n...' 
 ```
 
+Example success response:
+
+``` json
+
+```
+
 #### 1.3.3.2 GET /:id
+
+Example request:
 
 ``` bash
 curl -X GET us.local/api/v1/users/63ee4d1addcb75d94f8a85d1 \
 -H 'Authorization: Bearer ThiSiSABeaRerTok3n...' 
 ```
 
+Example success response:
+
+``` json
+
+```
+
 #### 1.3.3.3 PATCH /:id/password
+
+Example request:
 
 ``` bash
 curl -X PATCH us.local/api/v1/users/63ee4d1addcb75d94f8a85d1/password \
@@ -189,32 +342,80 @@ curl -X PATCH us.local/api/v1/users/63ee4d1addcb75d94f8a85d1/password \
     }'
 ```
 
+Example success response:
+
+``` json
+
+```
+
 #### 1.3.3.4 PATCH /:id/toggleadmin
+
+Example request:
 
 ``` bash
 curl -X PATCH us.local/api/v1/users/63ee4d1addcb75d94f8a85d1/toggleadmin \
 -H 'Authorization: Bearer ThiSiSABeaRerTok3n...' 
 ```
 
+Example success response:
+
+``` json
+
+```
+
 #### 1.3.3.5 DELETE /:id
+
+Example request:
 
 ``` bash
 curl -X DELETE us.local/api/v1/users/63ee4d1addcb75d94f8a85d1 \
 -H 'Authorization: Bearer ThiSiSABeaRerTok3n...' 
 ```
 
+Example success response:
+
+``` json
+
+```
+
 #### 1.3.3.6 DELETE /:id/urls
+
+Example request:
 
 ``` bash
 curl -X DELETE us.local/api/v1/users/63ee4d1addcb75d94f8a85d1/urls \
 -H 'Authorization: Bearer ThiSiSABeaRerTok3n...' 
 ```
 
+Example success response:
+
+``` json
+
+```
+
 ### 1.3.4 Stats
 
 #### 1.3.4.1 GET /
+
+Example request:
 
 ``` bash
 curl -X GET us.local/api/v1/stats \
 -H 'Authorization: Bearer ThiSiSABeaRerTok3n...' 
 ```
+
+Example success response:
+
+``` json
+
+```
+
+
+
+
+
+
+
+---
+
+Last update: 21.03.23
