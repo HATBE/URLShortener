@@ -216,7 +216,26 @@ curl -X GET us.local/api/v1/urls/EOhCtWhoY/stats \
 Example success response:
 
 ``` json
-
+{
+    "status": true,
+    "message": "stats of the url","
+    data": {
+        "stats": {
+            "clicked": 1
+        },
+        "url":{
+            "id": "63ee4d1addcb75d94f8a85d1",
+            "url": "https://hatbe.ch",
+            "shorturl": "EOhCtWhoY",
+            "date": 1679325770,
+            "user": {
+                "id":"63ee4d1addcb75d94f8a85d1",
+                "username":"user",
+                "isAdmin":false
+            }
+        }
+    }
+}
 ```
 
 #### 1.3.2.3 GET /:id/accesslist
@@ -390,7 +409,10 @@ curl -X DELETE us.local/api/v1/users/63ee4d1addcb75d94f8a85d1/urls \
 Example success response:
 
 ``` json
-
+{
+    "status": true,
+    "message": "ok"
+}
 ```
 
 ### 1.3.4 Stats
@@ -407,7 +429,15 @@ curl -X GET us.local/api/v1/stats \
 Example success response:
 
 ``` json
-
+{
+    "status": true,
+    "message": "Successfully received stats.",
+    "data": {
+        "usersCount": 10,
+        "urlsCount": 10,
+        "urlsClicked": 10
+    }
+}
 ```
 
 
