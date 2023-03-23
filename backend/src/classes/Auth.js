@@ -13,9 +13,6 @@ class Auth {
             };
         }
 
-
-        console.log(username)
-
         const user = await UserManager.getFromUsername(username);
 
         if(!user) {

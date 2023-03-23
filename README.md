@@ -104,7 +104,7 @@ Example success response:
 ``` json
 {
     "status": true,
-    "message": "Successfully received the data of the currently loggedin user.",
+    "message": "Successfully received the data of the currently loggedin user",
     "data": {
         "user": {
             "id": "6414ae5984ac522db3e31dd1",
@@ -161,7 +161,7 @@ Example success response:
 ``` json
 {
     "status": true,
-    "message": "Successfully created the user \"hatbe1\".",
+    "message": "Successfully created the user \"user\".",
     "data": {
         "user": {
             "id": "63ee4d1addcb75d94f8a85d1",
@@ -218,8 +218,8 @@ Example success response:
 ``` json
 {
     "status": true,
-    "message": "stats of the url","
-    data": {
+    "message": "stats of the url",
+    "data": {
         "stats": {
             "clicked": 1
         },
@@ -250,25 +250,43 @@ curl -X GET us.local/api/v1/urls/EOhCtWhoY/accesslist \
 Example success response:
 
 ``` json
-
+{
+    "status": true,
+    "message": "accesslist of the url",
+    "data": {
+        "accesslist": [
+            {
+                "id": "63ee4d1addcb75d94f8a85d1",
+                "url": "63ee4d1addcb75d94f8a85d1",
+                "date": 1679325770,
+                "ip": "localhost"
+            }
+        ],
+        "url": {
+            "id": "63ee4d1addcb75d94f8a85d1",
+            "url": "https://hatbe.ch",
+            "shorturl": "EOhCtWhoY",
+            "date": 1679325770,
+            "user": {
+                "id": "63ee4d1addcb75d94f8a85d1",
+                "username": "user",
+                "isAdmin": false
+            }
+        },
+        "pagination": {
+            "page": 1,
+            "maxPages": 1,
+            "maxCount": 1,
+            "hasLast": false,
+            "hasNext": false,
+            "limit": 7
+        }
+    }
+}
 ```
 
-#### 1.3.2.4 GET /:id/urls
 
-Example request:
-
-``` bash
-curl -X GET us.local/api/v1/urls/EOhCtWhoY/urls \
--H 'Authorization: Bearer ThiSiSABeaRerTok3n...'
-```
-
-Example success response:
-
-``` json
-
-```
-
-#### 1.3.2.5 POST /
+#### 1.3.2.4 POST /
 
 Example request:
 
@@ -301,7 +319,7 @@ Example success response:
 }
 ```
 
-#### 1.3.2.6 DELETE /:id
+#### 1.3.2.5 DELETE /:id
 
 Example request:
 
@@ -313,7 +331,10 @@ curl -X DELETE us.local/api/v1/urls/EOhCtWhoY \
 Example success response:
 
 ``` json
-
+{
+    "status": true,
+    "message": "ok"
+}
 ```
 
 ### 1.3.3 Users
@@ -330,7 +351,27 @@ curl -X GET us.local/api/v1/users \
 Example success response:
 
 ``` json
-
+{
+    "status": true,
+    "message": "successfully fetched all users",
+    "data": {
+        "users": [
+            {
+                "id": "63ee4d1addcb75d94f8a85d1",
+                "username": "user",
+                "isAdmin": false
+            },
+        ],
+        "pagination": {
+            "page": 1,
+            "maxPages": 1,
+            "maxCount": 1,
+            "hasLast": false,
+            "hasNext": false,
+            "limit": 7
+        }
+    }
+}
 ```
 
 #### 1.3.3.2 GET /:id
@@ -345,10 +386,61 @@ curl -X GET us.local/api/v1/users/63ee4d1addcb75d94f8a85d1 \
 Example success response:
 
 ``` json
-
+{
+    "status": true,
+    "message": "The user was found.",
+    "data": {
+        "user": {
+            "id": "63ee4d1addcb75d94f8a85d1",
+            "username": "user",
+            "isAdmin": false
+        }
+    }
+}
 ```
 
-#### 1.3.3.3 PATCH /:id/password
+#### 1.3.2.3 GET /:id/urls
+
+Example request:
+
+``` bash
+curl -X GET us.local/api/v1/urls/EOhCtWhoY/urls \
+-H 'Authorization: Bearer ThiSiSABeaRerTok3n...'
+```
+
+Example success response:
+
+``` json
+{
+    "status": true,
+    "message": "success",
+    "data": {
+        "urls": [
+            {
+                "id": "63ee4d1addcb75d94f8a85d1",
+                "url": "https://hans.peter",
+                "shorturl": "EOhCtWhoY",
+                "date": 1679325770,
+                "user": {
+                    "id": "63ee4d1addcb75d94f8a85d1",
+                    "username": "user",
+                    "isAdmin": false
+                }
+            }
+        ],
+        "pagination": {
+            "page": 1,
+            "maxPages": 1,
+            "maxCount": 1,
+            "hasLast": false,
+            "hasNext": false,
+            "limit": 7
+        }
+    }
+}
+```
+
+#### 1.3.3.4 PATCH /:id/password
 
 Example request:
 
@@ -364,10 +456,13 @@ curl -X PATCH us.local/api/v1/users/63ee4d1addcb75d94f8a85d1/password \
 Example success response:
 
 ``` json
-
+{
+    "status": true,
+    "message": "Successully changed your password."
+}
 ```
 
-#### 1.3.3.4 PATCH /:id/toggleadmin
+#### 1.3.3.5 PATCH /:id/toggleadmin
 
 Example request:
 
@@ -379,10 +474,13 @@ curl -X PATCH us.local/api/v1/users/63ee4d1addcb75d94f8a85d1/toggleadmin \
 Example success response:
 
 ``` json
-
+{
+    "status": true,
+    "message": "Successfully set admin state to true"
+}
 ```
 
-#### 1.3.3.5 DELETE /:id
+#### 1.3.3.6 DELETE /:id
 
 Example request:
 
@@ -394,10 +492,13 @@ curl -X DELETE us.local/api/v1/users/63ee4d1addcb75d94f8a85d1 \
 Example success response:
 
 ``` json
-
+{
+    "status": true,
+    "message": "ok"
+}
 ```
 
-#### 1.3.3.6 DELETE /:id/urls
+#### 1.3.3.7 DELETE /:id/urls
 
 Example request:
 
