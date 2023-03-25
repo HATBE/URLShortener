@@ -8,11 +8,13 @@ const UserModel = require('../models/user');
 class UserManager {
     static async create(username, password) {
         // build new user
-        const user = await new UserModel({
+        let user = await new UserModel({
             username: username,
             password: password,
             isAdmin: false
-        }).save();
+        });
+
+        user = await user.save();
 
         return new User(user); // save user
     }
@@ -33,10 +35,12 @@ class UserManager {
 
         const salt = await bcrypt.genSalt(10); // generate salt
         const hashedPassword = await bcrypt.hash(newpassword, salt); // hash password
-
-        const updatedUser = await UserModel.findByIdAndUpdate(user.getRawId(), {
+        
+        let updatedUser = await UserModel.findByIdAndUpdate(user.getRawId(), {
             password: hashedPassword
-        }).save();
+        });
+
+        updatedUser = await updatedUser.save();
 
         return {status: true};
     }
@@ -49,11 +53,11 @@ class UserManager {
         const salt = await bcrypt.genSalt(10); // generate salt
         const hashedPassword = await bcrypt.hash(newpassword, salt); // hash password
 
-        const updatedUser = await UserModel.findByIdAndUpdate(user.getRawId(), {
+        let updatedUser = await UserModel.findByIdAndUpdate(user.getRawId(), {
             password: hashedPassword
         });
         
-        updatedUser.save(); 
+        updatedUser = await updatedUser.save(); 
 
         return {status: true};
     }

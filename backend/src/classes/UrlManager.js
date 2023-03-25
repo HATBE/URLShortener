@@ -42,7 +42,9 @@ class UrlManager {
             shorturl: shorturl,
             date: Math.round(Date.now() / 1000),
             userid: user ? user.getId() : null || null
-        }).save();
+        });
+        
+        newUrl = await newUrl.save();
         
         return new Url(newUrl);
     }

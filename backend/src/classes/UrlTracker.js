@@ -11,11 +11,13 @@ class UrlTracker {
     }
 
     static async create(urlId, ip) {
-        const urlTracker = new UrlTrackerModel({
+        let urlTracker = new UrlTrackerModel({
             url: urlId,
             date: Math.round(Date.now() / 1000),
             ip: (ip === '::1' || ip === '127.0.0.1' || ip === '::ffff:127.0.0.1') ? 'localhost' : ip // if access comes from home address, enter localhost as a string
-        }).save();
+        });
+
+        urlTracker = await urlTracker.save();
 
         return urlTracker;
     }

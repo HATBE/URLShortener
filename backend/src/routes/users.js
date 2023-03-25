@@ -205,11 +205,11 @@ router.patch('/:id/toggleadmin', mustAuthorize, onlyAdmin, async (req, res) => {
         return res.status(400).json({status: false, message: "You can't toggle admin state yourself, you are yourself!"});
     }
 
-    const updatedUser = await UserModel.findByIdAndUpdate(id, {
+    let updatedUser = await UserModel.findByIdAndUpdate(id, {
         isAdmin: !user.isAdmin()
-    })
+    });
     
-    updatedUser.save();
+    updatedUser = await updatedUser.save();
 
     res.status(200).json({
         status: true, 
