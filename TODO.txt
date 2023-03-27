@@ -1,2 +1,0 @@
-urls get my -> get :id
-delete users/urls -> :id/urls
