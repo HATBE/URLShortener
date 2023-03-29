@@ -65,8 +65,6 @@ class Auth {
             username, 
             hashedPassword
         );
-        
-        console.log(newUser)
 
         return {
             status: true, 
