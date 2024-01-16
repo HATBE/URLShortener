@@ -1,558 +1,81 @@
-# URL Shortener
+## Key features
 
-- [URL Shortener](#url-shortener)
-  - [1 Description](#1-description)
-    - [1.1 Libraries and Frameworks](#11-libraries-and-frameworks)
-    - [1.2 Preview](#12-preview)
-  - [2 Frontend](#2-frontend)
-    - [2.1 /](#21-)
-    - [2.2 /login](#22-login)
-    - [2.3 /register](#23-register)
-    - [2.4 /dashboard](#24-dashboard)
-    - [2.5 /:id](#25-id)
-    - [2.6 /view-url/:id](#26-view-urlid)
-    - [2.7 /settings](#27-settings)
-    - [2.8 /admin/dashboard](#28-admindashboard)
-    - [2.9 /admin/view-user/:id](#29-adminview-userid)
-  - [3 Backend](#3-backend)
-    - [3.1 Auth](#31-auth)
-      - [3.1.1 GET /loggedin](#311-get-loggedin)
-      - [3.1.2 POST /login](#312-post-login)
-      - [3.1.3 POST /register](#313-post-register)
-    - [3.2 URLs](#32-urls)
-      - [3.2.1 GET /:id](#321-get-id)
-      - [3.2.2 GET /:id/stats](#322-get-idstats)
-      - [3.2.3 GET /:id/accesslist](#323-get-idaccesslist)
-      - [3.2.4 POST /](#324-post-)
-      - [3.2.5 DELETE /:id](#325-delete-id)
-    - [3.3 Users](#33-users)
-      - [3.3.1 GET /](#331-get-)
-      - [3.3.2 GET /:id](#332-get-id)
-      - [3.2.3 GET /:id/urls](#323-get-idurls)
-      - [3.3.4 PATCH /:id/password](#334-patch-idpassword)
-      - [3.3.5 PATCH /:id/toggleadmin](#335-patch-idtoggleadmin)
-      - [3.3.6 DELETE /:id](#336-delete-id)
-      - [3.3.7 DELETE /:id/urls](#337-delete-idurls)
-    - [3.4 Stats](#34-stats)
-      - [3.4.1 GET /](#341-get-)
+- Shorten URLs
+- Create, Use, Delete urls
+- Tracking of url usage
+- authentication system (login / register)
+- User Dashboard
+- User settings
+- Admin Dashboard
+- User Management
+- Error handling
 
+## How It's Built
 
+The frontend of this application is developed using Angular, while the backend uses NodeJS with Express, making it a full JavaScript implementation. MongoDB has been chosen as the database for its efficiency and flexibility. For styling, the Bootstrap CSS Framework is used to provide a clean and responsive design.
 
-## 1 Description
+The entire source code is available on GitHub for review and collaboration.
 
-### 1.1 Libraries and Frameworks
+Additionally, there is a walkthrough on YouTube.
 
-- MEAN Stack
-    - [M]ongoDB as Database
-    - [E]xpress as API
-    - [A]ngular as Frontend
-    - [N]odeJS as backend
-- Bootstrap for css styles
-- Fontawesome for icons
+## Features
 
-### 1.2 Preview
+### URL Shortening for Guests
 
-Video Link: https://www.youtube.com/watch?v=4TzxXNHSW2g
+Guests can shorten URLs directly from the index page. Upon entering a URL, a shortened version is generated, which combines the server URL with a unique 9-character ID. As a guest, options to edit, delete, or view statistics of the URL are not available. The URL will remain on the server indefinitely.
 
-## 2 Frontend
+![](./.img/1.png)
 
-### 2.1 /
+### Accessing a Shortened URL (Guest or Registered User)
 
-![root](./.img/1.png)
+Shortened URLs can be entered in any browser. Users are immediately redirected to the link's destination. Each access, including time and IP address (if enabled in the backend .ENV file), is recorded in the database, accessible to the URL's owner.
 
-### 2.2 /login
+### Registration Process
 
-![login page](./.img/8.png)
+Users can register at the "/register" path, requiring a new username and password. Post-registration, users are redirected to the "/login" page with a query (?freshregisteredas=%username%), which auto-fills the username field and displays a success message.
 
-### 2.3 /register
+![](./.img/2.png)
 
-![register page](./.img/10.png)
+### Login Functionality
 
-### 2.4 /dashboard
+Existing users can log in using their username and password. Upon successful login, users are redirected to their dashboard at "/dashboard". This area is exclusively accessible to logged-in users.
 
-![dashboard](./.img/9.png)
+![](./.img/7.png)
 
-### 2.5 /:id
+### User Dashboard
 
-redirect to url
-
-### 2.6 /view-url/:id
-
-![view url](./.img/18.png)
-
-### 2.7 /settings
+The dashboard presents a paginated list of all user-created shortened URLs. Users can view statistics (via the eye button) or delete URLs (using the trashcan icon). The URL shortening widget is available at the top of this list, along with a settings button (an additional admin button appears for admin users).
 
-![settings](./.img/15.png)
+![](./.img/8.png)
 
-### 2.8 /admin/dashboard
+### URL Shortening for Registered Users
 
-![admin dashboard](./.img/16.png)
+The URL shortening process for logged-in users on the "/dashboard" is similar to that for guests on the index page, with the added benefit of being listed as the URL's owner.
 
-### 2.9 /admin/view-user/:id
+### Viewing Statistics of Personal URLs
 
-![view user](./.img/17.png)
+By selecting the eye button on the "/dashboard", users access the URL info page, displaying the original URL, the shortened version, the date of creation, and access counts. A detailed list of accesses, including date and IP address, is also available. Users have the option to delete their URLs from this page.
 
-## 3 Backend
+![](./.img/6.png)
 
-### 3.1 Auth
+### User Settings
 
-#### 3.1.1 GET /loggedin
+Within user settings, options to change passwords, delete accounts, or remove all associated URLs are available, subject to confirmation through a modal. Users can also log out from here, a function mirrored in the header.
 
-Example request:
-
-``` bash
-curl -X GET us.local/api/v1/auth/loggedin \
--H 'Authorization: Bearer ThiSiSABeaRerTok3n...' 
-```
-
-Example success response:
-
-``` json
-{
-    "status": true,
-    "message": "Successfully received the data of the currently loggedin user",
-    "data": {
-        "user": {
-            "id": "6414ae5984ac522db3e31dd1",
-            "username": "user",
-            "isAdmin": false
-        }
-    }
-}
-```
-
-#### 3.1.2 POST /login
-
-Example request:
-
-``` bash
-curl -X POST us.local/api/v1/auth/login \
--d '{
-    "username": "user",
-    "password": "password"
-    }'
-```
-
-Example success response:
-
-``` json
-{
-    "status": true,
-    "message": "Successfully loggedin.",
-    "data": {
-        "token": "ThiSiSABeaRerTok3n...",
-        "user": {
-            "id": "6414ae5984ac522db3e31dd1",
-            "username": "user",
-            "isAdmin": false
-        }
-    }
-}
-```
-
-#### 3.1.3 POST /register
-
-Example request:
-
-``` bash
-curl -X POST us.local/api/v1/auth/register \
--d '{
-    "username": "user",
-    "password": "password"
-    }'
-```
-
-Example success response:
-
-``` json
-{
-    "status": true,
-    "message": "Successfully created the user \"user\".",
-    "data": {
-        "user": {
-            "id": "63ee4d1addcb75d94f8a85d1",
-            "username": "user",
-            "isAdmin": false
-        }
-    }
-}
-```
-
-### 3.2 URLs
-
-#### 3.2.1 GET /:id
-
-Example request:
-
-``` bash
-curl -X GET us.local/api/v1/urls/EOhCtWhoY
-```
-
-Example success response:
-
-``` json
-{
-    "status": true,
-    "message": "The url was found.",
-    "data": {
-        "url": {
-            "id": "63ee4d1addcb75d94f8a85d1",
-            "url": "https://hatbe.ch",
-            "shorturl": "EOhCtWhoY",
-            "date": 1679325770,
-            "user": {
-                "id": "63ee4d1addcb75d94f8a85d1",
-                "username": "user",
-                "isAdmin": false
-            }
-        }
-    }
-}
-```
-
-#### 3.2.2 GET /:id/stats
-
-Example request:
-
-``` bash
-curl -X GET us.local/api/v1/urls/EOhCtWhoY/stats \
--H 'Authorization: Bearer ThiSiSABeaRerTok3n...'
-```
-
-Example success response:
-
-``` json
-{
-    "status": true,
-    "message": "stats of the url",
-    "data": {
-        "stats": {
-            "clicked": 1
-        },
-        "url":{
-            "id": "63ee4d1addcb75d94f8a85d1",
-            "url": "https://hatbe.ch",
-            "shorturl": "EOhCtWhoY",
-            "date": 1679325770,
-            "user": {
-                "id":"63ee4d1addcb75d94f8a85d1",
-                "username":"user",
-                "isAdmin":false
-            }
-        }
-    }
-}
-```
-
-#### 3.2.3 GET /:id/accesslist
-
-Example request:
-
-``` bash
-curl -X GET us.local/api/v1/urls/EOhCtWhoY/accesslist \
--H 'Authorization: Bearer ThiSiSABeaRerTok3n...'
-```
-
-Example success response:
-
-``` json
-{
-    "status": true,
-    "message": "accesslist of the url",
-    "data": {
-        "accesslist": [
-            {
-                "id": "63ee4d1addcb75d94f8a85d1",
-                "url": "63ee4d1addcb75d94f8a85d1",
-                "date": 1679325770,
-                "ip": "localhost"
-            }
-        ],
-        "url": {
-            "id": "63ee4d1addcb75d94f8a85d1",
-            "url": "https://hatbe.ch",
-            "shorturl": "EOhCtWhoY",
-            "date": 1679325770,
-            "user": {
-                "id": "63ee4d1addcb75d94f8a85d1",
-                "username": "user",
-                "isAdmin": false
-            }
-        },
-        "pagination": {
-            "page": 1,
-            "maxPages": 1,
-            "maxCount": 1,
-            "hasLast": false,
-            "hasNext": false,
-            "limit": 7
-        }
-    }
-}
-```
-
-
-#### 3.2.4 POST /
-
-Example request:
-
-``` bash
-curl -X POST us.local/api/v1/urls \
--d '{
-    "url": "https://hatbe.ch",
-    }'
-```
-
-Example success response:
-
-``` json
-{
-    "status": true,
-    "message": "Successfully added the url to your account.",
-    "data": {
-        "url": {
-            "id": "63ee4d1addcb75d94f8a85d1",
-            "url": "https://hatbe.ch",
-            "shorturl": "EOhCtWhoY",
-            "date": 1679325770,
-            "user": {
-                "id": "63ee4d1addcb75d94f8a85d1",
-                "username": "user",
-                "isAdmin": false
-            }
-        }
-    }
-}
-```
-
-#### 3.2.5 DELETE /:id
-
-Example request:
-
-``` bash
-curl -X DELETE us.local/api/v1/urls/EOhCtWhoY \
--H 'Authorization: Bearer ThiSiSABeaRerTok3n...' 
-```
-
-Example success response:
-
-``` json
-{
-    "status": true,
-    "message": "ok"
-}
-```
-
-### 3.3 Users
-
-#### 3.3.1 GET /
-
-Example request:
-
-``` bash
-curl -X GET us.local/api/v1/users \
--H 'Authorization: Bearer ThiSiSABeaRerTok3n...' 
-```
-
-Example success response:
-
-``` json
-{
-    "status": true,
-    "message": "successfully fetched all users",
-    "data": {
-        "users": [
-            {
-                "id": "63ee4d1addcb75d94f8a85d1",
-                "username": "user",
-                "isAdmin": false
-            },
-        ],
-        "pagination": {
-            "page": 1,
-            "maxPages": 1,
-            "maxCount": 1,
-            "hasLast": false,
-            "hasNext": false,
-            "limit": 7
-        }
-    }
-}
-```
-
-#### 3.3.2 GET /:id
-
-Example request:
-
-``` bash
-curl -X GET us.local/api/v1/users/63ee4d1addcb75d94f8a85d1 \
--H 'Authorization: Bearer ThiSiSABeaRerTok3n...' 
-```
-
-Example success response:
-
-``` json
-{
-    "status": true,
-    "message": "The user was found.",
-    "data": {
-        "user": {
-            "id": "63ee4d1addcb75d94f8a85d1",
-            "username": "user",
-            "isAdmin": false
-        }
-    }
-}
-```
-
-#### 3.2.3 GET /:id/urls
-
-Example request:
-
-``` bash
-curl -X GET us.local/api/v1/urls/EOhCtWhoY/urls \
--H 'Authorization: Bearer ThiSiSABeaRerTok3n...'
-```
-
-Example success response:
-
-``` json
-{
-    "status": true,
-    "message": "success",
-    "data": {
-        "urls": [
-            {
-                "id": "63ee4d1addcb75d94f8a85d1",
-                "url": "https://hans.peter",
-                "shorturl": "EOhCtWhoY",
-                "date": 1679325770,
-                "user": {
-                    "id": "63ee4d1addcb75d94f8a85d1",
-                    "username": "user",
-                    "isAdmin": false
-                }
-            }
-        ],
-        "pagination": {
-            "page": 1,
-            "maxPages": 1,
-            "maxCount": 1,
-            "hasLast": false,
-            "hasNext": false,
-            "limit": 7
-        }
-    }
-}
-```
-
-#### 3.3.4 PATCH /:id/password
-
-Example request:
-
-``` bash
-curl -X PATCH us.local/api/v1/users/63ee4d1addcb75d94f8a85d1/password \
--H 'Authorization: Bearer ThiSiSABeaRerTok3n...' \
--d '{
-    "oldpassword": "password123"
-    "newpassword": "password321",
-    }'
-```
-
-Example success response:
-
-``` json
-{
-    "status": true,
-    "message": "Successully changed your password."
-}
-```
-
-#### 3.3.5 PATCH /:id/toggleadmin
-
-Example request:
-
-``` bash
-curl -X PATCH us.local/api/v1/users/63ee4d1addcb75d94f8a85d1/toggleadmin \
--H 'Authorization: Bearer ThiSiSABeaRerTok3n...' 
-```
-
-Example success response:
-
-``` json
-{
-    "status": true,
-    "message": "Successfully set admin state to true"
-}
-```
-
-#### 3.3.6 DELETE /:id
-
-Example request:
-
-``` bash
-curl -X DELETE us.local/api/v1/users/63ee4d1addcb75d94f8a85d1 \
--H 'Authorization: Bearer ThiSiSABeaRerTok3n...' 
-```
-
-Example success response:
-
-``` json
-{
-    "status": true,
-    "message": "ok"
-}
-```
-
-#### 3.3.7 DELETE /:id/urls
-
-Example request:
-
-``` bash
-curl -X DELETE us.local/api/v1/users/63ee4d1addcb75d94f8a85d1/urls \
--H 'Authorization: Bearer ThiSiSABeaRerTok3n...' 
-```
-
-Example success response:
-
-``` json
-{
-    "status": true,
-    "message": "ok"
-}
-```
-
-### 3.4 Stats
-
-#### 3.4.1 GET /
-
-Example request:
-
-``` bash
-curl -X GET us.local/api/v1/stats \
--H 'Authorization: Bearer ThiSiSABeaRerTok3n...' 
-```
-
-Example success response:
-
-``` json
-{
-    "status": true,
-    "message": "Successfully received stats.",
-    "data": {
-        "usersCount": 10,
-        "urlsCount": 10,
-        "urlsClicked": 10
-    }
-}
-```
+![](./.img/3.png)
 
+### Admin Dashboard
 
+Access to the admin dashboard is restricted to admin users; others are redirected to the index page. The admin dashboard provides an overview of all users, with options to view (eye button) or delete them. New users can be created from this panel.
 
+![](./.img/4.png)
 
+### Admin Dashboard User Details
 
+Selecting the eye button in the admin dashboard reveals details of the user, including username and group (admin or user). Additionally, admins have the capability to reset passwords for users.
 
+![](./.img/5.png)
 
 ---
 
-Last update: 21.03.23
+For more detailed information about this web application, please view the accompanying YouTube video, explore the live demo, or browse the code on GitHub.
